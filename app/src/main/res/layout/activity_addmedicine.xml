@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:fillViewport="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/textStyle"
+                android:text="Medicine Name: "/>
+
+            <TextView
+                style="@style/textStyle"
+                android:text="Medicine"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/camera_button"
+            android:layout_width="75dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:text="Add Photo"
+            android:textColor="#AFADAD"
+            android:textSize="10sp"/>
+
+        <TextView
+            style="@style/textStyle"
+            android:text="Dosage"/>
+
+        <Spinner
+            android:id="@+id/dosage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:spinnerMode="dropdown"
+            android:prompt="@string/dosage"
+            android:entries="@array/dosage_items">
+
+        </Spinner>
+
+        <TextView
+            style="@style/textStyle"
+            android:text="Schedule"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/schedule_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#212121"
+                android:text="Daily until I stop"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"/>
+
+            <ImageView
+                android:id="@+id/editPencil"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="24dp"
+                android:src="@drawable/pencil"/>
+
+            <RadioGroup
+                android:id="@+id/radiogroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginLeft="16dp"
+                android:orientation="vertical" >
+
+                <RadioButton android:id="@+id/btn1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Daily until I stop" />
+                <RadioButton android:id="@+id/btn2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1 Week" />
+                <RadioButton android:id="@+id/btn3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2 Weeks" />
+                <RadioButton android:id="@+id/btn4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1 Month" />
+                <RadioButton android:id="@+id/btn5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Never" />
+            </RadioGroup>
+
+        </RelativeLayout>
+
+        <TextView
+            style="@style/textStyle"
+            android:text="Set Routine"/>
+
+        <CheckBox android:id="@+id/checkbox_9am"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:text="9 AM"
+            android:onClick="onCheckboxClicked"/>
+        <CheckBox android:id="@+id/checkbox_12pm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="12 PM"
+            android:onClick="onCheckboxClicked"/>
+        <CheckBox android:id="@+id/checkbox_2pm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="2 PM"
+            android:onClick="onCheckboxClicked"/>
+        <CheckBox android:id="@+id/checkbox_9pm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="9 PM"
+            android:onClick="onCheckboxClicked"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="SAVE"
+            android:textColor="@color/white"
+            android:backgroundTint="#ef5350"/>
+
+
+    </LinearLayout>
+</ScrollView>

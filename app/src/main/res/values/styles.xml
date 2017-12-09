@@ -1,0 +1,40 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#F44336</item>
+        <item name="colorPrimaryDark">#D32F2F</item>
+        <item name="colorAccent">#7C4DFF</item>
+        <item name="colorControlNormal">#c5c5c5</item>
+        <item name="colorControlActivated">#ef5350</item>
+        <item name="colorControlHighlight">#ef5350</item>
+    </style>
+
+    <style name="TextAppearence.App.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColor">#ef5350</item>
+        <item name="android:textColorHint">#212121</item>
+    </style>
+
+    <!--<style name="DashBoardTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#F44336</item>
+        <item name="colorPrimaryDark">#D32F2F</item>
+        <item name="colorAccent">#7C4DFF</item>
+
+        <item name="colorControlNormal">#FFFFFF</item>
+        <item name="colorControlActivated">#ef5350</item>
+        <item name="colorControlHighlight">#ef5350</item>
+    </style>-->
+
+    <style name="Theme">theme</style>
+
+    <style name="textStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:textColor">#D32F2F</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+</resources>
