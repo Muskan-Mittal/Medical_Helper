@@ -1,4 +1,4 @@
-package com.example.muskan.medical_help;
+package com.example.muskan.medical_help.Models;
 
 public class user_model {
 

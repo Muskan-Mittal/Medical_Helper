@@ -12,9 +12,7 @@ public class inputValidation {
 
     private Context context;
 
-    public inputValidation(){
-
-    }
+    public inputValidation(){}
 
     public inputValidation(Context context) {
         this.context = context;

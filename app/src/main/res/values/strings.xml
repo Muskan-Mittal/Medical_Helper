@@ -7,6 +7,7 @@
     <string name="error_message_email">Enter Valid Email</string>
     <string name="error_message_password">Enter Password</string>
     <string name="error_password_match">Password doesnot match</string>
+    <string name="error_message_medicine">Enter Valid Medicine</string>
     <string name="facebook_app_id">2030765153863126</string>
     <string name="fb_login_protocol_scheme">fb2030765153863126</string>
     <string name="action_emergency">Emergency</string>

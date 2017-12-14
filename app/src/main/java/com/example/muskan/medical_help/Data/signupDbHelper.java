@@ -6,7 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.muskan.medical_help.user_model;
+import com.example.muskan.medical_help.Models.medicine_model;
+import com.example.muskan.medical_help.Models.user_model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,18 @@ public class signupDbHelper extends SQLiteOpenHelper {
         // Inserting Row
         db.insert(TABLE_USER, null, values);
         db.close();
+    }
+
+    // Updating medicine
+    public int updateUser(user_model user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_EMAIL, user.getUserId());
+        values.put(COLUMN_USER_PWD, user.getPwd());
+
+        return db.update(TABLE_USER, values, COLUMN_USER_ID + " = ?",
+                new String[] { String.valueOf(user.getId()) });
     }
 
     public List<user_model> getAllUser() {

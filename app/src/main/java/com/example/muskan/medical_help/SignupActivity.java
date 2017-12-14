@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.muskan.medical_help.Data.signupDbHelper;
 import com.example.muskan.medical_help.Helpers.inputValidation;
+import com.example.muskan.medical_help.Models.user_model;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -42,6 +43,7 @@ public class SignupActivity extends AppCompatActivity {
         initViews();
         initObjects();
 
+//      To handle already have account
         textviewLogin.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -52,6 +54,7 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
+//        To handle sign up
         buttonSignup.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -80,7 +83,7 @@ public class SignupActivity extends AppCompatActivity {
         textInputEditTextConfirmPassword = (TextInputEditText) findViewById(R.id.pwd_confirm);
 
         buttonSignup = (Button) findViewById(R.id.Signup_Button);
-        textviewLogin = (TextView)findViewById(R.id.login_tv);
+        textviewLogin = (TextView) findViewById(R.id.login_tv);
     }
 
     private void initObjects() {
@@ -111,15 +114,14 @@ public class SignupActivity extends AppCompatActivity {
             user.setPwd(textInputEditTextPassword.getText().toString().trim());
             dbHelper.addUser(user);
 
-        } else
-        {
+        } else {
             flag = false;
             emptyInputEditText();
             Toast.makeText(this, "User already exists", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (flag){
+        if (flag) {
             Intent dashboardIntent = new Intent(SignupActivity.this, DashboardActivity.class);
             startActivity(dashboardIntent);
         }
