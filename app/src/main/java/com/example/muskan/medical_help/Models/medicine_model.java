@@ -1,5 +1,8 @@
 package com.example.muskan.medical_help.Models;
 
+import java.sql.Blob;
+import java.util.Date;
+
 public class medicine_model {
 
     private int medicineId;
@@ -8,16 +11,18 @@ public class medicine_model {
     private int dosage;
     private String schedule;
     private String routineTime;
+    private String date;
 
     public medicine_model(){}
 
-    public medicine_model(int medicineId, String medicineName, String imagePath, int dosage, String schedule, String routineTime){
+    public medicine_model(int medicineId, String medicineName, String imagePath, int dosage, String schedule, String routineTime, String date){
         this.medicineId = medicineId;
         this.medicineName = medicineName;
         this.dosage = dosage;
         this.imagePath = imagePath;
         this.schedule = schedule;
         this.routineTime = routineTime;
+        this.date = date;
     }
 
     public int getMedicineId(){ return medicineId;}
@@ -60,7 +65,11 @@ public class medicine_model {
         this.routineTime = routineTime;
     }
 
+    public String getDate(){ return date; }
 
+    public void setDate (String date){
+        this.date = date;
+    }
 
 
 }

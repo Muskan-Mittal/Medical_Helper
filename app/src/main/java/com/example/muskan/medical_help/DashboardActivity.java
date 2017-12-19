@@ -39,6 +39,17 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
+        LinearLayout mymedicine_layout = (LinearLayout)findViewById(R.id.myMedicine);
+        mymedicine_layout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent myMedicineIntent = new Intent(DashboardActivity.this, MyMedicineActivity.class);
+                startActivity(myMedicineIntent);
+
+            }
+        });
+
        /* titles.add("Emergency");
         titles.add("Settings");
         titles.add("About Us");

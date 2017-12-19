@@ -2,7 +2,8 @@ package com.example.muskan.medical_help;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.annotation.TargetApi;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -12,14 +13,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -27,17 +31,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muskan.medical_help.Data.medicineDbHelper;
+import com.example.muskan.medical_help.Helpers.Utilities;
 import com.example.muskan.medical_help.Helpers.inputValidation;
 import com.example.muskan.medical_help.Models.medicine_model;
+import com.facebook.internal.Utility;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class AddMedicineActivity extends AppCompatActivity {
 
-    int count=0;
+    int count = 0;
 
     RadioButton button1, button2, button3, button4, button5;
     RadioGroup schedule_buttons;
@@ -45,9 +62,11 @@ public class AddMedicineActivity extends AppCompatActivity {
     TextInputLayout textInputLayoutMedicine;
     Button camera_btn, save_btn;
     String CurrentPhotoPath;
+    Bitmap photo;
     String routinetime = "";
     Spinner dosage;
     inputValidation input_Validation;
+    Uri imageUri;
 
     private medicine_model medicine;
     private medicineDbHelper dbHelper;
@@ -59,20 +78,33 @@ public class AddMedicineActivity extends AppCompatActivity {
     // Request code for runtime permissions
     private final int REQUEST_CODE_STORAGE_PERMS = 321;
 
+    //Alarm variables
+    String TAG = "RemindMe";
+    SwitchCompat reminderSwitch;
+    LocalData localData;
+    TextView tvTime;
+    LinearLayout ll_set_time;
+    int hour, min;
+    ClipboardManager myClipboard;
+    NotificationScheduler notificationScheduler;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addmedicine);
 
-        initObjects(); initViews(); hideRadioButtons();
+        initObjects();
+        initViews();
+        hideRadioButtons();
 
 //        Handles the edit button
-        ImageView pencil = (ImageView)findViewById(R.id.editPencil);
+        ImageView pencil = (ImageView) findViewById(R.id.editPencil);
         pencil.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                if(count%2==0)
+                if (count % 2 == 0)
                     showRadioButtons();
                 else
                     hideRadioButtons();
@@ -84,22 +116,21 @@ public class AddMedicineActivity extends AppCompatActivity {
         schedule_buttons.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                 RadioButton checked = (RadioButton) findViewById(schedule_buttons.getCheckedRadioButtonId());
-                 schedule_text.setText(checked.getText());
+                RadioButton checked = (RadioButton) findViewById(schedule_buttons.getCheckedRadioButtonId());
+                schedule_text.setText(checked.getText());
             }
         });
 
 //        Handles the add photo button
-        camera_btn = (Button)findViewById(R.id.camera_button);
+        camera_btn = (Button) findViewById(R.id.camera_button);
         camera_btn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-                    if (!hasPermissions()){
+                    if (!hasPermissions()) {
                         requestNecessaryPermissions();
-                    }
-                    else {
+                    } else {
                         dispatchTakePictureIntent();
                     }
 
@@ -116,6 +147,7 @@ public class AddMedicineActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 addMedicineToSQLite();
+                //addAlarms();
             }
         });
 
@@ -126,42 +158,54 @@ public class AddMedicineActivity extends AppCompatActivity {
         textInputLayoutMedicine = (TextInputLayout) findViewById(R.id.textInputLayoutMedicine);
         dosage = (Spinner) findViewById(R.id.dosage);
         textInputEditTextMedicine = (TextInputEditText) findViewById(R.id.medicine_input);
-        schedule_text = (TextView)findViewById(R.id.schedule_text);
-        frontimagePath = (TextView)findViewById(R.id.frontimagepath);
-        schedule_buttons = (RadioGroup)findViewById(R.id.radiogroup);
-        save_btn = (Button)findViewById(R.id.save_btn);
+        schedule_text = (TextView) findViewById(R.id.schedule_text);
+        frontimagePath = (TextView) findViewById(R.id.frontimagepath);
+        schedule_buttons = (RadioGroup) findViewById(R.id.radiogroup);
+        save_btn = (Button) findViewById(R.id.save_btn);
         button1 = (RadioButton) findViewById(R.id.btn1);
         button2 = (RadioButton) findViewById(R.id.btn2);
         button3 = (RadioButton) findViewById(R.id.btn3);
         button4 = (RadioButton) findViewById(R.id.btn4);
         button5 = (RadioButton) findViewById(R.id.btn5);
         input_Validation = new inputValidation();
+        notificationScheduler = new NotificationScheduler();
     }
 
     private void initObjects() {
         medicine = new medicine_model();
         dbHelper = new medicineDbHelper(activity);
+        localData = new LocalData(getApplicationContext());
+
     }
 
-    private void addMedicineToSQLite(){
+    private String getDateTime() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat mdformat = new SimpleDateFormat("yyyy / MM / dd ");
+        String strDate = "Added on: " + mdformat.format(calendar.getTime());
+        Log.v("Date", strDate);
+        return strDate;
+    }
+
+    private void addMedicineToSQLite() {
         Boolean flag = true;
         if (!input_Validation.isInputEditTextFilled(textInputEditTextMedicine, textInputLayoutMedicine, getString(R.string.error_message_medicine))) {
             return;
         }
-        
-        if (!dbHelper.checkMedicine(textInputEditTextMedicine.getText().toString().trim())) {
-            medicine.setMedicineName(textInputEditTextMedicine.getText().toString().trim());
-            medicine.setImagePath(CurrentPhotoPath);
-            medicine.setDosage(Integer.parseInt(dosage.getSelectedItem().toString()));
-            medicine.setSchedule(schedule_text.toString());
-            medicine.setRoutineTime(routinetime);
-            dbHelper.addMedicine(medicine);
 
-        } else {
-            flag = false;
-            Toast.makeText(this, "This medicine is already added", Toast.LENGTH_SHORT).show();
-            return;
-        }
+            if (!dbHelper.checkMedicine(textInputEditTextMedicine.getText().toString().trim())) {
+                medicine.setMedicineName(textInputEditTextMedicine.getText().toString().trim());
+                medicine.setImagePath(getImageUri().getPath());
+                medicine.setDosage(Integer.parseInt(dosage.getSelectedItem().toString()));
+                medicine.setSchedule(schedule_text.toString());
+                medicine.setRoutineTime(routinetime);
+                medicine.setDate(getDateTime());
+                dbHelper.addMedicine(medicine);
+
+            } else {
+                flag = false;
+                Toast.makeText(this, "This medicine is already added", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
         if (flag) {
             Toast.makeText(this, "Medicine added successfully", Toast.LENGTH_SHORT).show();
@@ -173,10 +217,10 @@ public class AddMedicineActivity extends AppCompatActivity {
     @SuppressLint("WrongConstant")
     private boolean hasPermissions() {
         int res = 0;
-        String[] permissions = new String[] {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        for (String perms : permissions){
+        String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        for (String perms : permissions) {
             res = checkCallingOrSelfPermission(perms);
-            if (!(res == PackageManager.PERMISSION_GRANTED)){
+            if (!(res == PackageManager.PERMISSION_GRANTED)) {
                 return false;
             }
         }
@@ -185,7 +229,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
     private void requestNecessaryPermissions() {
 
-        String[] permissions = new String[] {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(permissions, REQUEST_CODE_STORAGE_PERMS);
@@ -208,19 +252,18 @@ public class AddMedicineActivity extends AppCompatActivity {
         }
         if (allowed) {
             dispatchTakePictureIntent();
-        }
-        else {
+        } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
                     Toast.makeText(AddMedicineActivity.this, "Camera Permissions denied", Toast.LENGTH_SHORT).show();
-                }
-                else if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                } else if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     Toast.makeText(AddMedicineActivity.this, "Storage Permissions denied", Toast.LENGTH_SHORT).show();
                 }
             }
 
         }
     }
+
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -248,7 +291,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         if (!f.exists()) {
             f.mkdirs();
         }
-        File storageDir = new File(Environment.getExternalStorageDirectory()+"/"+folderName);
+        File storageDir = new File(Environment.getExternalStorageDirectory() + "/" + folderName);
         File image = File.createTempFile(
                 imageFileName,
                 ".jpg",
@@ -256,23 +299,31 @@ public class AddMedicineActivity extends AppCompatActivity {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
+        imageUri = Uri.fromFile(image);
         CurrentPhotoPath = image.getAbsolutePath();
+
         return image;
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK){
+        if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
             try {
+
                 frontimagePath.setText(CurrentPhotoPath);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void hideRadioButtons(){
+    public Uri getImageUri(){
+        return imageUri;
+    }
+
+    public void hideRadioButtons() {
 
         button1.setVisibility(View.GONE);
         button2.setVisibility(View.GONE);
@@ -281,7 +332,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         button5.setVisibility(View.GONE);
     }
 
-    public void showRadioButtons(){
+    public void showRadioButtons() {
 
         button1.setVisibility(View.VISIBLE);
         button2.setVisibility(View.VISIBLE);
@@ -295,11 +346,44 @@ public class AddMedicineActivity extends AppCompatActivity {
         boolean checked = ((CheckBox) view).isChecked();
         routinetime += ((CheckBox) view).getText().toString();
 
-        switch (view.getId()) {
+       /* switch (view.getId()) {
             case R.id.checkbox_9am:
                 if (checked) {
+                    localData.set_hour(9);
+                    localData.set_min(0);
+                    notificationScheduler.setReminder(AddMedicineActivity.this, AlarmReceiver.class, localData.get_hour(), localData.get_min());
                 }
                 break;
-        }
+            case R.id.checkbox_12pm:
+                if(checked){
+                    localData.set_hour(12);
+                    localData.set_min(0);
+                    notificationScheduler.setReminder(AddMedicineActivity.this, AlarmReceiver.class, localData.get_hour(), localData.get_min());
+                }
+                break;
+            case R.id.checkbox_2pm:
+                if(checked){
+                    localData.set_hour(14);
+                    localData.set_min(0);
+                    notificationScheduler.setReminder(AddMedicineActivity.this, AlarmReceiver.class, localData.get_hour(), localData.get_min());
+                }
+                break;
+            case R.id.checkbox_9pm:
+                if(checked){
+                    localData.set_hour(21);
+                    localData.set_min(0);
+                    notificationScheduler.setReminder(AddMedicineActivity.this, AlarmReceiver.class, localData.get_hour(), localData.get_min());
+                }
+                break;*/
     }
+
+
+
+    public void addAlarms(){
+        localData.set_hour(17);
+        localData.set_min(06);
+        notificationScheduler.setReminder(AddMedicineActivity.this, AlarmReceiver.class, localData.get_hour(), localData.get_min());
+
+    }
+
 }

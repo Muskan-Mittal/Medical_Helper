@@ -13,10 +13,10 @@ import java.util.List;
 
 public class medicineDbHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "add_medicine.db";
+    private static final String DATABASE_NAME = "AddMedicines.db";
     private static final int DATABASE_VERSION = 1;
 
-    private static final String TABLE_MEDICINE = "medicine";
+    private static final String TABLE_MEDICINE = "Medicines";
 
     // User Table Columns names
     private static final String COLUMN_MEDICINE_ID = "medicine_id";
@@ -25,11 +25,13 @@ public class medicineDbHelper extends SQLiteOpenHelper {
     private static final String COLUMN_MEDICINE_DOSAGE = "medicine_dosage";
     private static final String COLUMN_MEDICINE_SCHEDULE = "medicine_schedule";
     private static final String COLUMN_MEDICINE_ROUTINETIME = "medicine_routinetime";
+    private static final String COLUMN_MEDICINE_DATE = "added_on";
 
     // create table sql query
     private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_MEDICINE + "("
             + COLUMN_MEDICINE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_MEDICINE_NAME + " TEXT,"
-            + COLUMN_MEDICINE_IMAGEPATH + " TEXT," + COLUMN_MEDICINE_DOSAGE + " INTEGER," + COLUMN_MEDICINE_SCHEDULE + " TEXT," + COLUMN_MEDICINE_ROUTINETIME + " TEXT" + ")";
+            + COLUMN_MEDICINE_IMAGEPATH + " TEXT," + COLUMN_MEDICINE_DOSAGE + " INTEGER," + COLUMN_MEDICINE_SCHEDULE + " TEXT," + COLUMN_MEDICINE_ROUTINETIME + " TEXT," +
+            COLUMN_MEDICINE_DATE + " DATE" + ")";
 
     // drop table sql query
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_MEDICINE;
@@ -40,6 +42,7 @@ public class medicineDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+
         sqLiteDatabase.execSQL(CREATE_USER_TABLE);
     }
 
@@ -89,7 +92,7 @@ public class medicineDbHelper extends SQLiteOpenHelper {
         values.put(COLUMN_MEDICINE_DOSAGE, medicine.getDosage());
         values.put(COLUMN_MEDICINE_SCHEDULE, medicine.getSchedule());
         values.put(COLUMN_MEDICINE_ROUTINETIME, medicine.getRoutineTime());
-
+        values.put(COLUMN_MEDICINE_DATE, medicine.getDate());
         // Inserting Row
         db.insert(TABLE_MEDICINE, null, values);
         db.close();
@@ -98,13 +101,14 @@ public class medicineDbHelper extends SQLiteOpenHelper {
     // Getting medicine
     public medicine_model getMedicine(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_MEDICINE, new String[] { COLUMN_MEDICINE_ID, COLUMN_MEDICINE_NAME, COLUMN_MEDICINE_IMAGEPATH, COLUMN_MEDICINE_DOSAGE, COLUMN_MEDICINE_SCHEDULE, COLUMN_MEDICINE_ROUTINETIME}, COLUMN_MEDICINE_ID + "=?",
+        Cursor cursor = db.query(TABLE_MEDICINE, new String[] { COLUMN_MEDICINE_ID, COLUMN_MEDICINE_NAME, COLUMN_MEDICINE_IMAGEPATH, COLUMN_MEDICINE_DOSAGE, COLUMN_MEDICINE_SCHEDULE, COLUMN_MEDICINE_ROUTINETIME, COLUMN_MEDICINE_DATE}, COLUMN_MEDICINE_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
         medicine_model medicine = new medicine_model(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2), Integer.parseInt(cursor.getString(3)), cursor.getString(4), cursor.getString(5));
+                cursor.getString(1), cursor.getString(2), Integer.parseInt(cursor.getString(3)), cursor.getString(4), cursor.getString(5), cursor.getString(6));
+
         return medicine;
     }
 

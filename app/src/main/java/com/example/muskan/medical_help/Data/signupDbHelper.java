@@ -16,7 +16,6 @@ public class signupDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "signup.db";
     private static final int DATABASE_VERSION = 1;
-
     private static final String TABLE_USER = "user";
 
     // User Table Columns names
@@ -60,7 +59,7 @@ public class signupDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    // Updating medicine
+    // Updating user
     public int updateUser(user_model user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
