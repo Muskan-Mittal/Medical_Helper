@@ -87,12 +87,12 @@ public class medicineDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_MEDICINE_NAME, medicine.getMedicineName());
-        values.put(COLUMN_MEDICINE_IMAGEPATH, medicine.getImagePath());
-        values.put(COLUMN_MEDICINE_DOSAGE, medicine.getDosage());
-        values.put(COLUMN_MEDICINE_SCHEDULE, medicine.getSchedule());
-        values.put(COLUMN_MEDICINE_ROUTINETIME, medicine.getRoutineTime());
-        values.put(COLUMN_MEDICINE_DATE, medicine.getDate());
+        values.put(COLUMN_MEDICINE_NAME, medicine.medicineName);
+        values.put(COLUMN_MEDICINE_IMAGEPATH, medicine.imagePath);
+        values.put(COLUMN_MEDICINE_DOSAGE, medicine.dosage);
+        values.put(COLUMN_MEDICINE_SCHEDULE, medicine.schedule);
+        values.put(COLUMN_MEDICINE_ROUTINETIME, medicine.routineTime);
+        values.put(COLUMN_MEDICINE_DATE, medicine.date);
         // Inserting Row
         db.insert(TABLE_MEDICINE, null, values);
         db.close();
@@ -124,12 +124,12 @@ public class medicineDbHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 medicine_model medicine = new medicine_model();
-                medicine.setMedicineId(Integer.parseInt(cursor.getString(0)));
-                medicine.setMedicineName(cursor.getString(1));
-                medicine.setImagePath(cursor.getString(2));
-                medicine.setDosage(Integer.parseInt(cursor.getString(3)));
-                medicine.setSchedule(cursor.getString(4));
-                medicine.setRoutineTime(cursor.getString(5));
+                medicine.medicineId = (Integer.parseInt(cursor.getString(0)));
+                medicine.medicineName = (cursor.getString(1));
+                medicine.imagePath = (cursor.getString(2));
+                medicine.dosage = (Integer.parseInt(cursor.getString(3)));
+                medicine.schedule = (cursor.getString(4));
+                medicine.routineTime = (cursor.getString(5));
 
                 medicineList.add(medicine);
             } while (cursor.moveToNext());
@@ -152,21 +152,21 @@ public class medicineDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_MEDICINE_NAME, medicine.getMedicineName());
-        values.put(COLUMN_MEDICINE_IMAGEPATH, medicine.getImagePath());
-        values.put(COLUMN_MEDICINE_DOSAGE, medicine.getDosage());
-        values.put(COLUMN_MEDICINE_SCHEDULE, medicine.getSchedule());
-        values.put(COLUMN_MEDICINE_ROUTINETIME, medicine.getRoutineTime());
+        values.put(COLUMN_MEDICINE_NAME, medicine.medicineName);
+        values.put(COLUMN_MEDICINE_IMAGEPATH, medicine.imagePath);
+        values.put(COLUMN_MEDICINE_DOSAGE, medicine.dosage);
+        values.put(COLUMN_MEDICINE_SCHEDULE, medicine.schedule);
+        values.put(COLUMN_MEDICINE_ROUTINETIME, medicine.routineTime);
 
         return db.update(TABLE_MEDICINE, values, COLUMN_MEDICINE_ID + " = ?",
-                new String[] { String.valueOf(medicine.getMedicineId()) });
+                new String[] { String.valueOf(medicine.medicineId) });
     }
 
     // Deleting medicine
     public void deleteMedicine(medicine_model medicine) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_MEDICINE, COLUMN_MEDICINE_ID + " = ?",
-                new String[] { String.valueOf(medicine.getMedicineId()) });
+                new String[] { String.valueOf(medicine.medicineId) });
         db.close();
     }
 

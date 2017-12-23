@@ -1,11 +1,17 @@
 package com.example.muskan.medical_help;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 
 import com.example.muskan.medical_help.Data.medicineDbHelper;
 import com.example.muskan.medical_help.Helpers.MedicineAdapter;
@@ -15,10 +21,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyMedicineActivity extends AppCompatActivity {
-    private final AppCompatActivity activity = MyMedicineActivity.this;
+public class MyMedicineActivity extends AppCompatActivity implements RecyclerItemClickListener.OnItemClickListener {
+   /* private final AppCompatActivity activity = MyMedicineActivity.this;
     private RecyclerView medicineRecyclerView;
-    private RecyclerView.Adapter medicineAdapter;
+    private MedicineAdapter medicineAdapter;
     private RecyclerView.LayoutManager layoutManager;
     List<medicine_model> medicineList;
     medicineDbHelper dbHelper;
@@ -26,6 +32,7 @@ public class MyMedicineActivity extends AppCompatActivity {
     private String[] FilePathStrings;
     private String[] FileNameStrings;
     private File[] listFile;
+    CardView cardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +60,28 @@ public class MyMedicineActivity extends AppCompatActivity {
                 FileNameStrings[i] = listFile[i].getName();
             }
 
-
             createMedicineList();
             medicineRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
             layoutManager = new LinearLayoutManager(this);
             medicineAdapter = new MedicineAdapter(this, medicineList, FilePathStrings, FileNameStrings);
             medicineRecyclerView.setLayoutManager(layoutManager);
             medicineRecyclerView.setAdapter(medicineAdapter);
+            medicineRecyclerView.addOnItemTouchListener(
+                    new RecyclerItemClickListener(activity , new RecyclerItemClickListener.OnItemClickListener() {
+                        @Override public void onItemClick(View view, int position) {
+                            *//*position = medicineAdapter.getPosition();
+                            if(position != RecyclerView.NO_POSITION){
+                                medicine_model clickedMedicine = medicineList.get(position);
+
+                            Log.v("positiion", "Pos "+position );*//*
+                            Intent i = new Intent(MyMedicineActivity.this, UpdateMedicineActivity.class);
+                           // i.putExtra("MedicineName", clickedMedicine.getMedicineName());
+                           // Log.i("hello", clickedMedicine.getMedicineName());
+                            startActivity(i);
+                        }
+                    //}
+
+        }));
         }
     }
 
@@ -67,5 +89,21 @@ public class MyMedicineActivity extends AppCompatActivity {
         dbHelper = new medicineDbHelper(activity);
         medicineList = new ArrayList<medicine_model>();
         medicineList = dbHelper.getAllMedicines();
+    }
+
+*/
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_category);
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, new MyMedicineFragment()).commit();
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+        Intent i = new Intent(MyMedicineActivity.this, UpdateMedicineActivity.class);
+        startActivity(i);
     }
 }

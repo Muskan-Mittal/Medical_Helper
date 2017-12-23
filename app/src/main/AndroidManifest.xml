@@ -77,6 +77,15 @@
                 android:value=".DashboardActivity"/>
         </activity>
 
+        <!--Update Medicine activity-->
+        <activity android:name=".UpdateMedicineActivity"
+            android:label="Update Medicine"
+            android:parentActivityName=".MyMedicineActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MyMedicineActivity"/>
+        </activity>
+
         <!--Logout ativity-->
         <activity android:name=".LogoutActivity"
             android:label="Logout"

@@ -4,23 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Movie;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.muskan.medical_help.Data.medicineDbHelper;
-import com.example.muskan.medical_help.LoginActivity;
 import com.example.muskan.medical_help.Models.medicine_model;
 import com.example.muskan.medical_help.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,6 +26,7 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
     private String[] filepath;
     private String[] filename;
     private static LayoutInflater inflater = null;
+    int pos = 0;
 
     public MedicineAdapter(Activity a, List<medicine_model> medicineList, String[] fpath, String[] fname) {
         this.medicineList = medicineList;
@@ -52,28 +46,36 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
     @Override
     public void onBindViewHolder(MedicineViewHolder holder, int position) {
 
-        medicine_model medicine = medicineList.get(position);
-        holder.name.setText(medicine.getMedicineName());
-        //holder.date.setText("Added on: "+medicine.getDate());
+        final medicine_model medicine = medicineList.get(position);
+        holder.name.setText(medicine.medicineName);
         Bitmap bmp = getResizedBitmap(BitmapFactory.decodeFile(filepath[position]),120);
         holder.ivPoster.setImageBitmap(bmp);
     }
+
+
     @Override
     public int getItemCount() {
         return medicineList.size();
     }
 
     public class MedicineViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, date;
+        public TextView name;
         public ImageView ivPoster;
 
         public MedicineViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.cv_name);
-            //date = (TextView) itemView.findViewById(R.id.cv_date);
             ivPoster = (ImageView) itemView.findViewById(R.id.iv_poster);
+            pos = getAdapterPosition();
         }
+
     }
+
+    public int getPosition(){
+        return pos;
+    }
+
+    public void add(medicine_model medicine){ this.medicineList.add(medicine);}
 
     public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
         int width = image.getWidth();

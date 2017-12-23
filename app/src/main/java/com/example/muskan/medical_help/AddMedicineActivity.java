@@ -193,12 +193,12 @@ public class AddMedicineActivity extends AppCompatActivity {
         }
 
             if (!dbHelper.checkMedicine(textInputEditTextMedicine.getText().toString().trim())) {
-                medicine.setMedicineName(textInputEditTextMedicine.getText().toString().trim());
-                medicine.setImagePath(getImageUri().getPath());
-                medicine.setDosage(Integer.parseInt(dosage.getSelectedItem().toString()));
-                medicine.setSchedule(schedule_text.toString());
-                medicine.setRoutineTime(routinetime);
-                medicine.setDate(getDateTime());
+                medicine.medicineName = (textInputEditTextMedicine.getText().toString().trim());
+                medicine.imagePath = (getImageUri().getPath());
+                medicine.dosage = (Integer.parseInt(dosage.getSelectedItem().toString()));
+                medicine.schedule = (schedule_text.getText().toString());
+                medicine.routineTime = routinetime;
+                medicine.date = getDateTime();
                 dbHelper.addMedicine(medicine);
 
             } else {
@@ -344,7 +344,7 @@ public class AddMedicineActivity extends AppCompatActivity {
     public void onCheckboxClicked(View view) {
 
         boolean checked = ((CheckBox) view).isChecked();
-        routinetime += ((CheckBox) view).getText().toString();
+        routinetime += ((CheckBox) view).getText().toString()+",";
 
        /* switch (view.getId()) {
             case R.id.checkbox_9am:
