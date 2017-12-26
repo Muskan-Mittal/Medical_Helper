@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muskan.medical_help.Data.signupDbHelper;
-import com.example.muskan.medical_help.Helpers.inputValidation;
+import com.example.muskan.medical_help.Helpers.InputValidation;
 import com.example.muskan.medical_help.Models.user_model;
 
 public class SignupActivity extends AppCompatActivity {
@@ -29,7 +29,7 @@ public class SignupActivity extends AppCompatActivity {
     private Button buttonSignup;
     private TextView textviewLogin;
 
-    private inputValidation input_Validation;
+    private InputValidation input_Validation;
     private signupDbHelper dbHelper;
     private user_model user;
 
@@ -87,7 +87,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void initObjects() {
-        input_Validation = new inputValidation(activity);
+        input_Validation = new InputValidation(activity);
         dbHelper = new signupDbHelper(activity);
         user = new user_model();
     }

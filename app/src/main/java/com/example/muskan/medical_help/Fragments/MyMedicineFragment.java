@@ -1,4 +1,4 @@
-package com.example.muskan.medical_help;
+package com.example.muskan.medical_help.Fragments;
 
 
 import android.content.Context;
@@ -21,6 +21,9 @@ import android.widget.TextView;
 import com.example.muskan.medical_help.Data.medicineDbHelper;
 import com.example.muskan.medical_help.Helpers.MedicineAdapter;
 import com.example.muskan.medical_help.Models.medicine_model;
+import com.example.muskan.medical_help.R;
+import com.example.muskan.medical_help.RecyclerItemClickListener;
+import com.example.muskan.medical_help.UpdateMedicineActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -148,26 +151,11 @@ public class MyMedicineFragment extends Fragment {
                         i.putExtra("Medicine", (Parcelable)medicineList.get(position));
                         startActivity(i);
 
-                        //medicine_model medicine = medicineList.get(position);
-                        //setMedicine(medicine);
-
-                        /*if(position != RecyclerView.NO_POSITION){
-                            medicine_model clickedMedicine = medicineList.get(position);*/
-
-                        //}
                 }
         //Log.v("Name", "" + newString);
     }));
 
         return rootview;
-    }
-
-    public void setMedicine(medicine_model medicine){
-        this.medicineObj = medicine;
-    }
-
-    public medicine_model getMedicine(){
-        return this.medicineObj;
     }
 
     private void createMedicineList() {

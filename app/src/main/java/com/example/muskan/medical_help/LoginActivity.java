@@ -2,7 +2,6 @@ package com.example.muskan.medical_help;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -12,7 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.muskan.medical_help.Data.signupDbHelper;
-import com.example.muskan.medical_help.Helpers.inputValidation;
+import com.example.muskan.medical_help.Helpers.InputValidation;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -26,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button ButtonLogin;
 
-    private inputValidation input_Validation;
+    private InputValidation input_Validation;
     private signupDbHelper dbHelper;
 
     @Override
@@ -61,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initObjects() {
         dbHelper = new signupDbHelper(activity);
-        input_Validation = new inputValidation(activity);
+        input_Validation = new InputValidation(activity);
 
     }
 

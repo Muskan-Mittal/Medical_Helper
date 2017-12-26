@@ -1,97 +1,14 @@
 package com.example.muskan.medical_help;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
-import com.example.muskan.medical_help.Data.medicineDbHelper;
-import com.example.muskan.medical_help.Helpers.MedicineAdapter;
-import com.example.muskan.medical_help.Models.medicine_model;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import com.example.muskan.medical_help.Fragments.MyMedicineFragment;
 
 public class MyMedicineActivity extends AppCompatActivity implements RecyclerItemClickListener.OnItemClickListener {
-   /* private final AppCompatActivity activity = MyMedicineActivity.this;
-    private RecyclerView medicineRecyclerView;
-    private MedicineAdapter medicineAdapter;
-    private RecyclerView.LayoutManager layoutManager;
-    List<medicine_model> medicineList;
-    medicineDbHelper dbHelper;
-    File file;
-    private String[] FilePathStrings;
-    private String[] FileNameStrings;
-    private File[] listFile;
-    CardView cardView;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mymedicine);
-
-        // Locate the image folder in your SD Card
-        file = new File(Environment.getExternalStorageDirectory()
-                + File.separator + "test");
-        // Create a new folder if no folder named SDImageTutorial exist
-        file.mkdirs();
-
-
-        if (file.isDirectory()) {
-            listFile = file.listFiles();
-            // Create a String array for FilePathStrings
-            FilePathStrings = new String[listFile.length];
-            // Create a String array for FileNameStrings
-            FileNameStrings = new String[listFile.length];
-
-            for (int i = 0; i < listFile.length; i++) {
-                // Get the path of the image file
-                FilePathStrings[i] = listFile[i].getAbsolutePath();
-                // Get the name image file
-                FileNameStrings[i] = listFile[i].getName();
-            }
-
-            createMedicineList();
-            medicineRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-            layoutManager = new LinearLayoutManager(this);
-            medicineAdapter = new MedicineAdapter(this, medicineList, FilePathStrings, FileNameStrings);
-            medicineRecyclerView.setLayoutManager(layoutManager);
-            medicineRecyclerView.setAdapter(medicineAdapter);
-            medicineRecyclerView.addOnItemTouchListener(
-                    new RecyclerItemClickListener(activity , new RecyclerItemClickListener.OnItemClickListener() {
-                        @Override public void onItemClick(View view, int position) {
-                            *//*position = medicineAdapter.getPosition();
-                            if(position != RecyclerView.NO_POSITION){
-                                medicine_model clickedMedicine = medicineList.get(position);
-
-                            Log.v("positiion", "Pos "+position );*//*
-                            Intent i = new Intent(MyMedicineActivity.this, UpdateMedicineActivity.class);
-                           // i.putExtra("MedicineName", clickedMedicine.getMedicineName());
-                           // Log.i("hello", clickedMedicine.getMedicineName());
-                            startActivity(i);
-                        }
-                    //}
-
-        }));
-        }
-    }
-
-    private void createMedicineList() {
-        dbHelper = new medicineDbHelper(activity);
-        medicineList = new ArrayList<medicine_model>();
-        medicineList = dbHelper.getAllMedicines();
-    }
-
-*/
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

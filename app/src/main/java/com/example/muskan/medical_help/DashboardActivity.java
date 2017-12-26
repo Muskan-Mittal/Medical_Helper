@@ -50,6 +50,17 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
+        LinearLayout reminders_layout = (LinearLayout)findViewById(R.id.reminder);
+        reminders_layout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent reminderIntent = new Intent(DashboardActivity.this, RemindersMainActivity.class);
+                startActivity(reminderIntent);
+
+            }
+        });
+
        /* titles.add("Emergency");
         titles.add("Settings");
         titles.add("About Us");

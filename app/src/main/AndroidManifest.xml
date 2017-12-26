@@ -86,6 +86,15 @@
                 android:value=".MyMedicineActivity"/>
         </activity>
 
+        <!--Reminders activity-->
+        <activity android:name=".RemindersMainActivity"
+            android:label="Timeline"
+            android:parentActivityName=".DashboardActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DashboardActivity"/>
+        </activity>
+
         <!--Logout ativity-->
         <activity android:name=".LogoutActivity"
             android:label="Logout"
@@ -112,7 +121,7 @@
         </activity>
 
         <!-- Register the Alarm Receiver -->
-        <receiver android:name=".AlarmReceiver"
+        <receiver android:name=".Helpers.AlarmReceiver"
             android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

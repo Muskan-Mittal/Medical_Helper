@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
-public class inputValidation {
+public class InputValidation {
 
     private Context context;
 
-    public inputValidation(){}
+    public InputValidation(){}
 
-    public inputValidation(Context context) {
+    public InputValidation(Context context) {
         this.context = context;
     }
 

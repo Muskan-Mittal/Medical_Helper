@@ -2,18 +2,15 @@ package com.example.muskan.medical_help;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -31,26 +28,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muskan.medical_help.Data.medicineDbHelper;
-import com.example.muskan.medical_help.Helpers.Utilities;
-import com.example.muskan.medical_help.Helpers.inputValidation;
+import com.example.muskan.medical_help.Helpers.AlarmReceiver;
+import com.example.muskan.medical_help.Helpers.InputValidation;
 import com.example.muskan.medical_help.Models.medicine_model;
-import com.facebook.internal.Utility;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Blob;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class AddMedicineActivity extends AppCompatActivity {
 
@@ -65,7 +51,7 @@ public class AddMedicineActivity extends AppCompatActivity {
     Bitmap photo;
     String routinetime = "";
     Spinner dosage;
-    inputValidation input_Validation;
+    InputValidation input_Validation;
     Uri imageUri;
 
     private medicine_model medicine;
@@ -167,7 +153,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         button3 = (RadioButton) findViewById(R.id.btn3);
         button4 = (RadioButton) findViewById(R.id.btn4);
         button5 = (RadioButton) findViewById(R.id.btn5);
-        input_Validation = new inputValidation();
+        input_Validation = new InputValidation();
         notificationScheduler = new NotificationScheduler();
     }
 

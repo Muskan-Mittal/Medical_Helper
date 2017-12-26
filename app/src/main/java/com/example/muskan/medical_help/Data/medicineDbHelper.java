@@ -28,9 +28,13 @@ public class medicineDbHelper extends SQLiteOpenHelper {
     private static final String COLUMN_MEDICINE_DATE = "added_on";
 
     // create table sql query
-    private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_MEDICINE + "("
-            + COLUMN_MEDICINE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_MEDICINE_NAME + " TEXT,"
-            + COLUMN_MEDICINE_IMAGEPATH + " TEXT," + COLUMN_MEDICINE_DOSAGE + " INTEGER," + COLUMN_MEDICINE_SCHEDULE + " TEXT," + COLUMN_MEDICINE_ROUTINETIME + " TEXT," +
+    private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_MEDICINE + "(" +
+            COLUMN_MEDICINE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            COLUMN_MEDICINE_NAME + " TEXT," +
+            COLUMN_MEDICINE_IMAGEPATH + " TEXT," +
+            COLUMN_MEDICINE_DOSAGE + " INTEGER," +
+            COLUMN_MEDICINE_SCHEDULE + " TEXT," +
+            COLUMN_MEDICINE_ROUTINETIME + " TEXT," +
             COLUMN_MEDICINE_DATE + " DATE" + ")";
 
     // drop table sql query
@@ -107,7 +111,7 @@ public class medicineDbHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         medicine_model medicine = new medicine_model(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2), Integer.parseInt(cursor.getString(3)), cursor.getString(4), cursor.getString(5), cursor.getString(6));
+                cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getString(4), cursor.getString(5), cursor.getString(6));
 
         return medicine;
     }

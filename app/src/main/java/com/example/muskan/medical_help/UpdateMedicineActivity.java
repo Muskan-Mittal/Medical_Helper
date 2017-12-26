@@ -1,6 +1,5 @@
 package com.example.muskan.medical_help;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -18,7 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muskan.medical_help.Data.medicineDbHelper;
-import com.example.muskan.medical_help.Helpers.inputValidation;
+import com.example.muskan.medical_help.Helpers.AlarmReceiver;
+import com.example.muskan.medical_help.Helpers.InputValidation;
 import com.example.muskan.medical_help.Models.medicine_model;
 
 import java.text.SimpleDateFormat;
@@ -40,7 +40,7 @@ public class UpdateMedicineActivity extends AppCompatActivity {
     Button save_btn;
     String routinetime = "";
     Spinner dosage;
-    inputValidation input_Validation;
+    InputValidation input_Validation;
 
     private medicineDbHelper dbHelper;
     private final AppCompatActivity activity = UpdateMedicineActivity.this;
@@ -119,7 +119,7 @@ public class UpdateMedicineActivity extends AppCompatActivity {
         check2 = (CheckBox)findViewById(R.id.checkbox_12pm);
         check3 = (CheckBox)findViewById(R.id.checkbox_2pm);
         check4 = (CheckBox)findViewById(R.id.checkbox_9pm);
-        input_Validation = new inputValidation();
+        input_Validation = new InputValidation();
         notificationScheduler = new NotificationScheduler();
     }
 
