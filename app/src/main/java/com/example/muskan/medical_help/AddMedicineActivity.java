@@ -27,16 +27,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.muskan.medical_help.Data.ReminderDbHelper;
 import com.example.muskan.medical_help.Data.medicineDbHelper;
 import com.example.muskan.medical_help.Helpers.AlarmReceiver;
 import com.example.muskan.medical_help.Helpers.InputValidation;
 import com.example.muskan.medical_help.Models.medicine_model;
+import com.example.muskan.medical_help.Models.reminder_model;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class AddMedicineActivity extends AppCompatActivity {
 
@@ -44,35 +48,44 @@ public class AddMedicineActivity extends AppCompatActivity {
 
     RadioButton button1, button2, button3, button4, button5;
     RadioGroup schedule_buttons;
+    CheckBox checkBox1, checkBox2, checkBox3, checkBox4;
     TextView schedule_text, frontimagePath;
     TextInputLayout textInputLayoutMedicine;
     Button camera_btn, save_btn;
     String CurrentPhotoPath;
-    Bitmap photo;
     String routinetime = "";
     Spinner dosage;
     InputValidation input_Validation;
     Uri imageUri;
+    private Calendar mCalendar;
+    private int mYear, mMonth, mHour, mMinute, mDay;
+    private String mTime;
+    private String mDate;
+    private long mRepeatTime;
 
     private medicine_model medicine;
     private medicineDbHelper dbHelper;
     private final AppCompatActivity activity = AddMedicineActivity.this;
     private TextInputEditText textInputEditTextMedicine;
-
+    private ReminderDbHelper rb;
+    reminder_model reminder;
+    AlarmReceiver alarmReceiver;
     // Request code for camera
     private final int CAMERA_REQUEST_CODE = 100;
     // Request code for runtime permissions
     private final int REQUEST_CODE_STORAGE_PERMS = 321;
-
     //Alarm variables
-    String TAG = "RemindMe";
-    SwitchCompat reminderSwitch;
     LocalData localData;
-    TextView tvTime;
-    LinearLayout ll_set_time;
-    int hour, min;
-    ClipboardManager myClipboard;
     NotificationScheduler notificationScheduler;
+    // Constant Intent String
+    public static final String EXTRA_REMINDER_ID = "Reminder_ID";
+
+    // Constant values in milliseconds
+    private static final long milMinute = 60000L;
+    private static final long milHour = 3600000L;
+    private static final long milDay = 86400000L;
+    private static final long milWeek = 604800000L;
+    private static final long milMonth = 2592000000L;
 
 
     @Override
@@ -131,9 +144,9 @@ public class AddMedicineActivity extends AppCompatActivity {
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                getChecked();
                 addMedicineToSQLite();
-                //addAlarms();
+                decideAlarms();
             }
         });
 
@@ -155,12 +168,28 @@ public class AddMedicineActivity extends AppCompatActivity {
         button5 = (RadioButton) findViewById(R.id.btn5);
         input_Validation = new InputValidation();
         notificationScheduler = new NotificationScheduler();
+        checkBox1 = (CheckBox) findViewById(R.id.checkbox_9am);
+        checkBox2 = (CheckBox) findViewById(R.id.checkbox_12pm);
+        checkBox3 = (CheckBox) findViewById(R.id.checkbox_2pm);
+        checkBox4 = (CheckBox) findViewById(R.id.checkbox_9pm);
+        reminder = new reminder_model();
+        mCalendar = Calendar.getInstance();
+        mHour = mCalendar.get(Calendar.HOUR_OF_DAY);
+        mMinute = mCalendar.get(Calendar.MINUTE);
+        mYear = mCalendar.get(Calendar.YEAR);
+        mMonth = mCalendar.get(Calendar.MONTH) + 1;
+        mDay = mCalendar.get(Calendar.DATE);
+
+        mDate = mDay + "/" + mMonth + "/" + mYear;
+        mTime = mHour + ":" + mMinute;
     }
 
     private void initObjects() {
         medicine = new medicine_model();
         dbHelper = new medicineDbHelper(activity);
         localData = new LocalData(getApplicationContext());
+        rb = new ReminderDbHelper(this);
+        alarmReceiver = new AlarmReceiver();
 
     }
 
@@ -327,49 +356,167 @@ public class AddMedicineActivity extends AppCompatActivity {
         button5.setVisibility(View.VISIBLE);
     }
 
-    public void onCheckboxClicked(View view) {
+    public void getChecked() {
 
-        boolean checked = ((CheckBox) view).isChecked();
-        routinetime += ((CheckBox) view).getText().toString()+",";
+        if(checkBox1.isChecked()){
+            routinetime += checkBox1.getText().toString()+",";
+        }
 
-       /* switch (view.getId()) {
-            case R.id.checkbox_9am:
-                if (checked) {
-                    localData.set_hour(9);
-                    localData.set_min(0);
-                    notificationScheduler.setReminder(AddMedicineActivity.this, AlarmReceiver.class, localData.get_hour(), localData.get_min());
-                }
-                break;
-            case R.id.checkbox_12pm:
-                if(checked){
-                    localData.set_hour(12);
-                    localData.set_min(0);
-                    notificationScheduler.setReminder(AddMedicineActivity.this, AlarmReceiver.class, localData.get_hour(), localData.get_min());
-                }
-                break;
-            case R.id.checkbox_2pm:
-                if(checked){
-                    localData.set_hour(14);
-                    localData.set_min(0);
-                    notificationScheduler.setReminder(AddMedicineActivity.this, AlarmReceiver.class, localData.get_hour(), localData.get_min());
-                }
-                break;
-            case R.id.checkbox_9pm:
-                if(checked){
-                    localData.set_hour(21);
-                    localData.set_min(0);
-                    notificationScheduler.setReminder(AddMedicineActivity.this, AlarmReceiver.class, localData.get_hour(), localData.get_min());
-                }
-                break;*/
-    }
+        if(checkBox2.isChecked()){
+            routinetime += checkBox2.getText().toString()+",";
+        }
 
+        if(checkBox3.isChecked()){
+            routinetime += checkBox3.getText().toString()+",";
+        }
 
+        if(checkBox4.isChecked()){
+            routinetime += checkBox4.getText().toString()+",";
+        }
 
-    public void addAlarms(){
-        localData.set_hour(17);
-        localData.set_min(06);
-        notificationScheduler.setReminder(AddMedicineActivity.this, AlarmReceiver.class, localData.get_hour(), localData.get_min());
 
     }
 
+    public void decideAlarms(){
+
+        String[] routineList = routinetime.split(",");
+        for(int j=0; j<routineList.length; j++){
+            if(!rb.checkReminder(routineList[j], (schedule_text.getText().toString()))){
+                addAlarms(routineList[j]);
+            }
+            else {
+                reminder = rb.getReminder(routineList[j], (schedule_text.getText().toString()));
+                updateAlarm(medicine.medicineName, routineList[j], reminder.getReminderID());
+            }
+
+        }
+    }
+
+    public int getHour(String time){
+        int hr = 0;
+        switch (time){
+            case "9 AM":
+                hr = 9;
+                break;
+            case "12 PM":
+                hr = 12;
+                break;
+            case "2 PM":
+                hr = 14;
+                break;
+            case "9 PM":
+                hr = 21;
+                break;
+        }
+        return hr;
+    }
+
+    public String getTitleForReminder(String time, String repeatType){
+        String title="Medicine(s) to be taken today:\n";
+        List<medicine_model> medicineList;
+        medicineDbHelper helper = new medicineDbHelper(activity);
+        medicineList = helper.getAllMedicines();
+
+        for(int i=0; i<medicineList.size(); i++){
+            medicine_model medicine = medicineList.get(i);
+            if(medicine.schedule == repeatType && (medicine.routineTime).contains(time)){
+                title += i + ". " + medicine.medicineName + "\n";
+            }
+        }
+        return title;
+    }
+
+    public void addAlarms(String time){
+
+        String mActive;
+
+        if(medicine.schedule!="Never"){
+            mActive = "true";
+        }
+        else {
+            mActive = "false";
+        }
+
+        String title = getTitleForReminder(time, medicine.schedule);
+        // Creating Reminder
+        int ID = rb.addReminder(new reminder_model(title, getDateTime(), time, medicine.schedule, mActive));
+
+        // Set up calender for creating the notification
+        mCalendar.set(Calendar.MONTH, --mMonth);
+        mCalendar.set(Calendar.YEAR, mYear);
+        mCalendar.set(Calendar.DAY_OF_MONTH, mDay);
+        mCalendar.set(Calendar.HOUR_OF_DAY, getHour(time));
+        mCalendar.set(Calendar.MINUTE, 0);
+        mCalendar.set(Calendar.SECOND, 0);
+
+        // Check repeat type
+        if ((schedule_text.getText().toString()).equals("Daily until I stop")) {
+            mRepeatTime = 1 * milDay;
+        } else if ((schedule_text.getText().toString()).equals("Weekly")) {
+            mRepeatTime = 1 * milWeek;
+        } else if ((schedule_text.getText().toString()).equals("Fortnightly")) {
+            mRepeatTime = 2 * milWeek;
+        } else if ((schedule_text.getText().toString()).equals("Monthly")) {
+            mRepeatTime = 1 * milMonth;
+        } else {
+            return;
+        }
+
+        // Create a new notification
+        if (mActive.equals("true")) {
+                new AlarmReceiver().setRepeatAlarm(getApplicationContext(), mCalendar, ID, mRepeatTime);
+        }
+
+        // Create toast to confirm new reminder
+        Toast.makeText(getApplicationContext(), "Saved",
+                Toast.LENGTH_SHORT).show();
+
+        //onBackPressed();
+    }
+
+    public void updateAlarm(String medicineName, String time, int mReceivedID){
+
+        // Set new values in the reminder
+        reminder.setTitle(getTitleForReminder(time, medicine.schedule));
+        reminder.setSetDate(mDate);
+        reminder.setReminderActive("true");
+
+        // Update reminder
+        rb.updateReminder(reminder);
+
+        // Set up calender for creating the notification
+        mCalendar.set(Calendar.MONTH, --mMonth);
+        mCalendar.set(Calendar.YEAR, mYear);
+        mCalendar.set(Calendar.DAY_OF_MONTH, mDay);
+        mCalendar.set(Calendar.HOUR_OF_DAY, getHour(time));
+        mCalendar.set(Calendar.MINUTE, 0);
+        mCalendar.set(Calendar.SECOND, 0);
+
+        // Cancel existing notification of the reminder by using its ID
+        alarmReceiver.cancelAlarm(getApplicationContext(), mReceivedID);
+
+        // Check repeat type
+        if ((schedule_text.getText().toString()).equals("Daily until I stop")) {
+            mRepeatTime = 1 * milDay;
+        } else if ((schedule_text.getText().toString()).equals("Weekly")) {
+            mRepeatTime = 1 * milWeek;
+        } else if ((schedule_text.getText().toString()).equals("Fortnightly")) {
+            mRepeatTime = 2 * milWeek;
+        } else if ((schedule_text.getText().toString()).equals("Monthly")) {
+            mRepeatTime = 1 * milMonth;
+        } else {
+            return;
+        }
+
+        // Create a new notification
+        if (reminder.getReminderActive().equals("true")) {
+                alarmReceiver.setRepeatAlarm(getApplicationContext(), mCalendar, mReceivedID, mRepeatTime);
+        }
+
+        // Create toast to confirm update
+        Toast.makeText(getApplicationContext(), "Edited",
+                Toast.LENGTH_SHORT).show();
+        onBackPressed();
+
+    }
 }

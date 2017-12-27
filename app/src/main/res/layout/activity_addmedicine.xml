@@ -144,26 +144,22 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="16dp"
-            android:text="9 AM"
-            android:onClick="onCheckboxClicked"/>
+            android:text="9 AM"/>
         <CheckBox android:id="@+id/checkbox_12pm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:text="12 PM"
-            android:onClick="onCheckboxClicked"/>
+            android:text="12 PM"/>
         <CheckBox android:id="@+id/checkbox_2pm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:text="2 PM"
-            android:onClick="onCheckboxClicked"/>
+            android:text="2 PM" />
         <CheckBox android:id="@+id/checkbox_9pm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:text="9 PM"
-            android:onClick="onCheckboxClicked"/>
+            android:text="9 PM" />
 
         <Button
             android:id="@+id/save_btn"

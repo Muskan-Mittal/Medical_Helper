@@ -112,7 +112,7 @@ public class medicineDbHelper extends SQLiteOpenHelper {
 
         medicine_model medicine = new medicine_model(Integer.parseInt(cursor.getString(0)),
                 cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getString(4), cursor.getString(5), cursor.getString(6));
-
+        cursor.close();
         return medicine;
     }
 
@@ -138,7 +138,7 @@ public class medicineDbHelper extends SQLiteOpenHelper {
                 medicineList.add(medicine);
             } while (cursor.moveToNext());
         }
-
+        cursor.close();
         return medicineList;
     }
 
@@ -173,6 +173,4 @@ public class medicineDbHelper extends SQLiteOpenHelper {
                 new String[] { String.valueOf(medicine.medicineId) });
         db.close();
     }
-
-
 }

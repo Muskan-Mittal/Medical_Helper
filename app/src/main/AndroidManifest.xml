@@ -121,10 +121,11 @@
         </activity>
 
         <!-- Register the Alarm Receiver -->
-        <receiver android:name=".Helpers.AlarmReceiver"
-            android:enabled="false">
+        <receiver android:name=".Helpers.AlarmReceiver"/>
+
+        <receiver android:name=".Helpers.BootReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
 

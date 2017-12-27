@@ -49,6 +49,7 @@ public class BootReceiver extends BroadcastReceiver {
 
             for (reminder_model rm : reminders) {
                 mReceivedID = rm.getReminderID();
+                mTitle = rm.getTitle();
                 mRepeatType = rm.getReminderRepeatType();
                 mActive = rm.getReminderActive();
                 mDate = rm.getSetDate();

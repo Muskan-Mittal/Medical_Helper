@@ -60,15 +60,6 @@ public class DashboardActivity extends AppCompatActivity {
 
             }
         });
-
-       /* titles.add("Emergency");
-        titles.add("Settings");
-        titles.add("About Us");
-        titles.add("Logout");
-
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        //drawerList = (ListView)findViewById(R.id.);*/
-
     }
 
     @Override
@@ -89,7 +80,6 @@ public class DashboardActivity extends AppCompatActivity {
         if(id == R.id.action_logout){
             Intent logoutIntent = new Intent(DashboardActivity.this, LogoutActivity.class);
             startActivity(logoutIntent);
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -100,5 +90,4 @@ public class DashboardActivity extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_HOME);
         startActivity(intent);
     }
-
 }
