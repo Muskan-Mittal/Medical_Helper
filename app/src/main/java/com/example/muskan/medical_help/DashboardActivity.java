@@ -13,10 +13,14 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.ArrayList;
 
 public class DashboardActivity extends AppCompatActivity {
 
+    private FirebaseAuth mAuth;
     private DrawerLayout drawerLayout;
     private ListView drawerList;
     private ArrayList<String> titles;
@@ -27,6 +31,7 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
         getSupportActionBar().setDisplayShowCustomEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        mAuth = FirebaseAuth.getInstance();
 
         LinearLayout addmedicine_layout = (LinearLayout)findViewById(R.id.addMedicine);
         addmedicine_layout.setOnClickListener(new View.OnClickListener() {
@@ -80,14 +85,21 @@ public class DashboardActivity extends AppCompatActivity {
         if(id == R.id.action_logout){
             Intent logoutIntent = new Intent(DashboardActivity.this, LogoutActivity.class);
             startActivity(logoutIntent);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        startActivity(intent);
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if(currentUser == null){
+            Intent startIntent = new Intent(DashboardActivity.this, MainActivity.class);
+            startActivity(startIntent);
+            finish();
+        }
     }
 }

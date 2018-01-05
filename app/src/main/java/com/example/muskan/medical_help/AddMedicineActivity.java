@@ -15,6 +15,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -198,7 +199,9 @@ public class AddMedicineActivity extends AppCompatActivity {
 
     private void addMedicineToSQLite() {
         Boolean flag = true;
-        if (!input_Validation.isInputEditTextFilled(textInputEditTextMedicine, textInputLayoutMedicine, getString(R.string.error_message_medicine))) {
+        String medicineName = textInputEditTextMedicine.getText().toString().trim();
+        if (TextUtils.isEmpty(medicineName)) {
+            textInputEditTextMedicine.setError("Enter a valid medicine name");
             return;
         }
 

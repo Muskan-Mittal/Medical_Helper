@@ -1,21 +1,39 @@
 package com.example.muskan.medical_help;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.muskan.medical_help.Data.signupDbHelper;
-import com.example.muskan.medical_help.Helpers.InputValidation;
-import com.example.muskan.medical_help.Models.user_model;
+import com.facebook.CallbackManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 public class SignupActivity extends AppCompatActivity {
 
+    private FirebaseAuth mAuth;
     private final AppCompatActivity activity = SignupActivity.this;
 
     private TextInputLayout textInputLayoutEmail;
@@ -28,10 +46,12 @@ public class SignupActivity extends AppCompatActivity {
 
     private Button buttonSignup;
     private TextView textviewLogin;
+    private ProgressDialog progressDialog;
 
-    private InputValidation input_Validation;
-    private signupDbHelper dbHelper;
-    private user_model user;
+    SignInButton googleSignInButton;
+    private final static int RC_SIGN_IN = 2;
+    GoogleApiClient mGoogleApiClient;
+    private CallbackManager mCallbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +63,8 @@ public class SignupActivity extends AppCompatActivity {
         initViews();
         initObjects();
 
-//      To handle already have account
+        //===================================================================================
+        // To handle already have account
         textviewLogin.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -54,12 +75,59 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-//        To handle sign up
+        //To handle sign up
         buttonSignup.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                postDataToSQLite();
+
+                String user_email = textInputEditTextEmail.getText().toString().trim();
+                String pwd = textInputEditTextPassword.getText().toString().trim();
+                String confirmPwd = textInputEditTextConfirmPassword.getText().toString().trim();
+
+                if(!TextUtils.isEmpty(user_email) || !TextUtils.isEmpty(pwd) || !TextUtils.isEmpty(confirmPwd)){
+                    progressDialog.setTitle("Registering User");
+                    progressDialog.setMessage("Please wait while your account is being created!");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.show();
+                    sign_up_user(user_email, pwd, confirmPwd);
+                }
+                else {
+                    Toast.makeText(SignupActivity.this, "Please fill the desired fields.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        //======================================================================================
+        //Google sign in
+
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Toast.makeText(SignupActivity.this,"Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+        // To handle the google sign in button
+        googleSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isNetworkAvailable()) {
+
+                    signIn();
+                }else
+                {
+                    Toast.makeText(getApplicationContext(), "No Connection!\nCheck your Internet Connection", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -71,6 +139,7 @@ public class SignupActivity extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_HOME);
         startActivity(intent);
     }
+
 
     private void initViews() {
 
@@ -84,52 +153,117 @@ public class SignupActivity extends AppCompatActivity {
 
         buttonSignup = (Button) findViewById(R.id.Signup_Button);
         textviewLogin = (TextView) findViewById(R.id.login_tv);
+
+        googleSignInButton = (SignInButton) findViewById(R.id.googleSignUpBtn);
+
     }
+
 
     private void initObjects() {
-        input_Validation = new InputValidation(activity);
-        dbHelper = new signupDbHelper(activity);
-        user = new user_model();
+
+        mAuth = FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(this);
     }
 
-    private void postDataToSQLite() {
-        Boolean flag = true;
+// Sign up using Sign Up Button
+    private void sign_up_user(String email, String password, String confirmPassword){
 
-        if (!input_Validation.isInputEditTextFilled(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
-            return;
-        }
-        if (!input_Validation.isInputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_password))) {
-            return;
-        }
-        if (!input_Validation.isInputEditTextEmail(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
-            return;
-        }
-        if (!input_Validation.isInputEditTextMatches(textInputEditTextPassword, textInputEditTextConfirmPassword,
-                textInputLayoutConfirmPassword, getString(R.string.error_password_match))) {
+        if (!password.contentEquals(confirmPassword)) {
+            textInputLayoutConfirmPassword.setError("Password doesnot match!");
             return;
         }
 
-        if (!dbHelper.checkUser(textInputEditTextEmail.getText().toString().trim())) {
-            user.setUserId(textInputEditTextEmail.getText().toString().trim());
-            user.setPwd(textInputEditTextPassword.getText().toString().trim());
-            dbHelper.addUser(user);
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            progressDialog.dismiss();
+                            Intent dashboardIntent = new Intent(SignupActivity.this, DashboardActivity.class);
+                            startActivity(dashboardIntent);
+                            finish();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            progressDialog.hide();
+                            Toast.makeText(SignupActivity.this, "Authentication failed. Password is too short!",
+                                    Toast.LENGTH_SHORT).show();
+                            emptyInputEditText();
+                        }
 
+
+                    }
+                });
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private void signIn() {
+
+        progressDialog.setTitle("Logging into your account");
+        progressDialog.setMessage("Please wait while your account is being authenticated!");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                GoogleSignInAccount account = result.getSignInAccount();
+                fireBaseAuthWithGoogle(account);
+
+            } else {
+                Toast.makeText(SignupActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+            }
         } else {
-            flag = false;
-            emptyInputEditText();
-            Toast.makeText(this, "User already exists", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (flag) {
-            Intent dashboardIntent = new Intent(SignupActivity.this, DashboardActivity.class);
-            startActivity(dashboardIntent);
+            mCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
 
     }
+
+    private void fireBaseAuthWithGoogle(GoogleSignInAccount account) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            progressDialog.dismiss();
+                            Intent mainIntent = new Intent(SignupActivity.this,DashboardActivity.class);
+                            startActivity(mainIntent);
+                            finish();
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            progressDialog.hide();
+                            Toast.makeText(SignupActivity.this,"Authentication failed!", Toast.LENGTH_SHORT).show();
+
+                        }
+
+
+                    }
+                });
+
+    }
+
 
     private void emptyInputEditText() {
-        textInputEditTextEmail.setText(null);
+
         textInputEditTextPassword.setText(null);
         textInputEditTextConfirmPassword.setText(null);
     }
