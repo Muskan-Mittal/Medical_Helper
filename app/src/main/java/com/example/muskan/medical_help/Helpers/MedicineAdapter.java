@@ -52,7 +52,6 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
         holder.ivPoster.setImageBitmap(bmp);
     }
 
-
     @Override
     public int getItemCount() {
         return medicineList.size();

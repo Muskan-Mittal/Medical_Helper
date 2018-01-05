@@ -42,9 +42,5 @@ public class Utilities {
         }
         return byteBuffer.toByteArray();
     }
-
-
-
-
 }
 

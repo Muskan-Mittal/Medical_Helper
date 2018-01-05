@@ -23,4 +23,9 @@ public class MyMedicineActivity extends AppCompatActivity implements RecyclerIte
         Intent i = new Intent(MyMedicineActivity.this, UpdateMedicineActivity.class);
         startActivity(i);
     }
+
+    @Override
+    public void onItemLongClick(View view, int position) {
+
+    }
 }

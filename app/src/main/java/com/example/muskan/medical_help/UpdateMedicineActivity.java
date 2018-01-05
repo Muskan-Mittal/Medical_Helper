@@ -60,10 +60,6 @@ public class UpdateMedicineActivity extends AppCompatActivity {
     private TextInputEditText textInputEditTextMedicine;
 
     //Alarm variables
-    String TAG = "RemindMe";
-    LocalData localData;
-    NotificationScheduler notificationScheduler;
-    String newString = "";
     medicine_model medicineObj;
 
     // Constant values in milliseconds
@@ -141,7 +137,6 @@ public class UpdateMedicineActivity extends AppCompatActivity {
         checkBox3 = (CheckBox)findViewById(R.id.checkbox_2pm);
         checkBox4 = (CheckBox)findViewById(R.id.checkbox_9pm);
         input_Validation = new InputValidation();
-        notificationScheduler = new NotificationScheduler();
         mCalendar = Calendar.getInstance();
         mHour = mCalendar.get(Calendar.HOUR_OF_DAY);
         mMinute = mCalendar.get(Calendar.MINUTE);
@@ -156,7 +151,6 @@ public class UpdateMedicineActivity extends AppCompatActivity {
     private void initObjects() {
         medicineObj = new medicine_model();
         dbHelper = new medicineDbHelper(activity);
-        localData = new LocalData(getApplicationContext());
         rb = new ReminderDbHelper(this);
         alarmReceiver = new AlarmReceiver();
         reminder = new reminder_model();
@@ -321,10 +315,11 @@ public class UpdateMedicineActivity extends AppCompatActivity {
 
         for(int i=0; i<medicineList.size(); i++){
             medicine_model medicine = medicineList.get(i);
-            if(medicine.schedule == repeatType && (medicine.routineTime).contains(time)){
+            if((medicine.routineTime).contains(time)){
                 title += "-" + medicine.medicineName + "\n";
             }
         }
+        Log.v("title:", ""+title);
         return title;
     }
 
@@ -347,8 +342,8 @@ public class UpdateMedicineActivity extends AppCompatActivity {
         mCalendar.set(Calendar.MONTH, --mMonth);
         mCalendar.set(Calendar.YEAR, mYear);
         mCalendar.set(Calendar.DAY_OF_MONTH, mDay);
-        mCalendar.set(Calendar.HOUR_OF_DAY, getHour(time));
-        mCalendar.set(Calendar.MINUTE, 0);
+        mCalendar.set(Calendar.HOUR_OF_DAY, 15);
+        mCalendar.set(Calendar.MINUTE, 40);
         mCalendar.set(Calendar.SECOND, 0);
 
         // Check repeat type
@@ -379,7 +374,7 @@ public class UpdateMedicineActivity extends AppCompatActivity {
     public void updateAlarm(String medicineName, String time, int mReceivedID){
 
         // Set new values in the reminder
-        reminder.setTitle(getTitleForReminder(time, medicineObj.schedule));
+        reminder.setTitle(""+getTitleForReminder(time, medicineObj.schedule)+medicineName);
         reminder.setSetDate(mDate);
         reminder.setReminderActive("true");
 

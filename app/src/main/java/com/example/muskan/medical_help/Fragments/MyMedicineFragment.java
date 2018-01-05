@@ -143,7 +143,7 @@ public class MyMedicineFragment extends Fragment {
         medicineAdapter = new MedicineAdapter(getActivity(), medicineList, FilePathStrings, FileNameStrings);
         medicineRecyclerView.setLayoutManager(layoutManager);
         medicineRecyclerView.setAdapter(medicineAdapter);
-        medicineRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity() , new RecyclerItemClickListener.OnItemClickListener() {
+        medicineRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity() , medicineRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
 
                         ((RecyclerItemClickListener.OnItemClickListener) getActivity()).onItemClick(view, position);
@@ -152,8 +152,12 @@ public class MyMedicineFragment extends Fragment {
                         startActivity(i);
 
                 }
-        //Log.v("Name", "" + newString);
-    }));
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                ((RecyclerItemClickListener.OnItemClickListener) getActivity()).onItemLongClick(view, position);
+            }
+        }));
 
         return rootview;
     }

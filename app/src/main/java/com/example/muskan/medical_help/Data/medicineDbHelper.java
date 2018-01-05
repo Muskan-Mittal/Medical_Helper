@@ -161,7 +161,6 @@ public class medicineDbHelper extends SQLiteOpenHelper {
         values.put(COLUMN_MEDICINE_DOSAGE, medicine.dosage);
         values.put(COLUMN_MEDICINE_SCHEDULE, medicine.schedule);
         values.put(COLUMN_MEDICINE_ROUTINETIME, medicine.routineTime);
-
         return db.update(TABLE_MEDICINE, values, COLUMN_MEDICINE_ID + " = ?",
                 new String[] { String.valueOf(medicine.medicineId) });
     }

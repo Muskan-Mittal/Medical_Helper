@@ -74,9 +74,6 @@ public class AddMedicineActivity extends AppCompatActivity {
     private final int CAMERA_REQUEST_CODE = 100;
     // Request code for runtime permissions
     private final int REQUEST_CODE_STORAGE_PERMS = 321;
-    //Alarm variables
-    LocalData localData;
-    NotificationScheduler notificationScheduler;
     // Constant Intent String
     public static final String EXTRA_REMINDER_ID = "Reminder_ID";
 
@@ -167,7 +164,6 @@ public class AddMedicineActivity extends AppCompatActivity {
         button4 = (RadioButton) findViewById(R.id.btn4);
         button5 = (RadioButton) findViewById(R.id.btn5);
         input_Validation = new InputValidation();
-        notificationScheduler = new NotificationScheduler();
         checkBox1 = (CheckBox) findViewById(R.id.checkbox_9am);
         checkBox2 = (CheckBox) findViewById(R.id.checkbox_12pm);
         checkBox3 = (CheckBox) findViewById(R.id.checkbox_2pm);
@@ -187,7 +183,6 @@ public class AddMedicineActivity extends AppCompatActivity {
     private void initObjects() {
         medicine = new medicine_model();
         dbHelper = new medicineDbHelper(activity);
-        localData = new LocalData(getApplicationContext());
         rb = new ReminderDbHelper(this);
         alarmReceiver = new AlarmReceiver();
 
