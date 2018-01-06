@@ -49,7 +49,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
                 .setSmallIcon(R.drawable.ic_alarm_on_white_24dp)
-                .setContentTitle(context.getResources().getString(R.string.app_name))
+                .setContentTitle(context.getResources().getString(R.string.AppName))
                 .setTicker(mTitle)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(mTitle))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))

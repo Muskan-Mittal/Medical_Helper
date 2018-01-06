@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.example.muskan.medical_help.Data.ReminderDbHelper;
 import com.example.muskan.medical_help.Data.medicineDbHelper;
 import com.example.muskan.medical_help.Helpers.AlarmReceiver;
-import com.example.muskan.medical_help.Helpers.InputValidation;
 import com.example.muskan.medical_help.Models.medicine_model;
 import com.example.muskan.medical_help.Models.reminder_model;
 
@@ -46,7 +45,6 @@ public class UpdateMedicineActivity extends AppCompatActivity {
     Button save_btn;
     String routinetime = "";
     Spinner dosage;
-    InputValidation input_Validation;
     private Calendar mCalendar;
     private int mYear, mMonth, mHour, mMinute, mDay;
     private String mTime;
@@ -137,7 +135,6 @@ public class UpdateMedicineActivity extends AppCompatActivity {
         checkBox2 = (CheckBox)findViewById(R.id.checkbox_12pm);
         checkBox3 = (CheckBox)findViewById(R.id.checkbox_2pm);
         checkBox4 = (CheckBox)findViewById(R.id.checkbox_9pm);
-        input_Validation = new InputValidation();
         mCalendar = Calendar.getInstance();
         mHour = mCalendar.get(Calendar.HOUR_OF_DAY);
         mMinute = mCalendar.get(Calendar.MINUTE);

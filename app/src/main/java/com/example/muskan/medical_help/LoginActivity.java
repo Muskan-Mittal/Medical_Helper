@@ -1,7 +1,6 @@
 package com.example.muskan.medical_help;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +17,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.muskan.medical_help.Helpers.InputValidation;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -54,8 +52,6 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText textInputEditTextPassword;
 
     private Button ButtonLogin;
-
-    private InputValidation input_Validation;
     private ProgressDialog progressDialog;
     private FirebaseAuth mAuth;
 
@@ -187,7 +183,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initObjects() {
 
-        input_Validation = new InputValidation(activity);
         progressDialog = new ProgressDialog(this);
         mAuth = FirebaseAuth.getInstance();
     }

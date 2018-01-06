@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,15 +16,16 @@
         android:layout_marginTop="100dp"
         android:src="@drawable/logo"/>
 
+    <!--Description for app-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="Having trouble in remembering your medicines? Set alarms and also save your medical reports online through DR. Help"
-
+        android:text="@string/DescriptionForApp"
         android:textColor="#212121"
         android:textSize="16sp"/>
 
+    <!--Get started button-->
     <Button
         android:id="@+id/get_started"
         android:layout_width="match_parent"
@@ -35,5 +35,4 @@
         android:backgroundTint="#ef5350"
         android:text="Get Started"
         android:textColor="#FFFFFF"/>
-
 </LinearLayout>

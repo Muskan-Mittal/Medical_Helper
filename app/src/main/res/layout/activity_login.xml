@@ -14,7 +14,7 @@
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:src="@drawable/logo"/>
+        android:src="@drawable/logo" />
 
     <!--User id label-->
     <android.support.design.widget.TextInputLayout
@@ -33,7 +33,6 @@
             android:textColor="#212121"
             android:textColorHint="#212121"
             tools:ignore="HardcodedText" />
-
     </android.support.design.widget.TextInputLayout>
 
     <!--Password label-->
@@ -53,7 +52,6 @@
             android:textColor="#212121"
             android:textColorHint="#212121"
             tools:ignore="HardcodedText" />
-
     </android.support.design.widget.TextInputLayout>
 
     <!--Login button-->
@@ -75,32 +73,32 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
+        <!--Horizontal line-->
         <View
             android:layout_width="60dp"
             android:layout_height="1dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:background="@android:color/darker_gray">
-        </View>
+            android:background="@android:color/darker_gray" />
 
+        <!--Or connect with text-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:text="Or connect with"
+            android:text="@string/OrConnectWithText"
             android:textAllCaps="true"
-            android:textColor="#212121"/>
+            android:textColor="#212121" />
 
+        <!--Horizontal line-->
         <View
             android:layout_width="60dp"
             android:layout_height="1dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:background="@android:color/darker_gray">
-        </View>
-
+            android:background="@android:color/darker_gray" />
     </LinearLayout>
 
     <LinearLayout
@@ -124,7 +122,7 @@
             android:textAllCaps="true"
             android:textColor="#FFFFFF" />
 
-        <!--Google+ button-->
+        <!--Google sign in button-->
         <com.google.android.gms.common.SignInButton
             android:id="@+id/googleLoginBtn"
             android:layout_width="wrap_content"
@@ -132,7 +130,5 @@
             android:layout_weight="1"
             android:backgroundTint="#D34836"
             android:textColor="#FFFFFF" />
-
     </LinearLayout>
-
 </LinearLayout>

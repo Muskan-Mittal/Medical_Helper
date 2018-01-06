@@ -4,10 +4,10 @@
     tools:context=".DashboardActivity">
 
     <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+        android:title="@string/ActionSettings"
         app:showAsAction="never" />
 
     <item android:id="@+id/action_logout"
-        android:title="@string/action_logout"
+        android:title="@string/ActionLogout"
         app:showAsAction="never" />
 </menu>

@@ -2,7 +2,6 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">#F44336</item>
         <item name="colorPrimaryDark">#D32F2F</item>
         <item name="colorAccent">#4CAF50</item>
@@ -11,6 +10,7 @@
         <item name="colorControlHighlight">#ef5350</item>
     </style>
 
+    <!--Text input layout style-->
     <style name="TextAppearence.App.TextInputLayout" parent="@android:style/TextAppearance">
         <item name="android:textColor">#ef5350</item>
         <item name="android:textColorHint">#212121</item>
@@ -18,6 +18,7 @@
 
     <style name="Theme">theme</style>
 
+    <!--Text style for headings in Add Medicine and Update Medicine Activity-->
     <style name="textStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -26,5 +27,4 @@
         <item name="android:textColor">#D32F2F</item>
         <item name="android:textSize">18sp</item>
     </style>
-
 </resources>

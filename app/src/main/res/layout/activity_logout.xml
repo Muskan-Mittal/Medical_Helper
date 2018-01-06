@@ -4,28 +4,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!--App name-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My Help"
-        android:textSize="36sp"
+        android:layout_gravity="center"
         android:layout_marginTop="60dp"
-        android:layout_gravity="center"/>
+        android:text="@string/AppName"
+        android:textSize="36sp" />
 
+    <!--Description-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Thank you for using My Help health app! Login in to set alarms and click images to store your medical records."
-        android:textSize="16sp"
-        android:padding="24dp"/>
+        android:padding="24dp"
+        android:text="@string/DescriptionForAppAfterLogout"
+        android:textSize="16sp" />
 
+    <!--Button for opening login portal-->
     <Button
         android:id="@+id/clickHereToLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Click here to LOGIN"
         android:backgroundTint="#ef5350"
-        android:textColor="#FFFFFF"/>
-
+        android:text="@string/TextForButtonToLoginPage"
+        android:textColor="#FFFFFF" />
 </LinearLayout>
