@@ -113,6 +113,7 @@
 
         <!--Facebook button-->
         <com.facebook.login.widget.LoginButton
+            android:id="@+id/fbLoginBtn"
             android:layout_width="167dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

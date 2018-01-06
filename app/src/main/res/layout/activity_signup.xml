@@ -137,7 +137,7 @@
 
             <!--Facebook button-->
             <com.facebook.login.widget.LoginButton
-                android:id="@+id/fb_button"
+                android:id="@+id/fbSignUpBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
