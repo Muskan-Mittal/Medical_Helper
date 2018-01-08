@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.example.muskan.medical_help"
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -28,6 +28,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    implementation("com.mikepenz:materialdrawer:6.0.2@aar") {
+        transitive = true
+    }
+
+//required support lib modules
+    implementation "com.android.support:recyclerview-v7:26.1.0"
+    implementation "com.android.support:support-annotations:26.1.0"
+    implementation "com.android.support:design:26.1.0"
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
 

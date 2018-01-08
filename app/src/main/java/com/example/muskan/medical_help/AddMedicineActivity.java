@@ -2,6 +2,7 @@ package com.example.muskan.medical_help;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -83,7 +85,7 @@ public class AddMedicineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addmedicine);
-
+        initToolbar();
         initObjects();
         initViews();
         hideRadioButtons();
@@ -143,6 +145,22 @@ public class AddMedicineActivity extends AppCompatActivity {
 
     }
 
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar_addMedicine);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
+                }
+            });
+        }
+    }
+
     private void initViews() {
 
         textInputLayoutMedicine = (TextInputLayout) findViewById(R.id.textInputLayoutMedicine);
@@ -197,20 +215,20 @@ public class AddMedicineActivity extends AppCompatActivity {
             return;
         }
 
-            if (!dbHelper.checkMedicine(textInputEditTextMedicine.getText().toString().trim())) {
-                medicine.medicineName = (textInputEditTextMedicine.getText().toString().trim());
-                medicine.imagePath = (getImageUri().getPath());
-                medicine.dosage = (Integer.parseInt(dosage.getSelectedItem().toString()));
-                medicine.schedule = (schedule_text.getText().toString());
-                medicine.routineTime = routinetime;
-                medicine.date = getDateTime();
-                dbHelper.addMedicine(medicine);
+        if (!dbHelper.checkMedicine(textInputEditTextMedicine.getText().toString().trim())) {
+            medicine.medicineName = (textInputEditTextMedicine.getText().toString().trim());
+            medicine.imagePath = (getImageUri().getPath());
+            medicine.dosage = (Integer.parseInt(dosage.getSelectedItem().toString()));
+            medicine.schedule = (schedule_text.getText().toString());
+            medicine.routineTime = routinetime;
+            medicine.date = getDateTime();
+            dbHelper.addMedicine(medicine);
 
-            } else {
-                flag = false;
-                Toast.makeText(this, "This medicine is already added", Toast.LENGTH_SHORT).show();
-                return;
-            }
+        } else {
+            flag = false;
+            Toast.makeText(this, "This medicine is already added", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (flag) {
             Toast.makeText(this, "Medicine added successfully", Toast.LENGTH_SHORT).show();
@@ -324,7 +342,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         }
     }
 
-    public Uri getImageUri(){
+    public Uri getImageUri() {
         return imageUri;
     }
 
@@ -348,33 +366,32 @@ public class AddMedicineActivity extends AppCompatActivity {
 
     public void getChecked() {
 
-        if(checkBox1.isChecked()){
-            routinetime += checkBox1.getText().toString()+",";
+        if (checkBox1.isChecked()) {
+            routinetime += checkBox1.getText().toString() + ",";
         }
 
-        if(checkBox2.isChecked()){
-            routinetime += checkBox2.getText().toString()+",";
+        if (checkBox2.isChecked()) {
+            routinetime += checkBox2.getText().toString() + ",";
         }
 
-        if(checkBox3.isChecked()){
-            routinetime += checkBox3.getText().toString()+",";
+        if (checkBox3.isChecked()) {
+            routinetime += checkBox3.getText().toString() + ",";
         }
 
-        if(checkBox4.isChecked()){
-            routinetime += checkBox4.getText().toString()+",";
+        if (checkBox4.isChecked()) {
+            routinetime += checkBox4.getText().toString() + ",";
         }
 
 
     }
 
-    public void decideAlarms(){
+    public void decideAlarms() {
 
         String[] routineList = routinetime.split(",");
-        for(int j=0; j<routineList.length; j++){
-            if(!rb.checkReminder(routineList[j], (schedule_text.getText().toString()))){
+        for (int j = 0; j < routineList.length; j++) {
+            if (!rb.checkReminder(routineList[j], (schedule_text.getText().toString()))) {
                 addAlarms(routineList[j]);
-            }
-            else {
+            } else {
                 reminder = rb.getReminder(routineList[j], (schedule_text.getText().toString()));
                 updateAlarm(medicine.medicineName, routineList[j], reminder.getReminderID());
             }
@@ -382,9 +399,9 @@ public class AddMedicineActivity extends AppCompatActivity {
         }
     }
 
-    public int getHour(String time){
+    public int getHour(String time) {
         int hr = 0;
-        switch (time){
+        switch (time) {
             case "9 AM":
                 hr = 9;
                 break;
@@ -401,29 +418,28 @@ public class AddMedicineActivity extends AppCompatActivity {
         return hr;
     }
 
-    public String getTitleForReminder(String time, String repeatType){
-        String title="Medicine(s) to be taken today:\n";
+    public String getTitleForReminder(String time, String repeatType) {
+        String title = "Medicine(s) to be taken today:\n";
         List<medicine_model> medicineList;
         medicineDbHelper helper = new medicineDbHelper(activity);
         medicineList = helper.getAllMedicines();
 
-        for(int i=0; i<medicineList.size(); i++){
+        for (int i = 0; i < medicineList.size(); i++) {
             medicine_model medicine = medicineList.get(i);
-            if(medicine.schedule == repeatType && (medicine.routineTime).contains(time)){
+            if (medicine.schedule == repeatType && (medicine.routineTime).contains(time)) {
                 title += i + ". " + medicine.medicineName + "\n";
             }
         }
         return title;
     }
 
-    public void addAlarms(String time){
+    public void addAlarms(String time) {
 
         String mActive;
 
-        if(medicine.schedule!="Never"){
+        if (medicine.schedule != "Never") {
             mActive = "true";
-        }
-        else {
+        } else {
             mActive = "false";
         }
 
@@ -454,7 +470,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         // Create a new notification
         if (mActive.equals("true")) {
-                new AlarmReceiver().setRepeatAlarm(getApplicationContext(), mCalendar, ID, mRepeatTime);
+            new AlarmReceiver().setRepeatAlarm(getApplicationContext(), mCalendar, ID, mRepeatTime);
         }
 
         // Create toast to confirm new reminder
@@ -464,7 +480,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         //onBackPressed();
     }
 
-    public void updateAlarm(String medicineName, String time, int mReceivedID){
+    public void updateAlarm(String medicineName, String time, int mReceivedID) {
 
         // Set new values in the reminder
         reminder.setTitle(getTitleForReminder(time, medicine.schedule));
@@ -500,7 +516,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         // Create a new notification
         if (reminder.getReminderActive().equals("true")) {
-                alarmReceiver.setRepeatAlarm(getApplicationContext(), mCalendar, mReceivedID, mRepeatTime);
+            alarmReceiver.setRepeatAlarm(getApplicationContext(), mCalendar, mReceivedID, mRepeatTime);
         }
 
         // Create toast to confirm update
