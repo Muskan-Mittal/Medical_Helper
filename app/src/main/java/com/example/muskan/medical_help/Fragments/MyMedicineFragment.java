@@ -9,14 +9,14 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.muskan.medical_help.Data.medicineDbHelper;
 import com.example.muskan.medical_help.Helpers.MedicineAdapter;
@@ -27,7 +27,6 @@ import com.example.muskan.medical_help.UpdateMedicineActivity;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -95,6 +94,7 @@ public class MyMedicineFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
     }
 
 
@@ -107,7 +107,6 @@ public class MyMedicineFragment extends Fragment {
         // Create a new folder if no folder named SDImageTutorial exist
         file.mkdirs();
         View rootview;
-
 
         if (file.isDirectory()) {
             listFile = file.listFiles();
@@ -137,7 +136,13 @@ public class MyMedicineFragment extends Fragment {
             }
         }
 
-        rootview = inflater.inflate(R.layout.activity_mymedicine, container, false);
+        rootview = inflater.inflate(R.layout.fragment_mymedicine, container, false);
+
+        Toolbar toolbar = (Toolbar) rootview.findViewById(R.id.toolbar_actionbar_addMedicine);
+        if (toolbar != null) {
+            showBackButton();
+        }
+
         medicineRecyclerView = (RecyclerView) rootview.findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(getActivity());
         medicineAdapter = new MedicineAdapter(getActivity(), medicineList, FilePathStrings, FileNameStrings);
@@ -168,4 +173,9 @@ public class MyMedicineFragment extends Fragment {
         medicineList = (ArrayList<medicine_model>) dbHelper.getAllMedicines();
     }
 
+    public void showBackButton() {
+        if (getActivity() instanceof AppCompatActivity) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
 }

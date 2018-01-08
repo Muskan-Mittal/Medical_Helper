@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -45,37 +46,30 @@ import java.util.Arrays;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    private final static int RC_SIGN_IN = 2;
     private final AppCompatActivity activity = SignupActivity.this;
-
+    SignInButton googleSignInButton;
+    GoogleApiClient mGoogleApiClient;
+    LoginButton facebookLoginButton;
+    private FirebaseAuth mAuth;
     private TextInputLayout textInputLayoutEmail;
     private TextInputLayout textInputLayoutPassword;
     private TextInputLayout textInputLayoutConfirmPassword;
-
     private TextInputEditText textInputEditTextEmail;
     private TextInputEditText textInputEditTextPassword;
     private TextInputEditText textInputEditTextConfirmPassword;
-
     private Button buttonSignup;
     private TextView textviewLogin;
     private ProgressDialog progressDialog;
-
-    SignInButton googleSignInButton;
-    private final static int RC_SIGN_IN = 2;
-    GoogleApiClient mGoogleApiClient;
     private CallbackManager mCallbackManager;
-    LoginButton facebookLoginButton;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        getSupportActionBar().setDisplayShowCustomEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
         initViews();
         initObjects();
+        initToolbar();
 
         //===================================================================================
         // To handle already have account
@@ -99,14 +93,13 @@ public class SignupActivity extends AppCompatActivity {
                 String pwd = textInputEditTextPassword.getText().toString().trim();
                 String confirmPwd = textInputEditTextConfirmPassword.getText().toString().trim();
 
-                if(!TextUtils.isEmpty(user_email) || !TextUtils.isEmpty(pwd) || !TextUtils.isEmpty(confirmPwd)){
+                if (!TextUtils.isEmpty(user_email) || !TextUtils.isEmpty(pwd) || !TextUtils.isEmpty(confirmPwd)) {
                     progressDialog.setTitle("Registering User");
                     progressDialog.setMessage("Please wait while your account is being created!");
                     progressDialog.setCanceledOnTouchOutside(false);
                     progressDialog.show();
                     sign_up_user(user_email, pwd, confirmPwd);
-                }
-                else {
+                } else {
                     Toast.makeText(SignupActivity.this, "Please fill the desired fields.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -125,7 +118,7 @@ public class SignupActivity extends AppCompatActivity {
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(SignupActivity.this,"Something went wrong!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignupActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -138,17 +131,15 @@ public class SignupActivity extends AppCompatActivity {
                 if (isNetworkAvailable()) {
 
                     signIn();
-                }else
-                {
+                } else {
                     Toast.makeText(getApplicationContext(), "No Connection!\nCheck your Internet Connection", Toast.LENGTH_LONG).show();
                 }
             }
         });
 
         //Facebook Login
-
+        facebookLoginButton.setReadPermissions("email");
         mCallbackManager = CallbackManager.Factory.create();
-
         facebookLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -160,7 +151,6 @@ public class SignupActivity extends AppCompatActivity {
                     progressDialog.setMessage("Please wait while your account is being authenticated.");
                     progressDialog.setCanceledOnTouchOutside(false);
                     progressDialog.show();
-
                     LoginManager.getInstance().logInWithReadPermissions(SignupActivity.this, Arrays.asList("email", "public_profile"));
                     LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
 
@@ -180,9 +170,7 @@ public class SignupActivity extends AppCompatActivity {
                             Log.d("ok", "facebook:onError", error);
                         }
                     });
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getApplicationContext(), "No Connection!\nCheck your Internet Connection", Toast.LENGTH_LONG).show();
                 }
             }
@@ -197,25 +185,19 @@ public class SignupActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     private void initViews() {
 
         textInputLayoutEmail = (TextInputLayout) findViewById(R.id.textInputLayoutEmail);
         textInputLayoutPassword = (TextInputLayout) findViewById(R.id.textInputLayoutPassword);
         textInputLayoutConfirmPassword = (TextInputLayout) findViewById(R.id.textInputLayoutConfirmPassword);
-
         textInputEditTextEmail = (TextInputEditText) findViewById(R.id.email_input);
         textInputEditTextPassword = (TextInputEditText) findViewById(R.id.pwd_input);
         textInputEditTextConfirmPassword = (TextInputEditText) findViewById(R.id.pwd_confirm);
-
         buttonSignup = (Button) findViewById(R.id.Signup_Button);
         textviewLogin = (TextView) findViewById(R.id.login_tv);
-
         googleSignInButton = (SignInButton) findViewById(R.id.googleSignUpBtn);
         facebookLoginButton = (LoginButton) findViewById(R.id.fbSignUpBtn);
-
     }
-
 
     private void initObjects() {
 
@@ -223,8 +205,8 @@ public class SignupActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
     }
 
-// Sign up using Sign Up Button
-    private void sign_up_user(String email, String password, String confirmPassword){
+    // Sign up using Sign Up Button
+    private void sign_up_user(String email, String password, String confirmPassword) {
 
         if (!password.contentEquals(confirmPassword)) {
             textInputLayoutConfirmPassword.setError("Password doesnot match!");
@@ -247,8 +229,6 @@ public class SignupActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                             emptyInputEditText();
                         }
-
-
                     }
                 });
     }
@@ -302,14 +282,14 @@ public class SignupActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             progressDialog.dismiss();
-                            Intent mainIntent = new Intent(SignupActivity.this,DashboardActivity.class);
+                            Intent mainIntent = new Intent(SignupActivity.this, DashboardActivity.class);
                             startActivity(mainIntent);
                             finish();
 
                         } else {
                             // If sign in fails, display a message to the user.
                             progressDialog.hide();
-                            Toast.makeText(SignupActivity.this,"Authentication failed!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignupActivity.this, "Authentication failed!", Toast.LENGTH_SHORT).show();
 
                         }
 
@@ -332,7 +312,7 @@ public class SignupActivity extends AppCompatActivity {
                             Log.d("ok", "signInWithCredential:success");
 
                             progressDialog.dismiss();
-                            Intent intent = new Intent(SignupActivity.this,DashboardActivity.class);
+                            Intent intent = new Intent(SignupActivity.this, DashboardActivity.class);
                             startActivity(intent);
                             finish();
 
@@ -351,5 +331,12 @@ public class SignupActivity extends AppCompatActivity {
     private void emptyInputEditText() {
         textInputEditTextPassword.setText(null);
         textInputEditTextConfirmPassword.setText(null);
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar_signUp);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
     }
 }

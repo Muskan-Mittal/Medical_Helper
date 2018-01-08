@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +16,13 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
 
@@ -24,16 +32,44 @@ public class DashboardActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ListView drawerList;
     private ArrayList<String> titles;
+    Toolbar toolbar;
+    Drawer result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        getSupportActionBar().setDisplayShowCustomEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        mAuth = FirebaseAuth.getInstance();
 
-        LinearLayout addmedicine_layout = (LinearLayout)findViewById(R.id.addMedicine);
+        mAuth = FirebaseAuth.getInstance();
+        initToolbar();
+
+//create the drawer and remember the `Drawer` result object
+        result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .addDrawerItems(
+                        new DividerDrawerItem(),
+                        new PrimaryDrawerItem().withName(R.string.NavEmergency),
+                        new PrimaryDrawerItem().withName(R.string.NavSettings),
+
+                        new SecondaryDrawerItem().withName(R.string.NavAboutUs),
+                        new SecondaryDrawerItem().withName(R.string.NavLogout)
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        // do something with the clicked item :D
+                        return true;
+                    }
+                })
+                .build();
+//        if(getSupportActionBar() != null){
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//            result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+//        }
+
+
+        LinearLayout addmedicine_layout = (LinearLayout) findViewById(R.id.addMedicine);
         addmedicine_layout.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -44,7 +80,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        LinearLayout mymedicine_layout = (LinearLayout)findViewById(R.id.myMedicine);
+        LinearLayout mymedicine_layout = (LinearLayout) findViewById(R.id.myMedicine);
         mymedicine_layout.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -55,7 +91,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        LinearLayout reminders_layout = (LinearLayout)findViewById(R.id.reminder);
+        LinearLayout reminders_layout = (LinearLayout) findViewById(R.id.reminder);
         reminders_layout.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -82,7 +118,7 @@ public class DashboardActivity extends AppCompatActivity {
             return true;
         }
 
-        if(id == R.id.action_logout){
+        if (id == R.id.action_logout) {
             Intent logoutIntent = new Intent(DashboardActivity.this, LogoutActivity.class);
             startActivity(logoutIntent);
             finish();
@@ -96,10 +132,24 @@ public class DashboardActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        if(currentUser == null){
+        if (currentUser == null) {
             Intent startIntent = new Intent(DashboardActivity.this, MainActivity.class);
             startActivity(startIntent);
             finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        startActivity(intent);
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar_dashboard);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
         }
     }
 }

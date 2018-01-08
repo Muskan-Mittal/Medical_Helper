@@ -61,7 +61,8 @@
         <activity
             android:name=".DashboardActivity"
             android:label="Dash Board"
-            android:parentActivityName=".DashboardActivity"></activity>
+            android:parentActivityName=".DashboardActivity">
+        </activity>
 
         <!--Add Medicine activity-->
         <activity
@@ -103,11 +104,12 @@
                 android:value=".DashboardActivity" />
         </activity>
 
-        <!--Logout ativity-->
+        <!--Logout activity-->
         <activity
             android:name=".LogoutActivity"
             android:label="Logout"
-            android:parentActivityName=".DashboardActivity"></activity>
+            android:parentActivityName=".DashboardActivity">
+        </activity>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

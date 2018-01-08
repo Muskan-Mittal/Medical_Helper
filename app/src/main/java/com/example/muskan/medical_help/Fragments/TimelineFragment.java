@@ -91,7 +91,7 @@ public class TimelineFragment extends Fragment {
         createReminderList();
 
         View rootView;
-        rootView = inflater.inflate(R.layout.activity_timeline, container, false);
+        rootView = inflater.inflate(R.layout.fragment_timeline, container, false);
         timelineRecyclerView = (RecyclerView) rootView.findViewById(R.id.timelineRv);
         layoutManager = new LinearLayoutManager(getActivity());
         timelineAdapter = new TimelineAdapter(getActivity(), rmList);

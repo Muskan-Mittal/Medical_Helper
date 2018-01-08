@@ -1,182 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:theme="@style/AppTheme">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <include
+        android:id="@+id/toolbar_actionbar_signUp"
+        layout="@layout/toolbar_default"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="36dp"
-        android:layout_marginRight="36dp"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content" />
 
-        <!--App logo-->
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/logo" />
-
-        <!--User id label-->
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/textInputLayoutEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/email_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="@string/UserId"
-                android:inputType="textEmailAddress"
-                android:textColor="#212121"
-                android:textColorHint="#212121"
-                tools:ignore="HardcodedText" />
-        </android.support.design.widget.TextInputLayout>
-
-        <!--Password label-->
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/textInputLayoutPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/pwd_input"
-                style="@style/TextAppearence.App.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="@string/Password"
-                android:inputType="textPassword"
-                android:textColor="#212121"
-                android:textColorHint="#212121"
-                tools:ignore="HardcodedText" />
-        </android.support.design.widget.TextInputLayout>
-
-        <!--Confirm password label-->
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/textInputLayoutConfirmPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/pwd_confirm"
-                style="@style/TextAppearence.App.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="@string/ConfirmPassword"
-                android:inputType="textPassword"
-                android:textColor="#212121"
-                android:textColorHint="#212121"
-                tools:ignore="HardcodedText" />
-        </android.support.design.widget.TextInputLayout>
-
-        <!--Sign up button-->
-        <Button
-            android:id="@+id/Signup_Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:layout_weight="2"
-            android:backgroundTint="#ef5350"
-            android:text="SIGN UP"
-            android:textColor="#FFFFFF" />
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:theme="@style/AppTheme">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="38dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:layout_marginLeft="36dp"
+            android:layout_marginRight="36dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
 
-            <!--Horizontal line-->
-            <View
-                android:layout_width="60dp"
-                android:layout_height="1dp"
+            <!--App logo-->
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:background="@android:color/darker_gray" />
+                android:src="@drawable/logo" />
 
-            <!--Or connect with text-->
-            <TextView
-                android:layout_width="wrap_content"
+            <!--User id label-->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayoutEmail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="@string/OrConnectWithText"
-                android:textAllCaps="true"
-                android:textColor="#212121" />
+                android:layout_marginTop="8dp">
 
-            <!--Horizontal line-->
-            <View
-                android:layout_width="60dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:background="@android:color/darker_gray" />
-        </LinearLayout>
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/email_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/UserId"
+                    android:inputType="textEmailAddress"
+                    android:textColor="#212121"
+                    android:textColorHint="#212121"
+                    tools:ignore="HardcodedText" />
+            </android.support.design.widget.TextInputLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="15dp"
-            android:layout_marginTop="18dp"
-            android:orientation="horizontal">
+            <!--Password label-->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayoutPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <!--Facebook button-->
-            <com.facebook.login.widget.LoginButton
-                android:id="@+id/fbSignUpBtn"
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/pwd_input"
+                    style="@style/TextAppearence.App.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/Password"
+                    android:inputType="textPassword"
+                    android:textColor="#212121"
+                    android:textColorHint="#212121"
+                    tools:ignore="HardcodedText" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Confirm password label-->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayoutConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/pwd_confirm"
+                    style="@style/TextAppearence.App.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/ConfirmPassword"
+                    android:inputType="textPassword"
+                    android:textColor="#212121"
+                    android:textColorHint="#212121"
+                    tools:ignore="HardcodedText" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Sign up button-->
+            <Button
+                android:id="@+id/Signup_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:layout_weight="1"
-                android:backgroundTint="#3B5998"
-                android:textAllCaps="true"
+                android:layout_marginTop="20dp"
+                android:layout_weight="2"
+                android:backgroundTint="#ef5350"
+                android:text="SIGN UP"
                 android:textColor="#FFFFFF" />
 
-            <!--Google sign in button-->
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/googleSignUpBtn"
-                android:layout_width="128dp"
-                android:layout_height="37dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="38dp"
                 android:layout_weight="1"
-                android:textColor="#FFFFFF" />
-        </LinearLayout>
+                android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="25dp"
-            android:orientation="horizontal">
+                <!--Horizontal line-->
+                <View
+                    android:layout_width="60dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/darker_gray" />
 
-            <!--Already have an account? text-->
-            <TextView
+                <!--Or connect with text-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="@string/OrConnectWithText"
+                    android:textAllCaps="true"
+                    android:textColor="#212121" />
+
+                <!--Horizontal line-->
+                <View
+                    android:layout_width="60dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/darker_gray" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/AlreadyHaveText"
-                android:textColor="#212121"
-                android:textSize="16sp" />
+                android:layout_gravity="center"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="18dp"
+                android:orientation="horizontal">
 
-            <!--Login text button-->
-            <TextView
-                android:id="@+id/login_tv"
+                <!--Facebook button-->
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/fbSignUpBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#3B5998"
+                    android:textAllCaps="true"
+                    android:textColor="#FFFFFF" />
+
+                <!--Google sign in button-->
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/googleSignUpBtn"
+                    android:layout_width="128dp"
+                    android:layout_height="37dp"
+                    android:layout_weight="1"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/Login"
-                android:textColor="#ef5350" />
+                android:layout_gravity="center"
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal">
+
+                <!--Already have an account? text-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/AlreadyHaveText"
+                    android:textColor="#212121"
+                    android:textSize="16sp" />
+
+                <!--Login text button-->
+                <TextView
+                    android:id="@+id/login_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Login"
+                    android:textColor="#ef5350" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</LinearLayout>

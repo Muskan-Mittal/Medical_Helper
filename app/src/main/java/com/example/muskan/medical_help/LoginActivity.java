@@ -1,6 +1,7 @@
 package com.example.muskan.medical_help;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -65,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        initToolbar();
         initViews();
         initObjects();
 
@@ -76,14 +78,13 @@ public class LoginActivity extends AppCompatActivity {
                 String user_email = textInputEditTextEmail.getText().toString().trim();
                 String pwd = textInputEditTextPassword.getText().toString().trim();
 
-                if(!TextUtils.isEmpty(user_email) || !TextUtils.isEmpty(pwd)){
+                if (!TextUtils.isEmpty(user_email) || !TextUtils.isEmpty(pwd)) {
                     progressDialog.setTitle("Logging In");
                     progressDialog.setMessage("Please wait while your credentials are verified!");
                     progressDialog.setCanceledOnTouchOutside(false);
                     progressDialog.show();
                     login_user(user_email, pwd);
-                }
-                else {
+                } else {
                     Toast.makeText(LoginActivity.this, "Please fill the desired fields.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -102,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(LoginActivity.this,"Something went wrong!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -115,8 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (isNetworkAvailable()) {
 
                     signIn();
-                }else
-                {
+                } else {
                     Toast.makeText(getApplicationContext(), "No Connection!\nCheck your Internet Connection", Toast.LENGTH_LONG).show();
                 }
             }
@@ -158,15 +158,29 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("ok", "facebook:onError", error);
                         }
                     });
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getApplicationContext(), "No Connection!\nCheck your Internet Connection", Toast.LENGTH_LONG).show();
                 }
             }
         });
 
 
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar_login);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getApplicationContext(), SignupActivity.class));
+                }
+            });
+        }
     }
 
     @SuppressLint("WrongViewCast")
@@ -187,7 +201,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    private void login_user(String email, String password){
+    private void login_user(String email, String password) {
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -265,14 +279,14 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             progressDialog.dismiss();
-                            Intent mainIntent = new Intent(LoginActivity.this,DashboardActivity.class);
+                            Intent mainIntent = new Intent(LoginActivity.this, DashboardActivity.class);
                             startActivity(mainIntent);
                             finish();
 
                         } else {
                             // If sign in fails, display a message to the user.
                             progressDialog.hide();
-                            Toast.makeText(LoginActivity.this,"Authentication failed!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Authentication failed!", Toast.LENGTH_SHORT).show();
 
                         }
 
@@ -295,7 +309,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("ok", "signInWithCredential:success");
 
                             progressDialog.dismiss();
-                            Intent intent = new Intent(LoginActivity.this,DashboardActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                             startActivity(intent);
                             finish();
 
