@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -24,6 +26,9 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -41,6 +46,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -62,6 +69,7 @@ public class SignupActivity extends AppCompatActivity {
     private TextView textviewLogin;
     private ProgressDialog progressDialog;
     private CallbackManager mCallbackManager;
+    Bitmap profilePic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +101,7 @@ public class SignupActivity extends AppCompatActivity {
                 String pwd = textInputEditTextPassword.getText().toString().trim();
                 String confirmPwd = textInputEditTextConfirmPassword.getText().toString().trim();
 
-                if (!TextUtils.isEmpty(user_email) || !TextUtils.isEmpty(pwd) || !TextUtils.isEmpty(confirmPwd)) {
+                if (!TextUtils.isEmpty(user_email) && !TextUtils.isEmpty(pwd) && !TextUtils.isEmpty(confirmPwd)) {
                     progressDialog.setTitle("Registering User");
                     progressDialog.setMessage("Please wait while your account is being created!");
                     progressDialog.setCanceledOnTouchOutside(false);
@@ -147,7 +155,7 @@ public class SignupActivity extends AppCompatActivity {
                 if (isNetworkAvailable()) {
 
                     facebookLoginButton.setEnabled(false);
-                    progressDialog.setTitle("Loging in");
+                    progressDialog.setTitle("Logging in");
                     progressDialog.setMessage("Please wait while your account is being authenticated.");
                     progressDialog.setCanceledOnTouchOutside(false);
                     progressDialog.show();
@@ -255,7 +263,6 @@ public class SignupActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
 
-
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
 
@@ -327,6 +334,30 @@ public class SignupActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    /*public Bitmap getProfileImage(){
+        Bundle params = new Bundle();
+        params.putString("fields", "id,email,gender,cover,picture.type(large)");
+        new GraphRequest(AccessToken.getCurrentAccessToken(), "me", params, HttpMethod.GET,
+                new GraphRequest.Callback() {
+                    @Override
+                    public void onCompleted(GraphResponse response) {
+                        if (response != null) {
+                            try {
+                                JSONObject data = response.getJSONObject();
+                                if (data.has("picture")) {
+                                    String profilePicUrl = data.getJSONObject("picture").getJSONObject("data").getString("url");
+                                    profilePic= BitmapFactory.decodeStream(profilePicUrl .openConnection().getInputStream());
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }).executeAsync();
+
+        return profilePic;
+    }*/
 
     private void emptyInputEditText() {
         textInputEditTextPassword.setText(null);
