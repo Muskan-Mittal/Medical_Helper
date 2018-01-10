@@ -54,6 +54,8 @@ dependencies {
 
     compile 'com.google.firebase:firebase-auth:11.0.4'
     compile 'com.google.android.gms:play-services-auth:11.0.4'
+
+    compile group:'com.squareup.picasso', name:'picasso', version:'2.5.0'
 }
 
 
