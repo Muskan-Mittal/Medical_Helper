@@ -1,10 +1,9 @@
 package com.example.muskan.medical_help;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,14 +14,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.facebook.Profile;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -38,19 +43,27 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         initToolbar();
-
-
         mAuth = FirebaseAuth.getInstance();
-
         activity = DashboardActivity.this;
         manager = getSupportFragmentManager();
-//create the drawer and remember the `Drawer` result object
+
+        /*GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if (acct != null) {
+            String personName = acct.getDisplayName();
+            String personGivenName = acct.getGivenName();
+            String personFamilyName = acct.getFamilyName();
+            String personEmail = acct.getEmail();
+            String personId = acct.getId();
+            Uri personPhoto = acct.getPhotoUrl();
+        }*/
+        FirebaseUser user = mAuth.getCurrentUser();
+
         // Create the AccountHeader
-        /*AccountHeader headerResult = new AccountHeaderBuilder()
+        AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
-                .withHeaderBackground(R.drawable.header)
+                .withHeaderBackground(R.drawable.nav_menu_header)
                 .addProfiles(
-                        new ProfileDrawerItem().withName("Muskan Mittal").withEmail("muskanmtl10@gmail.com")
+                        new ProfileDrawerItem().withName(user.getDisplayName()).withEmail(user.getEmail()).withIcon(user.getPhotoUrl())
                 )
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
@@ -58,11 +71,12 @@ public class DashboardActivity extends AppCompatActivity {
                         return false;
                     }
                 })
-                .build();*/
+                .build();
 
         result = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
+                .withAccountHeader(headerResult)
                 .addDrawerItems(
                         new DividerDrawerItem(),
                         new PrimaryDrawerItem().withName(R.string.NavHome).withIcon(R.drawable.ic_home_black_24dp),
@@ -74,10 +88,7 @@ public class DashboardActivity extends AppCompatActivity {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-
-                        FragmentTransaction transaction = manager.beginTransaction();
-                        Fragment fragment = new Fragment();
-                        Log.v("Position", ""+position);
+                        Log.v("Position", "" + position);
 
                         switch (position) {
                             case 1:
@@ -111,10 +122,6 @@ public class DashboardActivity extends AppCompatActivity {
         DashboardActivity.activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         DashboardActivity.toggle.syncState();
 
-//        if(getSupportActionBar() != null){
-//            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-//            result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
-//        }
         LinearLayout addmedicine_layout = (LinearLayout) findViewById(R.id.addMedicine);
         addmedicine_layout.setOnClickListener(new View.OnClickListener()
 
@@ -151,7 +158,6 @@ public class DashboardActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     @Override
@@ -176,8 +182,7 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
         if (id == android.R.id.home) {
-            result.getDrawerLayout().openDrawer(GravityCompat.START);  // OPEN DRAWER
-            Log.d("NICK", "Finally did it :D");
+            result.getDrawerLayout().openDrawer(GravityCompat.START);
             return true;
         }
 

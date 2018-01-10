@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                 String user_email = textInputEditTextEmail.getText().toString().trim();
                 String pwd = textInputEditTextPassword.getText().toString().trim();
 
-                if (!TextUtils.isEmpty(user_email) || !TextUtils.isEmpty(pwd)) {
+                if (!TextUtils.isEmpty(user_email) && !TextUtils.isEmpty(pwd)) {
                     progressDialog.setTitle("Logging In");
                     progressDialog.setMessage("Please wait while your credentials are verified!");
                     progressDialog.setCanceledOnTouchOutside(false);
