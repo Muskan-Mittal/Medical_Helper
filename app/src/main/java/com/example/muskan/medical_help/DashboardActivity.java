@@ -1,6 +1,7 @@
 package com.example.muskan.medical_help;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -12,10 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.facebook.Profile;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -28,6 +28,9 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerImageLoader;
+import com.squareup.picasso.Picasso;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -47,16 +50,25 @@ public class DashboardActivity extends AppCompatActivity {
         activity = DashboardActivity.this;
         manager = getSupportFragmentManager();
 
-        /*GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-        if (acct != null) {
-            String personName = acct.getDisplayName();
-            String personGivenName = acct.getGivenName();
-            String personFamilyName = acct.getFamilyName();
-            String personEmail = acct.getEmail();
-            String personId = acct.getId();
-            Uri personPhoto = acct.getPhotoUrl();
-        }*/
         FirebaseUser user = mAuth.getCurrentUser();
+
+        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
+            @Override
+            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
+
+                Picasso.with(imageView.getContext()).load(uri).placeholder(placeholder).into(imageView);
+            }
+            @Override
+            public void set(ImageView imageView, Uri uri, Drawable placeholder, String tag) {
+                Log.v("Picasso", ""+uri);
+                set(imageView, uri, placeholder);
+            }
+
+            @Override
+            public void cancel(ImageView imageView) {
+                Picasso.with(imageView.getContext()).cancelRequest(imageView);
+            }
+        });
 
         // Create the AccountHeader
         AccountHeader headerResult = new AccountHeaderBuilder()
@@ -64,6 +76,7 @@ public class DashboardActivity extends AppCompatActivity {
                 .withHeaderBackground(R.drawable.nav_menu_header)
                 .addProfiles(
                         new ProfileDrawerItem().withName(user.getDisplayName()).withEmail(user.getEmail()).withIcon(user.getPhotoUrl())
+
                 )
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
@@ -73,6 +86,7 @@ public class DashboardActivity extends AppCompatActivity {
                 })
                 .build();
 
+        Log.v("Profile pic", "" + user.getPhotoUrl());
         result = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
@@ -102,11 +116,11 @@ public class DashboardActivity extends AppCompatActivity {
                                 Intent SettingsIntent = new Intent(DashboardActivity.this, SettingsActivity.class);
                                 startActivity(SettingsIntent);
                                 break;
-                            case 4:
+                            case 5:
                                 Intent AboutUsIntent = new Intent(DashboardActivity.this, AboutUsActivity.class);
                                 startActivity(AboutUsIntent);
                                 break;
-                            case 5:
+                            case 6:
                                 Intent LogoutIntent = new Intent(DashboardActivity.this, LogoutActivity.class);
                                 startActivity(LogoutIntent);
                                 break;
@@ -114,7 +128,6 @@ public class DashboardActivity extends AppCompatActivity {
 
                         result.getDrawerLayout().closeDrawers();
                         return false;
-
                     }
                 }).build();
 
@@ -126,7 +139,6 @@ public class DashboardActivity extends AppCompatActivity {
         addmedicine_layout.setOnClickListener(new View.OnClickListener()
 
         {
-
             @Override
             public void onClick(View view) {
                 Intent addMedicineIntent = new Intent(DashboardActivity.this, AddMedicineActivity.class);
