@@ -104,6 +104,16 @@
                 android:value=".DashboardActivity" />
         </activity>
 
+        <!--Health Records activity-->
+        <activity
+            android:name=".HealthRecordsActivity"
+            android:label="Health Records"
+            android:parentActivityName=".DashboardActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DashboardActivity" />
+        </activity>
+
         <!--Logout activity-->
         <activity
             android:name=".LogoutActivity"
