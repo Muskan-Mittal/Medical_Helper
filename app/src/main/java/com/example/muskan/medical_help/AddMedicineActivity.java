@@ -50,7 +50,7 @@ public class AddMedicineActivity extends AppCompatActivity {
     TextInputLayout textInputLayoutMedicine;
     Button camera_btn, save_btn;
     String CurrentPhotoPath;
-    String routinetime = "";
+    String routineTime = "";
     Spinner dosage;
     Uri imageUri;
     private Calendar mCalendar;
@@ -220,7 +220,7 @@ public class AddMedicineActivity extends AppCompatActivity {
             medicine.imagePath = (getImageUri().getPath());
             medicine.dosage = (Integer.parseInt(dosage.getSelectedItem().toString()));
             medicine.schedule = (schedule_text.getText().toString());
-            medicine.routineTime = routinetime;
+            medicine.routineTime = routineTime;
             medicine.date = getDateTime();
             dbHelper.addMedicine(medicine);
 
@@ -367,19 +367,19 @@ public class AddMedicineActivity extends AppCompatActivity {
     public void getChecked() {
 
         if (checkBox1.isChecked()) {
-            routinetime += checkBox1.getText().toString() + ",";
+            routineTime += checkBox1.getText().toString() + ",";
         }
 
         if (checkBox2.isChecked()) {
-            routinetime += checkBox2.getText().toString() + ",";
+            routineTime += checkBox2.getText().toString() + ",";
         }
 
         if (checkBox3.isChecked()) {
-            routinetime += checkBox3.getText().toString() + ",";
+            routineTime += checkBox3.getText().toString() + ",";
         }
 
         if (checkBox4.isChecked()) {
-            routinetime += checkBox4.getText().toString() + ",";
+            routineTime += checkBox4.getText().toString() + ",";
         }
 
 
@@ -387,7 +387,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
     public void decideAlarms() {
 
-        String[] routineList = routinetime.split(",");
+        String[] routineList = routineTime.split(",");
         for (int j = 0; j < routineList.length; j++) {
             if (!rb.checkReminder(routineList[j], (schedule_text.getText().toString()))) {
                 addAlarms(routineList[j]);

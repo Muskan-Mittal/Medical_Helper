@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:theme="@style/AppTheme">
+
+    <include
+        android:id="@+id/toolbar_actionbar_healthRecord"
+        layout="@layout/toolbar_default"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/textStyle"
+        android:text="@string/UploadRecordsText"/>
+
+    <Button
+        android:id="@+id/addRecord"
+        android:layout_width="150dp"
+        android:layout_height="180dp"
+        android:layout_margin="20dp"
+        android:text="+"
+        android:textSize="24sp"
+        android:textColor="@color/colorPrimaryDark"/>
+
+    <ImageView
+        android:id="@+id/currentImage"
+        android:layout_width="150dp"
+        android:layout_height="180dp"
+        android:layout_margin="20dp"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" />
+</LinearLayout>
