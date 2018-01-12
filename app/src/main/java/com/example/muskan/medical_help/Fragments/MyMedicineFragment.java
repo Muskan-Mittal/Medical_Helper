@@ -43,8 +43,6 @@ public class MyMedicineFragment extends Fragment {
     private String[] FilePathStrings;
     private String[] FileNameStrings;
     private File[] listFile;
-    CardView cardView;
-    medicine_model medicineObj;
 
     @Override
     public void onDetach() {
@@ -122,7 +120,6 @@ public class MyMedicineFragment extends Fragment {
                 FileNameStrings[i] = listFile[i].getName();
             }
 
-
             if (savedInstanceState == null || !savedInstanceState.containsKey("medicineList")) {
                 medicineList = new ArrayList<medicine_model>();
                 medicineAdapter = new MedicineAdapter(getActivity(), medicineList, FilePathStrings, FileNameStrings);
@@ -132,7 +129,6 @@ public class MyMedicineFragment extends Fragment {
 
                 newString = (String) savedInstanceState.getSerializable("MedicineName");
                 medicineAdapter = new MedicineAdapter(getActivity(), medicineList, FilePathStrings, FileNameStrings);
-
             }
         }
 
@@ -148,15 +144,15 @@ public class MyMedicineFragment extends Fragment {
         medicineAdapter = new MedicineAdapter(getActivity(), medicineList, FilePathStrings, FileNameStrings);
         medicineRecyclerView.setLayoutManager(layoutManager);
         medicineRecyclerView.setAdapter(medicineAdapter);
-        medicineRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity() , medicineRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
+        medicineRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), medicineRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
 
-                        ((RecyclerItemClickListener.OnItemClickListener) getActivity()).onItemClick(view, position);
-                        Intent i = new Intent(getActivity(), UpdateMedicineActivity.class);
-                        i.putExtra("Medicine", (Parcelable)medicineList.get(position));
-                        startActivity(i);
-
-                }
+                ((RecyclerItemClickListener.OnItemClickListener) getActivity()).onItemClick(view, position);
+                Intent i = new Intent(getActivity(), UpdateMedicineActivity.class);
+                i.putExtra("Medicine", (Parcelable) medicineList.get(position));
+                startActivity(i);
+            }
 
             @Override
             public void onItemLongClick(View view, int position) {

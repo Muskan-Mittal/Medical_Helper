@@ -42,7 +42,7 @@ import java.util.List;
 public class AddMedicineActivity extends AppCompatActivity {
 
     int count = 0;
-
+    static int medicineNum = 1;
     RadioButton button1, button2, button3, button4, button5;
     RadioGroup schedule_buttons;
     CheckBox checkBox1, checkBox2, checkBox3, checkBox4;
@@ -309,7 +309,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         // Create an image file name
         String folderName = "test";
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName = medicineNum + "_" + timeStamp;
         File f = new File(Environment.getExternalStorageDirectory(), folderName);
         if (!f.exists()) {
             f.mkdirs();
