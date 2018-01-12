@@ -1,39 +1,30 @@
 package com.example.muskan.medical_help;
 
-import android.*;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.ContentResolver;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.muskan.medical_help.Data.Upload;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.muskan.medical_help.Helpers.RecordsAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
-import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,7 +35,7 @@ import java.util.Date;
  * Created by muskan on 10/1/18.
  */
 
-public class HealthRecordsActivity extends AppCompatActivity{
+public class HealthRecordsActivity extends AppCompatActivity {
 
     static int reportNum = 1;
     Button addPhoto;
@@ -53,11 +44,20 @@ public class HealthRecordsActivity extends AppCompatActivity{
     StorageReference storageReference;
     DatabaseReference databaseReference;
     StorageTask storageTask;
-    ProgressBar progressBar;
     // Request code for camera
     private final int CAMERA_REQUEST_CODE = 100;
     // Request code for runtime permissions
     private final int REQUEST_CODE_STORAGE_PERMS = 321;
+    RecordsAdapter recordsAdapter;
+    private RecyclerView recordsRecyclerView;
+
+    private GridLayoutManager layoutManager;
+    ProgressDialog progressDialog;
+    File file;
+    private String[] FilePathStrings;
+    private String[] FileNameStrings;
+    private File[] listFile;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,22 +66,52 @@ public class HealthRecordsActivity extends AppCompatActivity{
         initToolbar();
         initViews();
 
-        //Handle add photo button
-        addPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-                    if (!hasPermissions()) {
-                        requestNecessaryPermissions();
-                    } else {
-                        dispatchTakePictureIntent();
-                    }
+        recordsRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewForHealthRecords);
+        layoutManager = new GridLayoutManager(this, 2);
 
-                } else {
-                    Toast.makeText(HealthRecordsActivity.this, "Camera not supported", Toast.LENGTH_LONG).show();
-                }
+        progressDialog = new ProgressDialog(this);
+
+        // Locate the image folder in your SD Card
+        file = new File(Environment.getExternalStorageDirectory()
+                + File.separator + "Health Records");
+        // Create a new folder if no folder named SDImageTutorial exist
+        file.mkdirs();
+        View rootview;
+
+        if (file.isDirectory()) {
+            listFile = file.listFiles();
+            // Create a String array for FilePathStrings
+            FilePathStrings = new String[listFile.length];
+            // Create a String array for FileNameStrings
+            FileNameStrings = new String[listFile.length];
+
+            for (int i = 0; i < listFile.length; i++) {
+                // Get the path of the image file
+                FilePathStrings[i] = listFile[i].getAbsolutePath();
+                // Get the name image file
+                FileNameStrings[i] = listFile[i].getName();
             }
-        });
+
+            recordsAdapter = new RecordsAdapter(this, FilePathStrings, FileNameStrings);
+            recordsRecyclerView.setLayoutManager(layoutManager);
+            recordsRecyclerView.setAdapter(recordsAdapter);
+
+            //Handle add photo button
+            addPhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+                        if (!hasPermissions()) {
+                            requestNecessaryPermissions();
+                        } else {
+                            dispatchTakePictureIntent();
+                        }
+                    } else {
+                        Toast.makeText(HealthRecordsActivity.this, "Camera not supported", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
     }
 
     private void initToolbar() {
@@ -100,13 +130,12 @@ public class HealthRecordsActivity extends AppCompatActivity{
         }
     }
 
-    public void initViews(){
+    public void initViews() {
 
-        addPhoto = (Button)findViewById(R.id.addRecord);
+        addPhoto = (Button) findViewById(R.id.addRecord);
         currentImageView = (ImageView) findViewById(R.id.currentImage);
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
         databaseReference = FirebaseDatabase.getInstance().getReference("uploads");
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
     }
 
     @SuppressLint("WrongConstant")
@@ -193,11 +222,8 @@ public class HealthRecordsActivity extends AppCompatActivity{
                 storageDir
         );
         currentImageUri = Uri.fromFile(image);
-        Log.v("Pic", ""+currentImageUri.toString());
-        // Save a file: path for use with ACTION_VIEW intents
-        /*
-        CurrentPhotoPath = image.getAbsolutePath();
-*/
+        Log.v("Pic", "" + currentImageUri.toString());
+
         return image;
     }
 
@@ -206,61 +232,10 @@ public class HealthRecordsActivity extends AppCompatActivity{
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
             try {
-                Picasso.with(this).load(currentImageUri).into(currentImageView);
-                uploadFile();
+                //Picasso.with(this).load(currentImageUri).into(currentImageView);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-
-    private String getFileExtension(Uri uri) {
-        ContentResolver cR = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cR.getType(uri));
-    }
-
-    private void uploadFile() {
-        if (currentImageUri != null) {
-            StorageReference fileReference = storageReference.child(System.currentTimeMillis()
-                    + ".jpeg");
-
-            storageTask = fileReference.putFile(currentImageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    progressBar.setProgress(0);
-                                }
-                            }, 50);
-
-                            Toast.makeText(HealthRecordsActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-                            Upload upload = new Upload("Report"+reportNum,
-                                    taskSnapshot.getDownloadUrl().toString());
-                            String uploadId = databaseReference.push().getKey();
-                            databaseReference.child(uploadId).setValue(upload);
-                            reportNum++;
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(HealthRecordsActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            progressBar.setProgress((int) progress);
-                        }
-                    });
-        } else {
-            Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
-        }
-    }
 }
-
