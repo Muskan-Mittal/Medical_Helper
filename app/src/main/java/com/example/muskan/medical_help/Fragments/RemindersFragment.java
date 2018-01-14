@@ -118,9 +118,7 @@ public class RemindersFragment extends Fragment implements RecyclerItemClickList
 
             @Override
             public void onItemLongClick(View view, final int position) {
-               /* if (( getActivity()) != null) {
-                    ((RecyclerItemClickListener.OnItemClickListener) getActivity()).onItemLongClick(view, position);
-                }*/
+
                 AlertDialog.Builder alertDlg = new AlertDialog.Builder(getActivity());
                 alertDlg.setMessage("Are you sure you remove this medicine?");
                 alertDlg.setCancelable(false);

@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import com.example.muskan.medical_help.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by muskan on 11/1/18.
  */
@@ -20,12 +23,12 @@ import com.example.muskan.medical_help.R;
 public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.RecordsViewHolder> {
 
     private Activity activity;
-    private String[] filename;
-    private String[] filepath;
+    private List<String> filename;
+    private List<String> filepath;
     private static LayoutInflater inflater = null;
     int pos = 0;
 
-    public RecordsAdapter(Activity a, String[] fpath, String[] fname) {
+    public RecordsAdapter(Activity a, List<String> fpath, List<String> fname) {
 
         activity = a;
         filename = fname;
@@ -43,15 +46,16 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.RecordsV
 
     @Override
     public void onBindViewHolder(RecordsViewHolder holder, int position) {
-
-        holder.name.setText(filename[position]);
-        Bitmap bmp = getResizedBitmap(BitmapFactory.decodeFile(filepath[position]),250);
+        String fileName = filename.get(position);
+        String filePath = filepath.get(position);
+        holder.name.setText(fileName);
+        Bitmap bmp = getResizedBitmap(BitmapFactory.decodeFile(filePath),200);
         holder.iv_record.setImageBitmap(bmp);
     }
 
     @Override
     public int getItemCount() {
-        return filename.length;
+        return filename.size();
     }
 
     public class RecordsViewHolder extends RecyclerView.ViewHolder {

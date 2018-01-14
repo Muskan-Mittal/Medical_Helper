@@ -1,5 +1,6 @@
 package com.example.muskan.medical_help;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -35,6 +36,15 @@ public class MyMedicineActivity extends AppCompatActivity implements RecyclerIte
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar_myMedicine);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(MyMedicineActivity.this, DashboardActivity.class));
+                }
+            });
         }
     }
 }

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     card_view:cardUseCompatPadding="true"
     card_view:cardCornerRadius="8dp"
-    android:layout_marginBottom="16dp">
+    android:layout_marginBottom="6dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,7 +24,6 @@
             android:id="@+id/tv_title"
             android:layout_gravity="center"
             android:textColor="#121212"
-            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/img_upload"
