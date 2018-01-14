@@ -95,7 +95,6 @@ public class MyMedicineFragment extends Fragment {
 
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -161,11 +160,5 @@ public class MyMedicineFragment extends Fragment {
         dbHelper = new medicineDbHelper(getActivity());
         medicineList = new ArrayList<medicine_model>();
         medicineList = (ArrayList<medicine_model>) dbHelper.getAllMedicines();
-    }
-
-    public void showBackButton() {
-        if (getActivity() instanceof AppCompatActivity) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
     }
 }

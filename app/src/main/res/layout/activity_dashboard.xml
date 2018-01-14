@@ -16,22 +16,33 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
         android:orientation="vertical">
 
-        <!--App logo-->
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/logo" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--Backgroud image-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:src="@drawable/dashboard_bg" />
+
+            <!--App logo-->
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="20dp"
+                android:src="@drawable/logo" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
             <!--Add Medicine button layout-->
@@ -85,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="24dp"
             android:orientation="horizontal">
 
             <!--Health record button layout-->
@@ -134,5 +145,4 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

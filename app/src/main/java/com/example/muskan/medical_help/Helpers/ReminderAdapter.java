@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.muskan.medical_help.Models.medicine_model;
+import com.example.muskan.medical_help.Models.reminder_obj_model;
 import com.example.muskan.medical_help.R;
 
 import java.util.List;
@@ -51,7 +52,6 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
         else{
             holder.switchCompat.setChecked(false);
         }
-
     }
 
     @Override
@@ -70,7 +70,5 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
             switchCompat = (SwitchCompat) itemView.findViewById(R.id.timerSwitch);
             pos = getAdapterPosition();
         }
-
     }
-
 }
