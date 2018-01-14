@@ -12,8 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.muskan.medical_help.R;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,7 +47,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.RecordsV
         String fileName = filename.get(position);
         String filePath = filepath.get(position);
         holder.name.setText(fileName);
-        Bitmap bmp = getResizedBitmap(BitmapFactory.decodeFile(filePath),200);
+        Bitmap bmp = getResizedBitmap(BitmapFactory.decodeFile(filePath), 200);
         holder.iv_record.setImageBitmap(bmp);
     }
 
@@ -78,7 +76,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.RecordsV
         int width = image.getWidth();
         int height = image.getHeight();
 
-        float bitmapRatio = (float)width / (float) height;
+        float bitmapRatio = (float) width / (float) height;
         if (bitmapRatio > 1) {
             width = maxSize;
             height = (int) (width / bitmapRatio);

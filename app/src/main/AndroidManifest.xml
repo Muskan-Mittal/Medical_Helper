@@ -97,7 +97,7 @@
         <!--Reminders activity-->
         <activity
             android:name=".RemindersMainActivity"
-            android:label="Timeline"
+            android:label="Reminders"
             android:parentActivityName=".DashboardActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -1,7 +1,6 @@
 package com.example.muskan.medical_help;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,30 +10,18 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.muskan.medical_help.Helpers.MedicineAdapter;
 import com.example.muskan.medical_help.Helpers.RecordsAdapter;
-import com.example.muskan.medical_help.Models.medicine_model;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,13 +39,8 @@ public class HealthRecordsActivity extends AppCompatActivity implements Recycler
     static int reportNum = 1;
     FloatingActionButton addPhoto;
     Uri currentImageUri;
-    // Request code for camera
-    private final int CAMERA_REQUEST_CODE = 100;
-    // Request code for runtime permissions
-    private final int REQUEST_CODE_STORAGE_PERMS = 321;
     RecordsAdapter recordsAdapter;
     private RecyclerView recordsRecyclerView;
-
     private GridLayoutManager layoutManager;
     ProgressDialog progressDialog;
     File file;
@@ -66,7 +48,10 @@ public class HealthRecordsActivity extends AppCompatActivity implements Recycler
     private List<String> FileNameStrings;
     private File[] listFile;
     Context context = this;
-
+    // Request code for camera
+    private final int CAMERA_REQUEST_CODE = 100;
+    // Request code for runtime permissions
+    private final int REQUEST_CODE_STORAGE_PERMS = 321;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +62,6 @@ public class HealthRecordsActivity extends AppCompatActivity implements Recycler
 
         recordsRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewForHealthRecords);
         layoutManager = new GridLayoutManager(this, 2);
-
         progressDialog = new ProgressDialog(this);
 
         getImagesAfterUpdate();
@@ -89,7 +73,6 @@ public class HealthRecordsActivity extends AppCompatActivity implements Recycler
             @Override
             public void onItemClick(View view, int position) {
 
-                //((RecyclerItemClickListener.OnItemClickListener) this).onItemClick(view, position);
                 Intent i = new Intent(HealthRecordsActivity.this, FullImageActivity.class);
                 i.putExtra("Filepath", FilePathStrings.get(position));
                 startActivity(i);
@@ -121,7 +104,6 @@ public class HealthRecordsActivity extends AppCompatActivity implements Recycler
                 });
             }
         }));
-
 
         //Handle add photo button
         addPhoto.setOnClickListener(new View.OnClickListener()
@@ -249,7 +231,6 @@ public class HealthRecordsActivity extends AppCompatActivity implements Recycler
         );
         currentImageUri = Uri.fromFile(image);
         Log.v("Pic", "" + currentImageUri.toString());
-
         return image;
     }
 
@@ -260,7 +241,6 @@ public class HealthRecordsActivity extends AppCompatActivity implements Recycler
             try {
                 recordsAdapter.notifyDataSetChanged();
                 getImagesAfterUpdate();
-                //Picasso.with(this).load(currentImageUri).into(currentImageView);
             } catch (Exception e) {
                 e.printStackTrace();
             }
