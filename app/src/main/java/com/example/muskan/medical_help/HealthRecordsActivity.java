@@ -1,25 +1,35 @@
 package com.example.muskan.medical_help;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.muskan.medical_help.Helpers.MedicineAdapter;
 import com.example.muskan.medical_help.Helpers.RecordsAdapter;
+import com.example.muskan.medical_help.Models.medicine_model;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -29,21 +39,19 @@ import com.google.firebase.storage.StorageTask;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by muskan on 10/1/18.
  */
 
-public class HealthRecordsActivity extends AppCompatActivity {
+public class HealthRecordsActivity extends AppCompatActivity implements RecyclerItemClickListener.OnItemClickListener {
 
     static int reportNum = 1;
-    Button addPhoto;
+    FloatingActionButton addPhoto;
     Uri currentImageUri;
-    ImageView currentImageView;
-    StorageReference storageReference;
-    DatabaseReference databaseReference;
-    StorageTask storageTask;
     // Request code for camera
     private final int CAMERA_REQUEST_CODE = 100;
     // Request code for runtime permissions
@@ -54,9 +62,10 @@ public class HealthRecordsActivity extends AppCompatActivity {
     private GridLayoutManager layoutManager;
     ProgressDialog progressDialog;
     File file;
-    private String[] FilePathStrings;
-    private String[] FileNameStrings;
+    private List<String> FilePathStrings;
+    private List<String> FileNameStrings;
     private File[] listFile;
+    Context context = this;
 
 
     @Override
@@ -71,47 +80,67 @@ public class HealthRecordsActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
 
-        // Locate the image folder in your SD Card
-        file = new File(Environment.getExternalStorageDirectory()
-                + File.separator + "Health Records");
-        // Create a new folder if no folder named SDImageTutorial exist
-        file.mkdirs();
-        View rootview;
+        getImagesAfterUpdate();
 
-        if (file.isDirectory()) {
-            listFile = file.listFiles();
-            // Create a String array for FilePathStrings
-            FilePathStrings = new String[listFile.length];
-            // Create a String array for FileNameStrings
-            FileNameStrings = new String[listFile.length];
+        recordsAdapter = new RecordsAdapter(this, FilePathStrings, FileNameStrings);
+        recordsRecyclerView.setLayoutManager(layoutManager);
+        recordsRecyclerView.setAdapter(recordsAdapter);
+        recordsRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recordsRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
 
-            for (int i = 0; i < listFile.length; i++) {
-                // Get the path of the image file
-                FilePathStrings[i] = listFile[i].getAbsolutePath();
-                // Get the name image file
-                FileNameStrings[i] = listFile[i].getName();
+                //((RecyclerItemClickListener.OnItemClickListener) this).onItemClick(view, position);
+                Intent i = new Intent(HealthRecordsActivity.this, FullImageActivity.class);
+                i.putExtra("Filepath", FilePathStrings.get(position));
+                startActivity(i);
             }
 
-            recordsAdapter = new RecordsAdapter(this, FilePathStrings, FileNameStrings);
-            recordsRecyclerView.setLayoutManager(layoutManager);
-            recordsRecyclerView.setAdapter(recordsAdapter);
+            @Override
+            public void onItemLongClick(View view, final int position) {
+                Log.v("Confirm", "works");
+                AlertDialog.Builder alertDlg = new AlertDialog.Builder(context);
+                alertDlg.setMessage("Are you sure you want to remove this report?").setCancelable(false);
 
-            //Handle add photo button
-            addPhoto.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-                        if (!hasPermissions()) {
-                            requestNecessaryPermissions();
-                        } else {
-                            dispatchTakePictureIntent();
+                alertDlg.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int id) {
+                        FilePathStrings.remove(position);
+                        FileNameStrings.remove(position);
+                        recordsAdapter.notifyItemRemoved(position);
+                        recordsAdapter.notifyItemRangeChanged(position, FileNameStrings.size());
+                        String fileName = FilePathStrings.get(position);
+                        File fDelete = new File(FilePathStrings.get(position));
+                        if (fDelete.exists()) {
+                            if (fDelete.delete()) {
+                                Log.v("file Deleted :", "" + FilePathStrings.get(position));
+                            } else {
+                                Log.v("file not Deleted :", "" + FilePathStrings.get(position));
+                            }
                         }
-                    } else {
-                        Toast.makeText(HealthRecordsActivity.this, "Camera not supported", Toast.LENGTH_LONG).show();
                     }
+                });
+            }
+        }));
+
+
+        //Handle add photo button
+        addPhoto.setOnClickListener(new View.OnClickListener()
+
+        {
+            @Override
+            public void onClick(View view) {
+                if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+                    if (!hasPermissions()) {
+                        requestNecessaryPermissions();
+                    } else {
+                        dispatchTakePictureIntent();
+                    }
+                } else {
+                    Toast.makeText(HealthRecordsActivity.this, "Camera not supported", Toast.LENGTH_LONG).show();
                 }
-            });
-        }
+            }
+        });
+
     }
 
     private void initToolbar() {
@@ -132,10 +161,7 @@ public class HealthRecordsActivity extends AppCompatActivity {
 
     public void initViews() {
 
-        addPhoto = (Button) findViewById(R.id.addRecord);
-        currentImageView = (ImageView) findViewById(R.id.currentImage);
-        storageReference = FirebaseStorage.getInstance().getReference("uploads");
-        databaseReference = FirebaseDatabase.getInstance().getReference("uploads");
+        addPhoto = (FloatingActionButton) findViewById(R.id.addRecord);
     }
 
     @SuppressLint("WrongConstant")
@@ -192,7 +218,6 @@ public class HealthRecordsActivity extends AppCompatActivity {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-
             File photoFile = null;
             try {
                 photoFile = createImageFile();
@@ -210,7 +235,8 @@ public class HealthRecordsActivity extends AppCompatActivity {
         // Create an image file name
         String folderName = "Health Records";
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "" + timeStamp + "_";
+        String imageFileName = "Record" + reportNum + "_" + timeStamp;
+        reportNum++;
         File f = new File(Environment.getExternalStorageDirectory(), folderName);
         if (!f.exists()) {
             f.mkdirs();
@@ -232,10 +258,47 @@ public class HealthRecordsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
             try {
+                recordsAdapter.notifyDataSetChanged();
+                getImagesAfterUpdate();
                 //Picasso.with(this).load(currentImageUri).into(currentImageView);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void getImagesAfterUpdate() {
+
+        // Locate the image folder in your SD Card
+        file = new File(Environment.getExternalStorageDirectory()
+                + File.separator + "Health Records");
+        // Create a new folder if no folder named SDImageTutorial exist
+        file.mkdirs();
+
+        if (file.isDirectory()) {
+            listFile = file.listFiles();
+            // Create a String array for FilePathStrings
+            FilePathStrings = new ArrayList<>();
+            // Create a String array for FileNameStrings
+            FileNameStrings = new ArrayList<>();
+
+            for (int i = 0; i < listFile.length; i++) {
+                // Get the path of the image file
+                FilePathStrings.add(listFile[i].getAbsolutePath());
+                // Get the name image file
+                FileNameStrings.add(listFile[i].getName());
+            }
+        }
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Intent i = new Intent(HealthRecordsActivity.this, FullImageActivity.class);
+        startActivity(i);
+    }
+
+    @Override
+    public void onItemLongClick(View view, int position) {
+
     }
 }

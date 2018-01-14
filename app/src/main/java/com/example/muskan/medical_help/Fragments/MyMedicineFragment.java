@@ -133,12 +133,6 @@ public class MyMedicineFragment extends Fragment {
         }
 
         rootview = inflater.inflate(R.layout.fragment_mymedicine, container, false);
-
-        Toolbar toolbar = (Toolbar) rootview.findViewById(R.id.toolbar_actionbar_addMedicine);
-        if (toolbar != null) {
-            showBackButton();
-        }
-
         medicineRecyclerView = (RecyclerView) rootview.findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(getActivity());
         medicineAdapter = new MedicineAdapter(getActivity(), medicineList, FilePathStrings, FileNameStrings);

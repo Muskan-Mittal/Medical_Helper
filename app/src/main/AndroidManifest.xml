@@ -114,6 +114,16 @@
                 android:value=".DashboardActivity" />
         </activity>
 
+        <!--Full image activity-->
+        <activity
+            android:name=".FullImageActivity"
+            android:label="Image"
+            android:parentActivityName=".HealthRecordsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HealthRecordsActivity" />
+        </activity>
+
         <!--Logout activity-->
         <activity
             android:name=".LogoutActivity"
