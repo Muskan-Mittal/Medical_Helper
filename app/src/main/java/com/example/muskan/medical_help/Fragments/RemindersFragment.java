@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.example.muskan.medical_help.Data.medicineDbHelper;
 import com.example.muskan.medical_help.Helpers.ReminderAdapter;
 import com.example.muskan.medical_help.Models.medicine_model;
-import com.example.muskan.medical_help.Models.reminder_obj_model;
 import com.example.muskan.medical_help.R;
 import com.example.muskan.medical_help.RecyclerItemClickListener;
 
@@ -106,16 +105,19 @@ public class RemindersFragment extends Fragment implements RecyclerItemClickList
             reminderAdapter = new ReminderAdapter(getActivity(), medicineList);
         }
 
-        View rootView;
+        final View rootView;
         rootView = inflater.inflate(R.layout.fragment_reminders, container, false);
         reminderRecyclerView = (RecyclerView) rootView.findViewById(R.id.reminderRv);
         layoutManager = new LinearLayoutManager(getActivity());
+        reminderAdapter = new ReminderAdapter(getActivity(), medicineList);
         reminderRecyclerView.setLayoutManager(layoutManager);
         reminderRecyclerView.setAdapter(reminderAdapter);
-        /*reminderRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), reminderRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+        Log.v("try", "work");
+        reminderRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), reminderRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                ((RecyclerItemClickListener.OnItemClickListener) getActivity()).onItemClick(view, position);
+                //((RecyclerItemClickListener.OnItemClickListener) getActivity()).onItemClick(view, position);
+                switchCompat = rootView.findViewById(R.id.timerSwitch);
                 medicine_model medicine = medicineList.get(position);
                 // set tag by default.
                 switchCompat.setTag("TAG");
@@ -128,7 +130,8 @@ public class RemindersFragment extends Fragment implements RecyclerItemClickList
                             switchCompat.setTag(null);
                             return;
                         }
-
+                        switchCompat.setChecked(false);
+                        Log.v("Switch", "working");
                         // Do your stuff here.
                     }
                 });
@@ -141,46 +144,44 @@ public class RemindersFragment extends Fragment implements RecyclerItemClickList
                         return false;
                     }
                 });
-
             }
-*/
-//            @Override
-//            public void onItemLongClick(View view, final int position) {
-//
-//                AlertDialog.Builder alertDlg = new AlertDialog.Builder(getActivity());
-//                alertDlg.setMessage("Are you sure you remove this medicine?");
-//                alertDlg.setCancelable(false);
-//
-//                alertDlg.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//
-//                            public void onClick(DialogInterface dialog, int id) {
-//                                dbHelper.deleteMedicine(medicineList.get(position));
-//                                medicineList.remove(position);
-//                                reminderAdapter.notifyItemRemoved(position);
-//                                reminderAdapter.notifyItemRangeChanged(position, medicineList.size());
-//                                medicine_model medicine = new medicine_model();
-//                                medicine = medicineList.get(position);
-//                                File fDelete = new File(medicine.imagePath);
-//                                if (fDelete.exists()) {
-//                                    if (fDelete.delete()) {
-//                                        Log.v("file Deleted :", "" + medicine.imagePath);
-//                                    } else {
-//                                        Log.v("file not Deleted :", "" + medicine.imagePath);
-//                                    }
-//                                }
-//                            }
-//                        }
-//                );
-//
-//                alertDlg.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                    }
-//                });
-//                alertDlg.create().show();
-//            }
-//        }));
+
+            @Override
+            public void onItemLongClick(View view, final int position) {
+
+                AlertDialog.Builder alertDlg = new AlertDialog.Builder(getActivity());
+                alertDlg.setMessage("Are you sure you remove this medicine?");
+                alertDlg.setCancelable(false);
+
+                alertDlg.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dbHelper.deleteMedicine(medicineList.get(position));
+                                medicineList.remove(position);
+                                reminderAdapter.notifyItemRemoved(position);
+                                reminderAdapter.notifyItemRangeChanged(position, medicineList.size());
+                                medicine_model medicine = new medicine_model();
+                                medicine = medicineList.get(position);
+                                File fDelete = new File(medicine.imagePath);
+                                if (fDelete.exists()) {
+                                    if (fDelete.delete()) {
+                                        Log.v("file Deleted :", "" + medicine.imagePath);
+                                    } else {
+                                        Log.v("file not Deleted :", "" + medicine.imagePath);
+                                    }
+                                }
+                            }
+                        }
+                );
+
+                alertDlg.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alertDlg.create().show();
+            }
+        }));
 
         return rootView;
     }

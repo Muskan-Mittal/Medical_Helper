@@ -3,6 +3,7 @@ package com.example.muskan.medical_help.Helpers;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     @Override
     public void onBindViewHolder(TimelineAdapter.TimelineViewHolder holder, int position) {
         final reminder_model reminder = rmList.get(position);
+        Log.v("Reminder", ""+reminder.getTitle());
         holder.name.setText("Title:" + reminder.getTitle());
         holder.time.setText("Time:" + reminder.getReminderTime());
     }

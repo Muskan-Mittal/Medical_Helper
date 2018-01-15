@@ -80,28 +80,40 @@ public class HealthRecordsActivity extends AppCompatActivity implements Recycler
 
             @Override
             public void onItemLongClick(View view, final int position) {
-                Log.v("Confirm", "works");
-                AlertDialog.Builder alertDlg = new AlertDialog.Builder(context);
-                alertDlg.setMessage("Are you sure you want to remove this report?").setCancelable(false);
 
-                alertDlg.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int id) {
-                        FilePathStrings.remove(position);
-                        FileNameStrings.remove(position);
-                        recordsAdapter.notifyItemRemoved(position);
-                        recordsAdapter.notifyItemRangeChanged(position, FileNameStrings.size());
-                        String fileName = FilePathStrings.get(position);
-                        File fDelete = new File(FilePathStrings.get(position));
-                        if (fDelete.exists()) {
-                            if (fDelete.delete()) {
-                                Log.v("file Deleted :", "" + FilePathStrings.get(position));
-                            } else {
-                                Log.v("file not Deleted :", "" + FilePathStrings.get(position));
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(context);
+                }
+                builder.setTitle("Delete record")
+                        .setMessage("Are you sure you want to delete this record?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+                                File fDelete = new File(FilePathStrings.get(position));
+                                if (fDelete.exists()) {
+                                    if (fDelete.delete()) {
+                                        Log.v("file Deleted :", "" + FilePathStrings.get(position));
+                                        FilePathStrings.remove(position);
+                                        FileNameStrings.remove(position);
+                                        recordsAdapter.notifyItemRemoved(position);
+                                        recordsAdapter.notifyItemRangeChanged(position, FileNameStrings.size());
+                                        recordsAdapter.notifyItemRangeChanged(position, FilePathStrings.size());
+                                    } else {
+                                        Log.v("file not Deleted :", "" + FilePathStrings.get(position));
+                                    }
+                                }
                             }
-                        }
-                    }
-                });
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
             }
         }));
 
@@ -122,7 +134,6 @@ public class HealthRecordsActivity extends AppCompatActivity implements Recycler
                 }
             }
         });
-
     }
 
     private void initToolbar() {
@@ -192,7 +203,6 @@ public class HealthRecordsActivity extends AppCompatActivity implements Recycler
                     Toast.makeText(HealthRecordsActivity.this, "Storage Permissions denied", Toast.LENGTH_SHORT).show();
                 }
             }
-
         }
     }
 
