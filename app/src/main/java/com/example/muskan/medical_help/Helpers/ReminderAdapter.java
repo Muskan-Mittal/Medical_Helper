@@ -7,11 +7,9 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.muskan.medical_help.Models.medicine_model;
-import com.example.muskan.medical_help.Models.reminder_obj_model;
 import com.example.muskan.medical_help.R;
 
 import java.util.List;

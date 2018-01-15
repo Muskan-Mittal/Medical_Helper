@@ -106,5 +106,4 @@ public class TimelineFragment extends Fragment {
         rmList = new ArrayList<reminder_model>();
         rmList = (ArrayList<reminder_model>) rmDbHelper.getAllReminders();
     }
-
 }
