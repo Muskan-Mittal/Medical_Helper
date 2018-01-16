@@ -1,0 +1,65 @@
+<resources>
+    <!--App name-->
+    <string name="AppName">Medical Helper</string>
+
+    <!--Starting page app description-->
+    <string name="DescriptionForApp">Having trouble in remembering your medicines? Set alarms and also save your medical reports online through Medical Help</string>
+
+    <!--Facebook details-->
+    <string name="FacebookAppId">2030765153863126</string>
+    <string name="FbLoginProtocolScheme">fb2030765153863126</string>
+
+    <!--Login and Sign up activity string labels-->
+    <string name="UserId">User Id</string>
+    <string name="Password">Password</string>
+    <string name="OrConnectWithText">Or connect with</string>
+    <string name="AlreadyHaveText">Already have?</string>
+    <string name="Login">LOGIN</string>
+    <string name="ConfirmPassword">Confirm Password</string>
+
+    <!--Add and update medicine string labels-->
+    <string name="MedicineName">Medicine Name:</string>
+    <string name="MedicineNameHintText">Medicine</string>
+    <string name="AddPhotoBtnText">Add Photo</string>
+    <string name="DosageText">Dosage</string>
+    <string name="dosage">0</string>
+    <string name="ScheduleText">Schedule</string>
+    <string name="SelectAScheduleHint">Select a schedule</string>
+
+    <!--Logout page string labels-->
+    <string name="DescriptionForAppAfterLogout">Thank you for using My Help health app! Login in to set alarms and click images to store your medical records.</string>
+    <string name="TextForButtonToLoginPage">Click here to LOGIN</string>
+
+    <!--Overflow menu labels-->
+    <string name="ActionSettings">Settings</string>
+    <string name="ActionLogout">Logout</string>
+
+    <!-- Navigation Drawer menu labels -->
+    <string name="NavEmergency">Emergency</string>
+    <string name="NavSettings">Settings</string>
+    <string name="NavAboutUs">About Us</string>
+    <string name="NavLogout">Logout</string>
+
+    <!--Navigation drawer string labels-->
+    <string name="NavigationDrawerOpen">Open navigation drawer</string>
+    <string name="NavigationDrawerClose">Close navigation drawer</string>
+    <string name="OpenDrawer">open_drawer</string>
+    <string name="CloseDrawer">close_drawer</string>
+
+    <!-- Toolbar titles when navigation menu item is selected -->
+    <string-array name="nav_item_activity_titles">
+        <item>Emergency</item>
+        <item>Settings</item>
+        <item>About US</item>
+        <item>Logout</item>
+    </string-array>
+
+    <!--Spinner for dosage-->
+    <string-array name="dosage_items">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+</resources>

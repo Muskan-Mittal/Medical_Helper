@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "40584424843",
+    "firebase_url": "https://medicalhelp-e2d0e.firebaseio.com",
+    "project_id": "medicalhelp-e2d0e",
+    "storage_bucket": "medicalhelp-e2d0e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40584424843:android:5abb01bcf54a67ea",
+        "android_client_info": {
+          "package_name": "com.example.muskan.medical_help"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "40584424843-4com63kbaohqropl205lllu31lvnan3a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.muskan.medical_help",
+            "certificate_hash": "8d6a1f4fa965350d56bfa391f9aa6a80e148ee43"
+          }
+        },
+        {
+          "client_id": "40584424843-ja3hdes83vb0bskr6p4q68l9bhhikeqm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1A0b5bWUc-mGpTw6T1vYQdE7HI-oVpuA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "40584424843-ja3hdes83vb0bskr6p4q68l9bhhikeqm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
