@@ -1,193 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fillViewport="false"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <include
+        android:id="@+id/toolbar_actionbar_addMedicine"
+        layout="@layout/toolbar_default"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="false"
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                style="@style/textStyle"
-                android:text="@string/MedicineName" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <!--Medicine label-->
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInputLayoutMedicine"
-                android:layout_width="150dp"
+                <TextView
+                    style="@style/textStyle"
+                    android:text="@string/MedicineName" />
+
+                <!--Medicine label-->
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/textInputLayoutMedicine"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/medicine_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/MedicineNameHintText"
+                        android:inputType="text"
+                        android:textColor="#212121"
+                        android:textColorHint="#212121" />
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/medicine_input"
-                    android:layout_width="match_parent"
+                <!--Add photo button-->
+                <Button
+                    android:id="@+id/camera_button"
+                    android:layout_width="75dp"
+                    android:layout_height="90dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/AddPhotoBtnText"
+                    android:textColor="#AFADAD"
+                    android:textSize="10sp" />
+
+                <!--Image path text-->
+                <TextView
+                    android:id="@+id/frontimagepath"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/MedicineNameHintText"
-                    android:inputType="text"
+                    android:layout_marginLeft="95dp"
+                    android:layout_marginTop="16dp"
+                    android:text="" />
+            </RelativeLayout>
+
+            <!--Dosage text-->
+            <TextView
+                style="@style/textStyle"
+                android:text="@string/DosageText" />
+
+            <!--Dosage spinner-->
+            <Spinner
+                android:id="@+id/dosage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:entries="@array/dosage_items"
+                android:prompt="@string/dosage"
+                android:spinnerMode="dropdown" />
+
+            <!--Schedule text-->
+            <TextView
+                style="@style/textStyle"
+                android:text="@string/ScheduleText" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/schedule_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:text="@string/SelectAScheduleHint"
                     android:textColor="#212121"
-                    android:textColorHint="#212121" />
-            </android.support.design.widget.TextInputLayout>
-        </LinearLayout>
+                    android:textSize="16sp" />
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/editPencil"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="12dp"
+                    android:src="@drawable/pencil" />
 
-            <!--Add photo button-->
+                <!--Choices for schedule using radio group-->
+                <RadioGroup
+                    android:id="@+id/radiogroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="36dp"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/btn1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Daily until I stop" />
+
+                    <RadioButton
+                        android:id="@+id/btn2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Weekly" />
+
+                    <RadioButton
+                        android:id="@+id/btn3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fortnightly" />
+
+                    <RadioButton
+                        android:id="@+id/btn4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Monthly" />
+
+                    <RadioButton
+                        android:id="@+id/btn5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Never" />
+                </RadioGroup>
+            </RelativeLayout>
+
+            <!--Set routine text-->
+            <TextView
+                style="@style/textStyle"
+                android:text="Set Routine" />
+
+            <CheckBox
+                android:id="@+id/checkbox_9am"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:text="9 AM" />
+
+            <CheckBox
+                android:id="@+id/checkbox_12pm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="12 PM" />
+
+            <CheckBox
+                android:id="@+id/checkbox_2pm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="2 PM" />
+
+            <CheckBox
+                android:id="@+id/checkbox_9pm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="9 PM" />
+
+            <!--Save button-->
             <Button
-                android:id="@+id/camera_button"
-                android:layout_width="75dp"
-                android:layout_height="90dp"
-                android:layout_marginLeft="16dp"
+                android:id="@+id/save_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/AddPhotoBtnText"
-                android:textColor="#AFADAD"
-                android:textSize="10sp" />
-
-            <!--Image path text-->
-            <TextView
-                android:id="@+id/frontimagepath"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="95dp"
-                android:layout_marginTop="16dp"
-                android:text="" />
-        </RelativeLayout>
-
-        <!--Dosage text-->
-        <TextView
-            style="@style/textStyle"
-            android:text="@string/DosageText" />
-
-        <!--Dosage spinner-->
-        <Spinner
-            android:id="@+id/dosage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:entries="@array/dosage_items"
-            android:prompt="@string/dosage"
-            android:spinnerMode="dropdown" />
-
-        <!--Schedule text-->
-        <TextView
-            style="@style/textStyle"
-            android:text="@string/ScheduleText" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/schedule_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text="@string/SelectAScheduleHint"
-                android:textColor="#212121"
-                android:textSize="16sp" />
-
-            <ImageView
-                android:id="@+id/editPencil"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="24dp"
-                android:layout_marginTop="12dp"
-                android:src="@drawable/pencil" />
-
-            <!--Choices for schedule using radio group-->
-            <RadioGroup
-                android:id="@+id/radiogroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="36dp"
-                android:orientation="vertical">
-
-                <RadioButton
-                    android:id="@+id/btn1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Daily until I stop" />
-
-                <RadioButton
-                    android:id="@+id/btn2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Weekly" />
-
-                <RadioButton
-                    android:id="@+id/btn3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Fortnightly" />
-
-                <RadioButton
-                    android:id="@+id/btn4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Monthly" />
-
-                <RadioButton
-                    android:id="@+id/btn5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Never" />
-            </RadioGroup>
-        </RelativeLayout>
-
-        <!--Set routine text-->
-        <TextView
-            style="@style/textStyle"
-            android:text="Set Routine" />
-
-        <CheckBox
-            android:id="@+id/checkbox_9am"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:text="9 AM" />
-
-        <CheckBox
-            android:id="@+id/checkbox_12pm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:text="12 PM" />
-
-        <CheckBox
-            android:id="@+id/checkbox_2pm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:text="2 PM" />
-
-        <CheckBox
-            android:id="@+id/checkbox_9pm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:text="9 PM" />
-
-        <!--Save button-->
-        <Button
-            android:id="@+id/save_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="#ef5350"
-            android:text="SAVE"
-            android:textColor="@color/white" />
-    </LinearLayout>
-</ScrollView>
+                android:backgroundTint="#ef5350"
+                android:text="SAVE"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

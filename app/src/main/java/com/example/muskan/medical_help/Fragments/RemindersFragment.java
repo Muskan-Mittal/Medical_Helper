@@ -3,37 +3,27 @@ package com.example.muskan.medical_help.Fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AlertDialogLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.muskan.medical_help.Data.ReminderDbHelper;
 import com.example.muskan.medical_help.Data.medicineDbHelper;
-import com.example.muskan.medical_help.Helpers.MedicineAdapter;
 import com.example.muskan.medical_help.Helpers.ReminderAdapter;
 import com.example.muskan.medical_help.Models.medicine_model;
-import com.example.muskan.medical_help.Models.reminder_model;
-import com.example.muskan.medical_help.MyMedicineActivity;
 import com.example.muskan.medical_help.R;
 import com.example.muskan.medical_help.RecyclerItemClickListener;
-import com.example.muskan.medical_help.UpdateMedicineActivity;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -115,7 +105,7 @@ public class RemindersFragment extends Fragment implements RecyclerItemClickList
 
         }
         View rootView;
-        rootView = inflater.inflate(R.layout.activity_reminders, container, false);
+        rootView = inflater.inflate(R.layout.fragment_reminders, container, false);
         reminderRecyclerView = (RecyclerView) rootView.findViewById(R.id.reminderRv);
         layoutManager = new LinearLayoutManager(getActivity());
         reminderAdapter = new ReminderAdapter(getActivity(), medicineList);

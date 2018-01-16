@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.muskan.medical_help.Data.ReminderDbHelper;
 import com.example.muskan.medical_help.Data.medicineDbHelper;
+import com.example.muskan.medical_help.Fragments.MyMedicineFragment;
 import com.example.muskan.medical_help.Helpers.AlarmReceiver;
 import com.example.muskan.medical_help.Models.medicine_model;
 import com.example.muskan.medical_help.Models.reminder_model;
@@ -73,7 +75,7 @@ public class UpdateMedicineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addmedicine);
-
+        initToolbar();
         initObjects();
         initViews();
 
@@ -115,6 +117,16 @@ public class UpdateMedicineActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar_addMedicine);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        }
     }
 
     private void initViews() {
