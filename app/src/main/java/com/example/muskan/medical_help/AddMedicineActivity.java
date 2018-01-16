@@ -2,7 +2,6 @@ package com.example.muskan.medical_help;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -125,7 +124,6 @@ public class AddMedicineActivity extends AppCompatActivity {
                     } else {
                         dispatchTakePictureIntent();
                     }
-
                 } else {
                     Toast.makeText(AddMedicineActivity.this, "Camera not supported", Toast.LENGTH_LONG).show();
                 }
@@ -142,7 +140,6 @@ public class AddMedicineActivity extends AppCompatActivity {
                 decideAlarms();
             }
         });
-
     }
 
     private void initToolbar() {
@@ -186,7 +183,6 @@ public class AddMedicineActivity extends AppCompatActivity {
         mYear = mCalendar.get(Calendar.YEAR);
         mMonth = mCalendar.get(Calendar.MONTH) + 1;
         mDay = mCalendar.get(Calendar.DATE);
-
         mDate = mDay + "/" + mMonth + "/" + mYear;
         mTime = mHour + ":" + mMinute;
     }
@@ -196,7 +192,6 @@ public class AddMedicineActivity extends AppCompatActivity {
         dbHelper = new medicineDbHelper(activity);
         rb = new ReminderDbHelper(this);
         alarmReceiver = new AlarmReceiver();
-
     }
 
     private String getDateTime() {
@@ -223,13 +218,11 @@ public class AddMedicineActivity extends AppCompatActivity {
             medicine.routineTime = routineTime;
             medicine.date = getDateTime();
             dbHelper.addMedicine(medicine);
-
         } else {
             flag = false;
             Toast.makeText(this, "This medicine is already added", Toast.LENGTH_SHORT).show();
             return;
         }
-
         if (flag) {
             Toast.makeText(this, "Medicine added successfully", Toast.LENGTH_SHORT).show();
             Intent dashboardIntent = new Intent(AddMedicineActivity.this, DashboardActivity.class);
@@ -283,7 +276,6 @@ public class AddMedicineActivity extends AppCompatActivity {
                     Toast.makeText(AddMedicineActivity.this, "Storage Permissions denied", Toast.LENGTH_SHORT).show();
                 }
             }
-
         }
     }
 
@@ -324,7 +316,6 @@ public class AddMedicineActivity extends AppCompatActivity {
         // Save a file: path for use with ACTION_VIEW intents
         imageUri = Uri.fromFile(image);
         CurrentPhotoPath = image.getAbsolutePath();
-
         return image;
     }
 
@@ -333,9 +324,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
             try {
-
                 frontimagePath.setText(CurrentPhotoPath);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -381,8 +370,6 @@ public class AddMedicineActivity extends AppCompatActivity {
         if (checkBox4.isChecked()) {
             routineTime += checkBox4.getText().toString() + ",";
         }
-
-
     }
 
     public void decideAlarms() {
@@ -395,7 +382,6 @@ public class AddMedicineActivity extends AppCompatActivity {
                 reminder = rb.getReminder(routineList[j], (schedule_text.getText().toString()));
                 updateAlarm(medicine.medicineName, routineList[j], reminder.getReminderID());
             }
-
         }
     }
 
@@ -436,7 +422,6 @@ public class AddMedicineActivity extends AppCompatActivity {
     public void addAlarms(String time) {
 
         String mActive;
-
         if (medicine.schedule != "Never") {
             mActive = "true";
         } else {
@@ -444,6 +429,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         }
 
         String title = getTitleForReminder(time, medicine.schedule);
+
         // Creating Reminder
         int ID = rb.addReminder(new reminder_model(title, getDateTime(), time, medicine.schedule, mActive));
 
@@ -476,8 +462,6 @@ public class AddMedicineActivity extends AppCompatActivity {
         // Create toast to confirm new reminder
         Toast.makeText(getApplicationContext(), "Saved",
                 Toast.LENGTH_SHORT).show();
-
-        //onBackPressed();
     }
 
     public void updateAlarm(String medicineName, String time, int mReceivedID) {
@@ -523,6 +507,5 @@ public class AddMedicineActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Edited",
                 Toast.LENGTH_SHORT).show();
         onBackPressed();
-
     }
 }

@@ -1,14 +1,19 @@
 package com.example.muskan.medical_help.Helpers;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.example.muskan.medical_help.Data.medicineDbHelper;
 import com.example.muskan.medical_help.Models.medicine_model;
 import com.example.muskan.medical_help.R;
 
@@ -23,7 +28,8 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
     List<medicine_model> medicineList;
     private Activity activity;
     private static LayoutInflater inflater = null;
-    int pos = 0;
+    int position = 0;
+    medicineDbHelper dbHelper;
 
     public ReminderAdapter(Activity a, List<medicine_model> medicineList){
         this.medicineList = medicineList;
@@ -40,8 +46,9 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
         return viewHolder;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
-    public void onBindViewHolder(ReminderViewHolder holder, int position) {
+    public void onBindViewHolder(final ReminderViewHolder holder, int position) {
         final medicine_model medicine = medicineList.get(position);
         holder.name.setText(medicine.medicineName);
         if(medicine.schedule!= "Never"){
@@ -50,6 +57,34 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
         else{
             holder.switchCompat.setChecked(false);
         }
+
+        holder.switchCompat.setTag("Tag");
+        dbHelper = new medicineDbHelper(activity);
+        holder.switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (holder.switchCompat.getTag() != null) {
+                    holder.switchCompat.setTag(null);
+                    return;
+                }
+                if (holder.switchCompat.isChecked()){
+                    medicine.schedule = "Daily until I stop";
+                    dbHelper.updateMedicine(medicine);
+                }
+                else {
+                    medicine.schedule = "Never";
+                    dbHelper.updateMedicine(medicine);
+                }
+            }
+        });
+
+        holder.switchCompat.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                holder.switchCompat.setTag(null);
+                return false;
+            }
+        });
     }
 
     @Override
@@ -66,7 +101,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.tv_reminder_label);
             switchCompat = (SwitchCompat) itemView.findViewById(R.id.timerSwitch);
-            pos = getAdapterPosition();
+            position = getAdapterPosition();
         }
     }
 }

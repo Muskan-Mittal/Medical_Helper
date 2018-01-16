@@ -1,8 +1,10 @@
 package com.example.muskan.medical_help;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -19,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -50,18 +53,17 @@ public class DashboardActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         activity = DashboardActivity.this;
         manager = getSupportFragmentManager();
-
         FirebaseUser user = mAuth.getCurrentUser();
 
         DrawerImageLoader.init(new AbstractDrawerImageLoader() {
             @Override
             public void set(ImageView imageView, Uri uri, Drawable placeholder) {
-
                 Picasso.with(imageView.getContext()).load(uri).placeholder(placeholder).into(imageView);
             }
+
             @Override
             public void set(ImageView imageView, Uri uri, Drawable placeholder, String tag) {
-                Log.v("Picasso", ""+uri);
+                Log.v("Picasso", "" + uri);
                 set(imageView, uri, placeholder);
             }
 
@@ -77,7 +79,6 @@ public class DashboardActivity extends AppCompatActivity {
                 .withHeaderBackground(R.drawable.nav_menu_header)
                 .addProfiles(
                         new ProfileDrawerItem().withName(user.getDisplayName()).withEmail(user.getEmail()).withIcon(user.getPhotoUrl())
-
                 )
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
@@ -106,14 +107,15 @@ public class DashboardActivity extends AppCompatActivity {
                         Log.v("Position", "" + position);
 
                         switch (position) {
-                            case 1:
-
-                                break;
                             case 2:
+                                Intent HomeIntent = new Intent(DashboardActivity.this, DashboardActivity.class);
+                                startActivity(HomeIntent);
+                                break;
+                            case 3:
                                 Intent EmergencyIntent = new Intent(DashboardActivity.this, EmergencyActivity.class);
                                 startActivity(EmergencyIntent);
                                 break;
-                            case 3:
+                            case 4:
                                 Intent SettingsIntent = new Intent(DashboardActivity.this, SettingsActivity.class);
                                 startActivity(SettingsIntent);
                                 break;
@@ -181,7 +183,6 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent recordIntent = new Intent(DashboardActivity.this, HealthRecordsActivity.class);
                 startActivity(recordIntent);
-
             }
         });
     }

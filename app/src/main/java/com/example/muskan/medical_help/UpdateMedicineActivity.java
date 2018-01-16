@@ -210,7 +210,6 @@ public class UpdateMedicineActivity extends AppCompatActivity {
                     break;
             }
         }
-
     }
 
     private String getDateTime() {
@@ -295,7 +294,6 @@ public class UpdateMedicineActivity extends AppCompatActivity {
                 reminder = rb.getReminder(routineList[j], (schedule_text.getText().toString()));
                 updateAlarm(medicineObj.medicineName, routineList[j], reminder.getReminderID());
             }
-
         }
     }
 
@@ -315,6 +313,7 @@ public class UpdateMedicineActivity extends AppCompatActivity {
                 hr = 21;
                 break;
         }
+
         Log.v("time", ""+hr);
         return hr;
     }
@@ -423,9 +422,7 @@ public class UpdateMedicineActivity extends AppCompatActivity {
         }
 
         // Create toast to confirm update
-        Toast.makeText(getApplicationContext(), "Edited",
-                Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Edited", Toast.LENGTH_SHORT).show();
         onBackPressed();
-
     }
 }
