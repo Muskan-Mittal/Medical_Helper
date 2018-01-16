@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.example.muskan.medical_help.Fragments.TimelineFragment;
 import com.example.muskan.medical_help.Fragments.RemindersFragment;
@@ -16,6 +17,7 @@ public class RemindersMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_reminder);
+        initToolbar();
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         RemindersPagerAdapter adapter = new RemindersPagerAdapter(getSupportFragmentManager());
@@ -25,5 +27,12 @@ public class RemindersMainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar_remind);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
     }
 }
