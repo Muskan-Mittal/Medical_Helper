@@ -39,7 +39,6 @@ public class RemindersFragment extends Fragment implements RecyclerItemClickList
     private RecyclerView.LayoutManager layoutManager;
     ArrayList<medicine_model> medicineList;
     medicineDbHelper dbHelper;
-    SwitchCompat switchCompat;
 
     public RemindersFragment() {
         // Required empty public constructor
@@ -114,37 +113,6 @@ public class RemindersFragment extends Fragment implements RecyclerItemClickList
         reminderRecyclerView.setAdapter(reminderAdapter);
         Log.v("try", "work");
         reminderRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), reminderRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                //((RecyclerItemClickListener.OnItemClickListener) getActivity()).onItemClick(view, position);
-                switchCompat = rootView.findViewById(R.id.timerSwitch);
-                medicine_model medicine = medicineList.get(position);
-                // set tag by default.
-                switchCompat.setTag("TAG");
-
-                // Add OnCheckedChangeListener.
-                switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (switchCompat.getTag() != null) {
-                            switchCompat.setTag(null);
-                            return;
-                        }
-                        switchCompat.setChecked(false);
-                        Log.v("Switch", "working");
-                        // Do your stuff here.
-                    }
-                });
-
-                // Add Touch listener.
-                switchCompat.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        switchCompat.setTag(null);
-                        return false;
-                    }
-                });
-            }
 
             @Override
             public void onItemLongClick(View view, final int position) {
@@ -172,7 +140,6 @@ public class RemindersFragment extends Fragment implements RecyclerItemClickList
                             }
                         }
                 );
-
                 alertDlg.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -181,7 +148,13 @@ public class RemindersFragment extends Fragment implements RecyclerItemClickList
                 });
                 alertDlg.create().show();
             }
+
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
         }));
+
 
         return rootView;
     }
