@@ -1,18 +1,22 @@
 package com.example.muskan.medical_help.Models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by muskan on 25/12/17.
  */
 
-public class reminder_model {
+public class reminder_model implements Parcelable {
 
-    private int reminderID;
-    private String title;
-    private String setDate;
-    private String reminderTime;
-    private String reminderRepeatType;
-    private String reminderActive;
+    public int reminderID;
+    public String title;
+    public String setDate;
+    public String reminderTime;
+    public String reminderRepeatType;
+    public String reminderActive;
 
+    public reminder_model(){}
 
     public reminder_model(int reminderID, String title, String setDate, String reminderTime, String reminderRepeatType, String reminderActive) {
         this.reminderID = reminderID;
@@ -24,7 +28,6 @@ public class reminder_model {
     }
 
     public reminder_model(String title, String setDate, String reminderTime, String reminderRepeatType, String reminderActive) {
-
         this.title = title;
         this.setDate = setDate;
         this.reminderTime = reminderTime;
@@ -32,54 +35,38 @@ public class reminder_model {
         this.reminderActive = reminderActive;
     }
 
-    public reminder_model() {
+    private reminder_model(Parcel in){
+        reminderID = in.readInt();
+        title = in.readString();
+        setDate = in.readString();
+        reminderTime = in.readString();
+        reminderRepeatType = in.readString();
+        reminderActive = in.readString();
     }
 
-    public int getReminderID() {
-        return reminderID;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setReminderID(int reminderID) {
-        this.reminderID = reminderID;
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(reminderID);
+        parcel.writeString(title);
+        parcel.writeString(reminderTime);
+        parcel.writeString(setDate);
+        parcel.writeString(reminderRepeatType);
+        parcel.writeString(reminderActive);
     }
 
-    public String getTitle() {
-        return title;
-    }
+    public static final Parcelable.Creator<reminder_model> CREATOR = new Parcelable.Creator<reminder_model>() {
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+        public reminder_model createFromParcel(Parcel parcel) {
+            return new reminder_model(parcel);
+        }
 
-    public String getSetDate() {
-        return setDate;
-    }
-
-    public void setSetDate(String setDate) {
-        this.setDate = setDate;
-    }
-
-    public String getReminderTime() {
-        return this.reminderTime;
-    }
-
-    public void setReminderTime(String reminderTime) {
-        this.reminderTime = reminderTime;
-    }
-
-    public String getReminderRepeatType() {
-        return reminderRepeatType;
-    }
-
-    public void setReminderRepeatType(String reminderRepeatType) {
-        this.reminderRepeatType = reminderRepeatType;
-    }
-
-    public String getReminderActive() {
-        return reminderActive;
-    }
-
-    public void setReminderActive(String reminderActive) {
-        this.reminderActive = reminderActive;
-    }
+        public reminder_model[] newArray(int i) {
+            return new reminder_model[i];
+        }
+    };
 }

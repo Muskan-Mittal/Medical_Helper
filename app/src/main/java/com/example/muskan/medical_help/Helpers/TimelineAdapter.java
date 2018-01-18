@@ -64,7 +64,5 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             time = (TextView) itemView.findViewById(R.id.tv_reminder_time);
             pos = getAdapterPosition();
         }
-
     }
-
 }

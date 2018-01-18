@@ -63,7 +63,7 @@ public class ReminderDbHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String selection = KEY_TIME + " = ? and "+ KEY_REPEAT_TYPE + " = ?";
+        String selection = KEY_TIME + " = ? and " + KEY_REPEAT_TYPE + " = ?";
 
         String[] selectionArgs = {reminderTime, reminderType};
 
@@ -90,11 +90,11 @@ public class ReminderDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(KEY_TITLE, reminder.getTitle());
-        values.put(KEY_DATE, reminder.getSetDate());
-        values.put(KEY_TIME, reminder.getReminderTime());
-        values.put(KEY_REPEAT_TYPE, reminder.getReminderRepeatType());
-        values.put(KEY_ACTIVE, reminder.getReminderActive());
+        values.put(KEY_TITLE, reminder.title);
+        values.put(KEY_DATE, reminder.setDate);
+        values.put(KEY_TIME, reminder.reminderTime);
+        values.put(KEY_REPEAT_TYPE, reminder.reminderRepeatType);
+        values.put(KEY_ACTIVE, reminder.reminderActive);
 
         // Inserting Row
         long ID = db.insert(TABLE_REMINDERS, null, values);
@@ -167,11 +167,11 @@ public class ReminderDbHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 reminder_model reminder = new reminder_model();
-                reminder.setReminderID(Integer.parseInt(cursor.getString(0)));
-                reminder.setSetDate(cursor.getString(1));
-                reminder.setReminderTime(cursor.getString(2));
-                reminder.setReminderRepeatType(cursor.getString(3));
-                reminder.setReminderActive(cursor.getString(4));
+                reminder.reminderID = (Integer.parseInt(cursor.getString(0)));
+                reminder.setDate = (cursor.getString(1));
+                reminder.reminderTime = (cursor.getString(2));
+                reminder.reminderRepeatType = (cursor.getString(3));
+                reminder.reminderActive = (cursor.getString(4));
 
                 // Adding Reminders to list
                 reminderList.add(reminder);
@@ -195,22 +195,22 @@ public class ReminderDbHelper extends SQLiteOpenHelper {
     public int updateReminder(reminder_model reminder) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(KEY_TITLE, reminder.getTitle());
-        values.put(KEY_DATE, reminder.getSetDate());
-        values.put(KEY_TIME, reminder.getReminderTime());
-        values.put(KEY_REPEAT_TYPE, reminder.getReminderRepeatType());
-        values.put(KEY_ACTIVE, reminder.getReminderActive());
+        values.put(KEY_TITLE, reminder.title);
+        values.put(KEY_DATE, reminder.setDate);
+        values.put(KEY_TIME, reminder.reminderTime);
+        values.put(KEY_REPEAT_TYPE, reminder.reminderRepeatType);
+        values.put(KEY_ACTIVE, reminder.reminderActive);
 
         // Updating row
         return db.update(TABLE_REMINDERS, values, KEY_ID + "=?",
-                new String[]{String.valueOf(reminder.getReminderID())});
+                new String[]{String.valueOf(reminder.reminderID)});
     }
 
     // Deleting single Reminder
     public void deleteReminder(reminder_model reminder) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_REMINDERS, KEY_ID + "=?",
-                new String[]{String.valueOf(reminder.getReminderID())});
+                new String[]{String.valueOf(reminder.reminderID)});
         db.close();
     }
 }
