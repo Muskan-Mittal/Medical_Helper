@@ -53,7 +53,6 @@ public class medicine_model implements Parcelable {
         parcel.writeString(schedule);
         parcel.writeString(routineTime);
         parcel.writeString(date);
-
     }
 
     public static final Parcelable.Creator<medicine_model> CREATOR = new Parcelable.Creator<medicine_model>() {
@@ -65,7 +64,5 @@ public class medicine_model implements Parcelable {
         public medicine_model[] newArray(int i) {
             return new medicine_model[i];
         }
-
-
     };
 }

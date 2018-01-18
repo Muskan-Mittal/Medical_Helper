@@ -292,7 +292,7 @@ public class UpdateMedicineActivity extends AppCompatActivity {
             }
             else {
                 reminder = rb.getReminder(routineList[j], (schedule_text.getText().toString()));
-                updateAlarm(medicineObj.medicineName, routineList[j], reminder.getReminderID());
+                updateAlarm(medicineObj.medicineName, routineList[j], reminder.reminderID);
             }
         }
     }
@@ -348,12 +348,12 @@ public class UpdateMedicineActivity extends AppCompatActivity {
         String title = getTitleForReminder(time, medicineObj.schedule);
         // Creating Reminder
         int ID = rb.addReminder(new reminder_model(title, getDateTime(), time, medicineObj.schedule, mActive));
-
+        Log.v("Update is working","title:"+title);
         // Set up calender for creating the notification
         mCalendar.set(Calendar.MONTH, --mMonth);
         mCalendar.set(Calendar.YEAR, mYear);
         mCalendar.set(Calendar.DAY_OF_MONTH, mDay);
-        mCalendar.set(Calendar.HOUR_OF_DAY, 15);
+        mCalendar.set(Calendar.HOUR_OF_DAY, getHour(time));
         mCalendar.set(Calendar.MINUTE, 40);
         mCalendar.set(Calendar.SECOND, 0);
 
@@ -385,13 +385,13 @@ public class UpdateMedicineActivity extends AppCompatActivity {
     public void updateAlarm(String medicineName, String time, int mReceivedID){
 
         // Set new values in the reminder
-        reminder.setTitle(""+getTitleForReminder(time, medicineObj.schedule)+medicineName);
-        reminder.setSetDate(mDate);
-        reminder.setReminderActive("true");
+        reminder.title = getTitleForReminder(time, medicineObj.schedule);
+        reminder.setDate = mDate;
+        reminder.reminderActive = "true";
 
         // Update reminder
         rb.updateReminder(reminder);
-
+        Log.v("Update is working","title:"+getTitleForReminder(time, medicineObj.schedule));
         // Set up calender for creating the notification
         mCalendar.set(Calendar.MONTH, --mMonth);
         mCalendar.set(Calendar.YEAR, mYear);
@@ -417,7 +417,7 @@ public class UpdateMedicineActivity extends AppCompatActivity {
         }
 
         // Create a new notification
-        if (reminder.getReminderActive().equals("true")) {
+        if (reminder.reminderActive == "true") {
             alarmReceiver.setRepeatAlarm(getApplicationContext(), mCalendar, mReceivedID, mRepeatTime);
         }
 

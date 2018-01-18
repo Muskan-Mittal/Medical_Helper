@@ -380,7 +380,7 @@ public class AddMedicineActivity extends AppCompatActivity {
                 addAlarms(routineList[j]);
             } else {
                 reminder = rb.getReminder(routineList[j], (schedule_text.getText().toString()));
-                updateAlarm(medicine.medicineName, routineList[j], reminder.getReminderID());
+                updateAlarm(medicine.medicineName, routineList[j], reminder.reminderID);
             }
         }
     }
@@ -414,6 +414,7 @@ public class AddMedicineActivity extends AppCompatActivity {
             medicine_model medicine = medicineList.get(i);
             if (medicine.schedule == repeatType && (medicine.routineTime).contains(time)) {
                 title += i + ". " + medicine.medicineName + "\n";
+                Log.v("title", ""+title);
             }
         }
         return title;
@@ -427,7 +428,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         } else {
             mActive = "false";
         }
-
+        Log.v("time",""+time);
         String title = getTitleForReminder(time, medicine.schedule);
 
         // Creating Reminder
@@ -440,7 +441,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         mCalendar.set(Calendar.HOUR_OF_DAY, getHour(time));
         mCalendar.set(Calendar.MINUTE, 0);
         mCalendar.set(Calendar.SECOND, 0);
-
+        Log.v("time",""+getHour(time));
         // Check repeat type
         if ((schedule_text.getText().toString()).equals("Daily until I stop")) {
             mRepeatTime = 1 * milDay;
@@ -467,10 +468,10 @@ public class AddMedicineActivity extends AppCompatActivity {
     public void updateAlarm(String medicineName, String time, int mReceivedID) {
 
         // Set new values in the reminder
-        reminder.setTitle(getTitleForReminder(time, medicine.schedule));
-        reminder.setSetDate(mDate);
-        reminder.setReminderActive("true");
-
+        reminder.title = (getTitleForReminder(time, medicine.schedule));
+        reminder.setDate = mDate;
+        reminder.reminderActive = "true";
+        Log.v("time", ""+time);
         // Update reminder
         rb.updateReminder(reminder);
 
@@ -499,7 +500,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         }
 
         // Create a new notification
-        if (reminder.getReminderActive().equals("true")) {
+        if (reminder.reminderActive == "true") {
             alarmReceiver.setRepeatAlarm(getApplicationContext(), mCalendar, mReceivedID, mRepeatTime);
         }
 

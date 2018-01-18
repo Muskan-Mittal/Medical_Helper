@@ -105,8 +105,8 @@ public class medicineDbHelper extends SQLiteOpenHelper {
     // Getting medicine
     public medicine_model getMedicine(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_MEDICINE, new String[] { COLUMN_MEDICINE_ID, COLUMN_MEDICINE_NAME, COLUMN_MEDICINE_IMAGEPATH, COLUMN_MEDICINE_DOSAGE, COLUMN_MEDICINE_SCHEDULE, COLUMN_MEDICINE_ROUTINETIME, COLUMN_MEDICINE_DATE}, COLUMN_MEDICINE_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
+        Cursor cursor = db.query(TABLE_MEDICINE, new String[]{COLUMN_MEDICINE_ID, COLUMN_MEDICINE_NAME, COLUMN_MEDICINE_IMAGEPATH, COLUMN_MEDICINE_DOSAGE, COLUMN_MEDICINE_SCHEDULE, COLUMN_MEDICINE_ROUTINETIME, COLUMN_MEDICINE_DATE}, COLUMN_MEDICINE_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
@@ -119,9 +119,7 @@ public class medicineDbHelper extends SQLiteOpenHelper {
     // Getting all medicines
     public List<medicine_model> getAllMedicines() {
         List<medicine_model> medicineList = new ArrayList<medicine_model>();
-
         String selectQuery = "SELECT  * FROM " + TABLE_MEDICINE;
-
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -161,15 +159,17 @@ public class medicineDbHelper extends SQLiteOpenHelper {
         values.put(COLUMN_MEDICINE_DOSAGE, medicine.dosage);
         values.put(COLUMN_MEDICINE_SCHEDULE, medicine.schedule);
         values.put(COLUMN_MEDICINE_ROUTINETIME, medicine.routineTime);
-        return db.update(TABLE_MEDICINE, values, COLUMN_MEDICINE_ID + " = ?",
-                new String[] { String.valueOf(medicine.medicineId) });
+        int id = db.update(TABLE_MEDICINE, values, COLUMN_MEDICINE_ID + " = ?",
+                new String[]{String.valueOf(medicine.medicineId)});
+        db.close();
+        return id;
     }
 
     // Deleting medicine
     public void deleteMedicine(medicine_model medicine) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_MEDICINE, COLUMN_MEDICINE_ID + " = ?",
-                new String[] { String.valueOf(medicine.medicineId) });
+                new String[]{String.valueOf(medicine.medicineId)});
         db.close();
     }
 }
