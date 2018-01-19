@@ -43,9 +43,9 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     @Override
     public void onBindViewHolder(TimelineAdapter.TimelineViewHolder holder, int position) {
         final reminder_model reminder = rmList.get(position);
-        Log.v("Reminder", ""+reminder.getTitle());
-        holder.name.setText("Title:" + reminder.getTitle());
-        holder.time.setText("Time:" + reminder.getReminderTime());
+        Log.v("Reminder", ""+reminder.title);
+        holder.name.setText("Title:" + reminder.title);
+        holder.time.setText("Time:" + reminder.reminderTime);
     }
 
     @Override

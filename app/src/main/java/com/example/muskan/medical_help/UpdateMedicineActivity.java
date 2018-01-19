@@ -292,7 +292,7 @@ public class UpdateMedicineActivity extends AppCompatActivity {
             }
             else {
                 reminder = rb.getReminder(routineList[j], (schedule_text.getText().toString()));
-                updateAlarm(medicineObj.medicineName, routineList[j], reminder.reminderID);
+                updateAlarm(routineList[j], reminder.reminderID);
             }
         }
     }
@@ -326,7 +326,7 @@ public class UpdateMedicineActivity extends AppCompatActivity {
 
         for(int i=0; i<medicineList.size(); i++){
             medicine_model medicine = medicineList.get(i);
-            if((medicine.routineTime).contains(time)){
+            if(medicine.schedule.equals(repeatType) && (medicine.routineTime).contains(time)){
                 title += "-" + medicine.medicineName + "\n";
             }
         }
@@ -337,7 +337,6 @@ public class UpdateMedicineActivity extends AppCompatActivity {
     public void addAlarms(String time){
 
         String mActive;
-
         if(medicineObj.schedule!="Never"){
             mActive = "true";
         }
@@ -346,15 +345,15 @@ public class UpdateMedicineActivity extends AppCompatActivity {
         }
 
         String title = getTitleForReminder(time, medicineObj.schedule);
+        Log.v("title to add in db", ""+title);
         // Creating Reminder
-        int ID = rb.addReminder(new reminder_model(title, getDateTime(), time, medicineObj.schedule, mActive));
-        Log.v("Update is working","title:"+title);
+        int ID = rb.addReminder(new reminder_model(title, time, time, medicineObj.schedule, mActive));
         // Set up calender for creating the notification
         mCalendar.set(Calendar.MONTH, --mMonth);
         mCalendar.set(Calendar.YEAR, mYear);
         mCalendar.set(Calendar.DAY_OF_MONTH, mDay);
         mCalendar.set(Calendar.HOUR_OF_DAY, getHour(time));
-        mCalendar.set(Calendar.MINUTE, 40);
+        mCalendar.set(Calendar.MINUTE, 0);
         mCalendar.set(Calendar.SECOND, 0);
 
         // Check repeat type
@@ -378,15 +377,14 @@ public class UpdateMedicineActivity extends AppCompatActivity {
         // Create toast to confirm new reminder
         Toast.makeText(getApplicationContext(), "Saved",
                 Toast.LENGTH_SHORT).show();
-
-        //onBackPressed();
     }
 
-    public void updateAlarm(String medicineName, String time, int mReceivedID){
+    public void updateAlarm(String time, int mReceivedID){
 
         // Set new values in the reminder
         reminder.title = getTitleForReminder(time, medicineObj.schedule);
-        reminder.setDate = mDate;
+        reminder.reminderTime = time;
+        //reminder.setDate = mDate;
         reminder.reminderActive = "true";
 
         // Update reminder
@@ -405,19 +403,19 @@ public class UpdateMedicineActivity extends AppCompatActivity {
 
         // Check repeat type
         if ((schedule_text.getText().toString()).equals("Daily until I stop")) {
-            mRepeatTime = 1 * milDay;
+            mRepeatTime = milDay;
         } else if ((schedule_text.getText().toString()).equals("Weekly")) {
-            mRepeatTime = 1 * milWeek;
+            mRepeatTime = milWeek;
         } else if ((schedule_text.getText().toString()).equals("Fortnightly")) {
             mRepeatTime = 2 * milWeek;
         } else if ((schedule_text.getText().toString()).equals("Monthly")) {
-            mRepeatTime = 1 * milMonth;
+            mRepeatTime = milMonth;
         } else {
             return;
         }
 
         // Create a new notification
-        if (reminder.reminderActive == "true") {
+        if (reminder.reminderActive.equals("true")) {
             alarmReceiver.setRepeatAlarm(getApplicationContext(), mCalendar, mReceivedID, mRepeatTime);
         }
 

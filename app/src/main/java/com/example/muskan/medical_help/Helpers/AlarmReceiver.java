@@ -39,7 +39,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         // Get notification title from Reminder Database
         ReminderDbHelper rb = new ReminderDbHelper(context);
         reminder_model reminder = rb.getReminder(mReceivedID);
-        String mTitle = reminder.getTitle();
+        String mTitle = reminder.title;
         Log.v("Title in alarm receiver",""+mTitle);
         // Create intent to open ReminderEditActivity on notification click
         Intent editIntent = new Intent(context, RemindersMainActivity.class);
