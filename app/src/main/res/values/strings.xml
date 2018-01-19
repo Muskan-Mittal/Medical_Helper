@@ -30,6 +30,12 @@
     <string name="DescriptionForAppAfterLogout">Thank you for using My Help health app! Login in to set alarms and click images to store your medical records.</string>
     <string name="TextForButtonToLoginPage">Click here to LOGIN</string>
 
+    <!--About us string labels-->
+    <string name="AboutUsDescription">This app is developed for the aged population to ease their lives and provide them a platform to set up alarms for their medicines as they generally start forgetting at this age,
+        so also forget to take medicines at proper time and suffer due to that. The user or anyone on behalf of the user can enter the medicine reminders by describing name, quantity and when it should be taken as a
+        reminder. The reminder helps the user to look into the details of tablets that he or she has to take. The user can also save the medical reports through the Health Records option available on the dashboard.
+        This app is made by Ms. Muskan Mittal as a project under the programme Learn IT Girl, under the mentorship of Ms. Meha Kaushik.</string>
+
     <!--Health records string labels-->
     <string name="UploadRecordsText">Upload health records and reports</string>
 
