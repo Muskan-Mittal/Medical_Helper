@@ -85,7 +85,6 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-
                 Intent loginIntent = new Intent(SignupActivity.this, LoginActivity.class);
                 startActivity(loginIntent);
             }
@@ -96,11 +95,9 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-
                 String user_email = textInputEditTextEmail.getText().toString().trim();
                 String pwd = textInputEditTextPassword.getText().toString().trim();
                 String confirmPwd = textInputEditTextConfirmPassword.getText().toString().trim();
-
                 if (!TextUtils.isEmpty(user_email) && !TextUtils.isEmpty(pwd) && !TextUtils.isEmpty(confirmPwd)) {
                     progressDialog.setTitle("Registering User");
                     progressDialog.setMessage("Please wait while your account is being created!");
@@ -153,7 +150,6 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (isNetworkAvailable()) {
-
                     facebookLoginButton.setEnabled(false);
                     progressDialog.setTitle("Logging in");
                     progressDialog.setMessage("Please wait while your account is being authenticated.");
@@ -183,7 +179,6 @@ public class SignupActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     @Override
@@ -194,7 +189,6 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-
         textInputLayoutEmail = (TextInputLayout) findViewById(R.id.textInputLayoutEmail);
         textInputLayoutPassword = (TextInputLayout) findViewById(R.id.textInputLayoutPassword);
         textInputLayoutConfirmPassword = (TextInputLayout) findViewById(R.id.textInputLayoutConfirmPassword);
@@ -208,14 +202,12 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void initObjects() {
-
         mAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
     }
 
     // Sign up using Sign Up Button
     private void sign_up_user(String email, String password, String confirmPassword) {
-
         if (!password.contentEquals(confirmPassword)) {
             textInputLayoutConfirmPassword.setError("Password doesnot match!");
             return;
@@ -249,7 +241,6 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void signIn() {
-
         progressDialog.setTitle("Logging into your account");
         progressDialog.setMessage("Please wait while your account is being authenticated!");
         progressDialog.setCanceledOnTouchOutside(false);
@@ -265,19 +256,16 @@ public class SignupActivity extends AppCompatActivity {
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
                 fireBaseAuthWithGoogle(account);
-
             } else {
                 Toast.makeText(SignupActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
             }
         } else {
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
-
     }
 
     private void fireBaseAuthWithGoogle(GoogleSignInAccount account) {
@@ -292,23 +280,17 @@ public class SignupActivity extends AppCompatActivity {
                             Intent mainIntent = new Intent(SignupActivity.this, DashboardActivity.class);
                             startActivity(mainIntent);
                             finish();
-
                         } else {
                             // If sign in fails, display a message to the user.
                             progressDialog.hide();
                             Toast.makeText(SignupActivity.this, "Authentication failed!", Toast.LENGTH_SHORT).show();
-
                         }
-
-
                     }
                 });
-
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d("ok", "handleFacebookAccessToken:" + token);
-
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -317,12 +299,10 @@ public class SignupActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("ok", "signInWithCredential:success");
-
                             progressDialog.dismiss();
                             Intent intent = new Intent(SignupActivity.this, DashboardActivity.class);
                             startActivity(intent);
                             finish();
-
                         } else {
                             // If sign in fails, display a message to the user.
                             progressDialog.hide();
@@ -334,30 +314,6 @@ public class SignupActivity extends AppCompatActivity {
                     }
                 });
     }
-
-    /*public Bitmap getProfileImage(){
-        Bundle params = new Bundle();
-        params.putString("fields", "id,email,gender,cover,picture.type(large)");
-        new GraphRequest(AccessToken.getCurrentAccessToken(), "me", params, HttpMethod.GET,
-                new GraphRequest.Callback() {
-                    @Override
-                    public void onCompleted(GraphResponse response) {
-                        if (response != null) {
-                            try {
-                                JSONObject data = response.getJSONObject();
-                                if (data.has("picture")) {
-                                    String profilePicUrl = data.getJSONObject("picture").getJSONObject("data").getString("url");
-                                    profilePic= BitmapFactory.decodeStream(profilePicUrl .openConnection().getInputStream());
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }).executeAsync();
-
-        return profilePic;
-    }*/
 
     private void emptyInputEditText() {
         textInputEditTextPassword.setText(null);

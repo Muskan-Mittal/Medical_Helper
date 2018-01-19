@@ -123,9 +123,7 @@ public class MyMedicineFragment extends Fragment {
                 medicineList = new ArrayList<medicine_model>();
                 medicineAdapter = new MedicineAdapter(getActivity(), medicineList, FilePathStrings, FileNameStrings);
                 createMedicineList();
-
             } else {
-
                 newString = (String) savedInstanceState.getSerializable("MedicineName");
                 medicineAdapter = new MedicineAdapter(getActivity(), medicineList, FilePathStrings, FileNameStrings);
             }

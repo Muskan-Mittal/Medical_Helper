@@ -27,7 +27,6 @@ public class RemindersMainActivity extends AppCompatActivity {
         adapter.addFragment(new TimelineFragment(), "Timeline");
         adapter.addFragment(new RemindersFragment(), "Reminders");
         viewPager.setAdapter(adapter);
-
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
     }

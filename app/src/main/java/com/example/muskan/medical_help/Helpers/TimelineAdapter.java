@@ -25,7 +25,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     private static LayoutInflater inflater = null;
     int pos = 0;
 
-    public TimelineAdapter(Activity a, List<reminder_model> reminderList){
+    public TimelineAdapter(Activity a, List<reminder_model> reminderList) {
         this.rmList = reminderList;
         activity = a;
         inflater = (LayoutInflater) activity
@@ -43,7 +43,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     @Override
     public void onBindViewHolder(TimelineAdapter.TimelineViewHolder holder, int position) {
         final reminder_model reminder = rmList.get(position);
-        Log.v("Reminder", ""+reminder.title);
+        Log.v("Reminder", "" + reminder.title);
         holder.name.setText("Title:" + reminder.title);
         holder.time.setText("Time:" + reminder.reminderTime);
     }
@@ -53,11 +53,14 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
         return rmList.size();
     }
 
-    public void add(reminder_model reminder){ this.rmList.add(reminder); }
+    public void add(reminder_model reminder) {
+        this.rmList.add(reminder);
+    }
 
     public class TimelineViewHolder extends RecyclerView.ViewHolder {
         public TextView name;
         public TextView time;
+
         public TimelineViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.tv_reminder_title);

@@ -46,22 +46,18 @@ import java.util.Arrays;
 public class LoginActivity extends AppCompatActivity {
 
     private final AppCompatActivity activity = LoginActivity.this;
-
     private TextInputLayout textInputLayoutEmail;
     private TextInputLayout textInputLayoutPassword;
-
     private TextInputEditText textInputEditTextEmail;
     private TextInputEditText textInputEditTextPassword;
-
     private Button ButtonLogin;
     private ProgressDialog progressDialog;
     private FirebaseAuth mAuth;
-
-    SignInButton googleSignInButton;
     private final static int RC_SIGN_IN = 2;
-    GoogleApiClient mGoogleApiClient;
     private CallbackManager mCallbackManager;
     private LoginButton facebookLoginButton;
+    SignInButton googleSignInButton;
+    GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +128,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (isNetworkAvailable()) {
-
                     facebookLoginButton.setEnabled(false);
                     progressDialog.setTitle("Loging in");
                     progressDialog.setMessage("Please wait while your account is being authenticated.");
@@ -144,7 +139,6 @@ public class LoginActivity extends AppCompatActivity {
 
                         @Override
                         public void onSuccess(LoginResult loginResult) {
-
                             handleFacebookAccessToken(loginResult.getAccessToken());
                         }
 
@@ -163,8 +157,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     private void initToolbar() {
@@ -185,7 +177,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @SuppressLint("WrongViewCast")
     private void initViews() {
-
         textInputLayoutEmail = (TextInputLayout) findViewById(R.id.textInputLayoutEmail);
         textInputLayoutPassword = (TextInputLayout) findViewById(R.id.textInputLayoutPassword);
         textInputEditTextEmail = (TextInputEditText) findViewById(R.id.email_input);
@@ -196,13 +187,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initObjects() {
-
         progressDialog = new ProgressDialog(this);
         mAuth = FirebaseAuth.getInstance();
     }
 
     private void login_user(String email, String password) {
-
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -218,11 +207,9 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Authentication failed. Password is too short!",
                                     Toast.LENGTH_SHORT).show();
                             emptyInputEditText();
-
                         }
                     }
                 });
-
     }
 
     private void emptyInputEditText() {
@@ -238,7 +225,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signIn() {
-
         progressDialog.setTitle("Logging into your account");
         progressDialog.setMessage("Please wait while your account is being authenticated!");
         progressDialog.setCanceledOnTouchOutside(false);
@@ -252,7 +238,6 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
 
-
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
 
@@ -260,14 +245,12 @@ public class LoginActivity extends AppCompatActivity {
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
                 fireBaseAuthWithGoogle(account);
-
             } else {
                 Toast.makeText(LoginActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
             }
         } else {
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
-
     }
 
     private void fireBaseAuthWithGoogle(GoogleSignInAccount account) {
@@ -287,13 +270,9 @@ public class LoginActivity extends AppCompatActivity {
                             // If sign in fails, display a message to the user.
                             progressDialog.hide();
                             Toast.makeText(LoginActivity.this, "Authentication failed!", Toast.LENGTH_SHORT).show();
-
                         }
-
-
                     }
                 });
-
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
@@ -312,7 +291,6 @@ public class LoginActivity extends AppCompatActivity {
                             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                             startActivity(intent);
                             finish();
-
                         } else {
                             // If sign in fails, display a message to the user.
                             progressDialog.hide();
@@ -324,5 +302,4 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
-
 }

@@ -82,7 +82,6 @@ public class TimelineFragment extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -97,7 +96,6 @@ public class TimelineFragment extends Fragment {
         timelineAdapter = new TimelineAdapter(getActivity(), rmList);
         timelineRecyclerView.setLayoutManager(layoutManager);
         timelineRecyclerView.setAdapter(timelineAdapter);
-
         return rootView;
     }
 

@@ -120,7 +120,6 @@ public class RemindersFragment extends Fragment implements RecyclerItemClickList
                 AlertDialog.Builder alertDlg = new AlertDialog.Builder(getActivity());
                 alertDlg.setMessage("Are you sure you remove this medicine?");
                 alertDlg.setCancelable(false);
-
                 alertDlg.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dbHelper.deleteMedicine(medicineList.get(position));
@@ -155,7 +154,6 @@ public class RemindersFragment extends Fragment implements RecyclerItemClickList
             }
         }));
 
-
         return rootView;
     }
 
@@ -167,7 +165,6 @@ public class RemindersFragment extends Fragment implements RecyclerItemClickList
 
     @Override
     public void onItemClick(View view, int position) {
-
     }
 
     @Override

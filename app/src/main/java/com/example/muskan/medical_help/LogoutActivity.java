@@ -16,7 +16,7 @@ public class LogoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_logout);
         initToolbar();
 
-        Button click_to_login = (Button)findViewById(R.id.clickHereToLogin);
+        Button click_to_login = (Button) findViewById(R.id.clickHereToLogin);
         click_to_login.setOnClickListener(new View.OnClickListener() {
 
             @Override

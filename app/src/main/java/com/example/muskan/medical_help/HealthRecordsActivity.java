@@ -63,7 +63,6 @@ public class HealthRecordsActivity extends AppCompatActivity implements Recycler
         recordsRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewForHealthRecords);
         layoutManager = new GridLayoutManager(this, 2);
         progressDialog = new ProgressDialog(this);
-
         getImagesAfterUpdate();
 
         recordsAdapter = new RecordsAdapter(this, FilePathStrings, FileNameStrings);
@@ -72,7 +71,6 @@ public class HealthRecordsActivity extends AppCompatActivity implements Recycler
         recordsRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recordsRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
                 Intent i = new Intent(HealthRecordsActivity.this, FullImageActivity.class);
                 i.putExtra("Filepath", FilePathStrings.get(position));
                 startActivity(i);
@@ -80,7 +78,6 @@ public class HealthRecordsActivity extends AppCompatActivity implements Recycler
 
             @Override
             public void onItemLongClick(View view, final int position) {
-
                 AlertDialog.Builder builder;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
@@ -240,7 +237,6 @@ public class HealthRecordsActivity extends AppCompatActivity implements Recycler
                 storageDir
         );
         currentImageUri = Uri.fromFile(image);
-        Log.v("Pic", "" + currentImageUri.toString());
         return image;
     }
 
@@ -289,6 +285,5 @@ public class HealthRecordsActivity extends AppCompatActivity implements Recycler
 
     @Override
     public void onItemLongClick(View view, int position) {
-
     }
 }
