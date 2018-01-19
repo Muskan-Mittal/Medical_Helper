@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private final static int RC_SIGN_IN = 2;
     private CallbackManager mCallbackManager;
-    private LoginButton facebookLoginButton;
+    ImageView facebookButton;
     SignInButton googleSignInButton;
     GoogleApiClient mGoogleApiClient;
 
@@ -124,13 +125,13 @@ public class LoginActivity extends AppCompatActivity {
         //Facebook Login
 
         mCallbackManager = CallbackManager.Factory.create();
-
-        facebookLoginButton.setOnClickListener(new View.OnClickListener() {
+        facebookButton = (ImageView) findViewById(R.id.fbLoginBtn);
+        facebookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (isNetworkAvailable()) {
-                    facebookLoginButton.setEnabled(false);
+                    facebookButton.setEnabled(false);
                     progressDialog.setTitle("Loging in");
                     progressDialog.setMessage("Please wait while your account is being authenticated.");
                     progressDialog.setCanceledOnTouchOutside(false);
@@ -195,7 +196,7 @@ public class LoginActivity extends AppCompatActivity {
         textInputEditTextPassword = (TextInputEditText) findViewById(R.id.pwd_input);
         ButtonLogin = (Button) findViewById(R.id.buttonLogin);
         googleSignInButton = (SignInButton) findViewById(R.id.googleLoginBtn);
-        facebookLoginButton = (LoginButton) findViewById(R.id.fbLoginBtn);
+        facebookButton = (ImageView) findViewById(R.id.fbLoginBtn);
         forgotPasswordText = (TextView) findViewById(R.id.ForgotPasswordText);
     }
 
@@ -248,7 +249,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
@@ -278,7 +278,6 @@ public class LoginActivity extends AppCompatActivity {
                             Intent mainIntent = new Intent(LoginActivity.this, DashboardActivity.class);
                             startActivity(mainIntent);
                             finish();
-
                         } else {
                             // If sign in fails, display a message to the user.
                             progressDialog.hide();

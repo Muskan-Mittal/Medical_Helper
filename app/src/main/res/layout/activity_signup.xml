@@ -146,25 +146,26 @@
                 android:layout_marginTop="18dp"
                 android:orientation="horizontal">
 
-                <!--Facebook button-->
-                <com.facebook.login.widget.LoginButton
-                    android:id="@+id/fbSignUpBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="20dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="#3B5998"
-                    android:textAllCaps="true"
-                    android:textColor="#FFFFFF" />
-
                 <!--Google sign in button-->
                 <com.google.android.gms.common.SignInButton
                     android:id="@+id/googleSignUpBtn"
-                    android:layout_width="128dp"
-                    android:layout_height="37dp"
+                    android:layout_width="160dp"
+                    android:layout_height="38dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="12dp"
                     android:layout_weight="1"
+                    android:backgroundTint="#D34836"
                     android:textColor="#FFFFFF" />
+
+                <!--Facebook button-->
+                <ImageView
+                    android:id="@+id/fbSignUpBtn"
+                    android:layout_width="167dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/facebook_button" />
             </LinearLayout>
 
             <LinearLayout
