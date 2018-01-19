@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initToolbar();
-        Button start_Bt = (Button)findViewById(R.id.get_started);
+        Button start_Bt = (Button) findViewById(R.id.get_started);
         start_Bt.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(signupIntent);
             }
         });
-
     }
 
     private void initToolbar() {

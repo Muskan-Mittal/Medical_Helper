@@ -17,9 +17,10 @@ public class medicine_model implements Parcelable {
     public String routineTime;
     public String date;
 
-    public medicine_model(){}
+    public medicine_model() {
+    }
 
-    public medicine_model(int medicineId, String medicineName, String imagePath, int dosage, String schedule, String routineTime, String date){
+    public medicine_model(int medicineId, String medicineName, String imagePath, int dosage, String schedule, String routineTime, String date) {
         this.medicineId = medicineId;
         this.medicineName = medicineName;
         this.dosage = dosage;
@@ -29,7 +30,7 @@ public class medicine_model implements Parcelable {
         this.date = date;
     }
 
-    private medicine_model(Parcel in){
+    private medicine_model(Parcel in) {
         medicineId = in.readInt();
         medicineName = in.readString();
         imagePath = in.readString();

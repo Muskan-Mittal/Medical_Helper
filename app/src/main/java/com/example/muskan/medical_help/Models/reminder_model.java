@@ -16,7 +16,8 @@ public class reminder_model implements Parcelable {
     public String reminderRepeatType;
     public String reminderActive;
 
-    public reminder_model(){}
+    public reminder_model() {
+    }
 
     public reminder_model(int reminderID, String title, String setDate, String reminderTime, String reminderRepeatType, String reminderActive) {
         this.reminderID = reminderID;
@@ -35,7 +36,7 @@ public class reminder_model implements Parcelable {
         this.reminderActive = reminderActive;
     }
 
-    private reminder_model(Parcel in){
+    private reminder_model(Parcel in) {
         reminderID = in.readInt();
         title = in.readString();
         setDate = in.readString();

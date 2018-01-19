@@ -22,17 +22,15 @@ public class EmergencyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_emergency);
         initToolbar();
 
-        callAmbulance = (Button)findViewById(R.id.callAmbulanceBtn);
+        callAmbulance = (Button) findViewById(R.id.callAmbulanceBtn);
         callAmbulance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:112"));
                 startActivity(intent);
-
             }
         });
-
     }
 
     private void initToolbar() {

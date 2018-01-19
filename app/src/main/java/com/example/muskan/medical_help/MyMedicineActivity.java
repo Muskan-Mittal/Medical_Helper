@@ -22,14 +22,12 @@ public class MyMedicineActivity extends AppCompatActivity implements RecyclerIte
 
     @Override
     public void onItemClick(View view, int position) {
-
         Intent i = new Intent(MyMedicineActivity.this, UpdateMedicineActivity.class);
         startActivity(i);
     }
 
     @Override
     public void onItemLongClick(View view, int position) {
-
     }
 
     private void initToolbar() {

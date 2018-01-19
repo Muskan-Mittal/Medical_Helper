@@ -40,11 +40,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         ReminderDbHelper rb = new ReminderDbHelper(context);
         reminder_model reminder = rb.getReminder(mReceivedID);
         String mTitle = reminder.title;
-        Log.v("Title in alarm receiver",""+mTitle);
-        // Create intent to open ReminderEditActivity on notification click
-        Intent editIntent = new Intent(context, RemindersMainActivity.class);
-        editIntent.putExtra(AddMedicineActivity.EXTRA_REMINDER_ID, Integer.toString(mReceivedID));
-        PendingIntent mClick = PendingIntent.getActivity(context, mReceivedID, editIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Log.v("Title in alarm receiver", "" + mTitle);
 
         // Create Notification
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
@@ -78,7 +74,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         // Start alarm using initial notification time and repeat interval time
         mAlarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME,
                 SystemClock.elapsedRealtime() + diffTime,
-                RepeatTime , mPendingIntent);
+                RepeatTime, mPendingIntent);
 
         // Restart alarm if device is rebooted
         ComponentName receiver = new ComponentName(context, BootReceiver.class);

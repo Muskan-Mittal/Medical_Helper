@@ -47,16 +47,13 @@ public class ReminderDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older table if existed
         if (oldVersion >= newVersion)
             return;
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_REMINDERS);
-        // Create tables again
         onCreate(db);
     }
 
     public boolean checkReminder(String reminderTime, String reminderType) {
-
         String[] columns = {
                 KEY_ID
         };
@@ -86,7 +83,6 @@ public class ReminderDbHelper extends SQLiteOpenHelper {
     public int addReminder(reminder_model reminder) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-
         values.put(KEY_TITLE, reminder.title);
         values.put(KEY_DATE, reminder.setDate);
         values.put(KEY_TIME, reminder.reminderTime);
@@ -181,7 +177,6 @@ public class ReminderDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         cursor.close();
-
         return cursor.getCount();
     }
 
@@ -208,4 +203,3 @@ public class ReminderDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 }
-

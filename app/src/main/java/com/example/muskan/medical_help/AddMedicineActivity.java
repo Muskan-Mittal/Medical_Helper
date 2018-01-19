@@ -336,7 +336,6 @@ public class AddMedicineActivity extends AppCompatActivity {
     }
 
     public void hideRadioButtons() {
-
         button1.setVisibility(View.GONE);
         button2.setVisibility(View.GONE);
         button3.setVisibility(View.GONE);
@@ -345,7 +344,6 @@ public class AddMedicineActivity extends AppCompatActivity {
     }
 
     public void showRadioButtons() {
-
         button1.setVisibility(View.VISIBLE);
         button2.setVisibility(View.VISIBLE);
         button3.setVisibility(View.VISIBLE);
@@ -354,7 +352,6 @@ public class AddMedicineActivity extends AppCompatActivity {
     }
 
     public void getChecked() {
-
         if (checkBox1.isChecked()) {
             routineTime += checkBox1.getText().toString() + ",";
         }
@@ -373,7 +370,6 @@ public class AddMedicineActivity extends AppCompatActivity {
     }
 
     public void decideAlarms() {
-
         String[] routineList = routineTime.split(",");
         for (int j = 0; j < routineList.length; j++) {
             if (!rb.checkReminder(routineList[j], (schedule_text.getText().toString()))) {
@@ -418,19 +414,18 @@ public class AddMedicineActivity extends AppCompatActivity {
                 title += i + ". " + medicine.medicineName + "\n";
             }
         }
-        Log.v("Title that is returned", ""+title);
+        Log.v("Title that is returned", "" + title);
         return title;
     }
 
     public void addAlarms(String time) {
-
         String mActive;
         if (medicine.schedule != "Never") {
             mActive = "true";
         } else {
             mActive = "false";
         }
-        //Log.v("time",""+time);
+
         String title = getTitleForReminder(time, medicine.schedule);
 
         // Creating Reminder
@@ -443,7 +438,8 @@ public class AddMedicineActivity extends AppCompatActivity {
         mCalendar.set(Calendar.HOUR_OF_DAY, getHour(time));
         mCalendar.set(Calendar.MINUTE, 0);
         mCalendar.set(Calendar.SECOND, 0);
-        Log.v("time in add alarm",""+getHour(time));
+        Log.v("time in add alarm", "" + getHour(time));
+
         // Check repeat type
         if ((schedule_text.getText().toString()).equals("Daily until I stop")) {
             mRepeatTime = 1 * milDay;
@@ -473,8 +469,8 @@ public class AddMedicineActivity extends AppCompatActivity {
         reminder.title = (getTitleForReminder(time, medicine.schedule));
         reminder.setDate = mDate;
         reminder.reminderActive = "true";
-        Log.v("time", ""+time);
-        Log.e("title here hjkhfgdfg", ""+reminder.title+"\n"+getTitleForReminder(time, medicine.schedule));
+        Log.v("time", "" + time);
+        Log.e("title here hjkhfgdfg", "" + reminder.title + "\n" + getTitleForReminder(time, medicine.schedule));
         // Update reminder
         rb.updateReminder(reminder);
 

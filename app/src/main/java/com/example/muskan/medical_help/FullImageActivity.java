@@ -14,6 +14,7 @@ import android.widget.ImageView;
 public class FullImageActivity extends AppCompatActivity {
 
     ImageView currentPic;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

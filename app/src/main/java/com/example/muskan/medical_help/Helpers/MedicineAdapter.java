@@ -36,6 +36,7 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
         inflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
     @Override
     public MedicineViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -43,12 +44,12 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
         MedicineViewHolder viewHolder = new MedicineViewHolder(itemView);
         return viewHolder;
     }
+
     @Override
     public void onBindViewHolder(MedicineViewHolder holder, int position) {
-
         final medicine_model medicine = medicineList.get(position);
         holder.name.setText(medicine.medicineName);
-        Bitmap bmp = getResizedBitmap(BitmapFactory.decodeFile(filepath[position]),120);
+        Bitmap bmp = getResizedBitmap(BitmapFactory.decodeFile(filepath[position]), 120);
         holder.ivPoster.setImageBitmap(bmp);
     }
 
@@ -60,27 +61,27 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
     public class MedicineViewHolder extends RecyclerView.ViewHolder {
         public TextView name;
         public ImageView ivPoster;
-
         public MedicineViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.cv_name);
             ivPoster = (ImageView) itemView.findViewById(R.id.iv_poster);
             pos = getAdapterPosition();
         }
-
     }
 
-    public int getPosition(){
+    public int getPosition() {
         return pos;
     }
 
-    public void add(medicine_model medicine){ this.medicineList.add(medicine);}
+    public void add(medicine_model medicine) {
+        this.medicineList.add(medicine);
+    }
 
     public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
         int width = image.getWidth();
         int height = image.getHeight();
 
-        float bitmapRatio = (float)width / (float) height;
+        float bitmapRatio = (float) width / (float) height;
         if (bitmapRatio > 1) {
             width = maxSize;
             height = (int) (width / bitmapRatio);

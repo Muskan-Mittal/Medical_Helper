@@ -36,8 +36,24 @@ import java.util.List;
 public class UpdateMedicineActivity extends AppCompatActivity {
 
     int count = 0;
+
     // Constant Intent String
     public static final String EXTRA_REMINDER_ID = "Reminder_ID";
+    private Calendar mCalendar;
+    private int mYear, mMonth, mHour, mMinute, mDay;
+    private String mTime;
+    private String mDate;
+    private long mRepeatTime;
+    private medicineDbHelper dbHelper;
+    private final AppCompatActivity activity = UpdateMedicineActivity.this;
+    private TextInputEditText textInputEditTextMedicine;
+
+    // Constant values in milliseconds
+    private static final long milMinute = 60000L;
+    private static final long milHour = 3600000L;
+    private static final long milDay = 86400000L;
+    private static final long milWeek = 604800000L;
+    private static final long milMonth = 2592000000L;
 
     RadioButton button1, button2, button3, button4, button5;
     CheckBox checkBox1, checkBox2, checkBox3, checkBox4;
@@ -47,29 +63,10 @@ public class UpdateMedicineActivity extends AppCompatActivity {
     Button save_btn;
     String routinetime = "";
     Spinner dosage;
-    private Calendar mCalendar;
-    private int mYear, mMonth, mHour, mMinute, mDay;
-    private String mTime;
-    private String mDate;
-    private long mRepeatTime;
     reminder_model reminder;
     AlarmReceiver alarmReceiver;
     ReminderDbHelper rb;
-
-    private medicineDbHelper dbHelper;
-    private final AppCompatActivity activity = UpdateMedicineActivity.this;
-    private TextInputEditText textInputEditTextMedicine;
-
-    //Alarm variables
     medicine_model medicineObj;
-
-    // Constant values in milliseconds
-    private static final long milMinute = 60000L;
-    private static final long milHour = 3600000L;
-    private static final long milDay = 86400000L;
-    private static final long milWeek = 604800000L;
-    private static final long milMonth = 2592000000L;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +77,10 @@ public class UpdateMedicineActivity extends AppCompatActivity {
         initViews();
 
         medicineObj = (medicine_model) getIntent().getParcelableExtra("Medicine");
-        Log.v("selected", ""+medicineObj.medicineName);
-
+        Log.v("selected", "" + medicineObj.medicineName);
         hideRadioButtons();
         getDataFromSqlite();
+
 //        Handles the edit button
         ImageView pencil = (ImageView) findViewById(R.id.editPencil);
         pencil.setOnClickListener(new View.OnClickListener() {
@@ -128,30 +125,31 @@ public class UpdateMedicineActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-
         textInputLayoutMedicine = (TextInputLayout) findViewById(R.id.textInputLayoutMedicine);
         dosage = (Spinner) findViewById(R.id.dosage);
         textInputEditTextMedicine = (TextInputEditText) findViewById(R.id.medicine_input);
         schedule_text = (TextView) findViewById(R.id.schedule_text);
         frontImagePath = (TextView) findViewById(R.id.frontimagepath);
         schedule_buttons = (RadioGroup) findViewById(R.id.radiogroup);
+
         save_btn = (Button) findViewById(R.id.save_btn);
         button1 = (RadioButton) findViewById(R.id.btn1);
         button2 = (RadioButton) findViewById(R.id.btn2);
         button3 = (RadioButton) findViewById(R.id.btn3);
         button4 = (RadioButton) findViewById(R.id.btn4);
         button5 = (RadioButton) findViewById(R.id.btn5);
+
         checkBox1 = (CheckBox) findViewById(R.id.checkbox_9am);
-        checkBox2 = (CheckBox)findViewById(R.id.checkbox_12pm);
-        checkBox3 = (CheckBox)findViewById(R.id.checkbox_2pm);
-        checkBox4 = (CheckBox)findViewById(R.id.checkbox_9pm);
+        checkBox2 = (CheckBox) findViewById(R.id.checkbox_12pm);
+        checkBox3 = (CheckBox) findViewById(R.id.checkbox_2pm);
+        checkBox4 = (CheckBox) findViewById(R.id.checkbox_9pm);
+
         mCalendar = Calendar.getInstance();
         mHour = mCalendar.get(Calendar.HOUR_OF_DAY);
         mMinute = mCalendar.get(Calendar.MINUTE);
         mYear = mCalendar.get(Calendar.YEAR);
         mMonth = mCalendar.get(Calendar.MONTH) + 1;
         mDay = mCalendar.get(Calendar.DATE);
-
         mDate = mDay + "/" + mMonth + "/" + mYear;
         mTime = mHour + ":" + mMinute;
     }
@@ -164,13 +162,13 @@ public class UpdateMedicineActivity extends AppCompatActivity {
         reminder = new reminder_model();
     }
 
-    public void getDataFromSqlite(){
+    public void getDataFromSqlite() {
         textInputEditTextMedicine.setText(medicineObj.medicineName);
         frontImagePath.setText(medicineObj.imagePath);
         schedule_text.setText(medicineObj.schedule);
         dosage.setSelection(medicineObj.dosage);
-        int i=0;
-        switch (medicineObj.schedule){
+        int i = 0;
+        switch (medicineObj.schedule) {
             case "Daily until I stop":
                 i = 0;
                 break;
@@ -192,8 +190,8 @@ public class UpdateMedicineActivity extends AppCompatActivity {
 
         String str = medicineObj.routineTime;
         String[] routineList = str.split(",");
-        for(int j=0; j<routineList.length; j++){
-            switch (routineList[j]){
+        for (int j = 0; j < routineList.length; j++) {
+            switch (routineList[j]) {
                 case "9 AM":
                     checkBox1.setChecked(true);
                     break;
@@ -219,7 +217,6 @@ public class UpdateMedicineActivity extends AppCompatActivity {
     }
 
     private void updateMedicineToSQLite() {
-
         String medicineName = textInputEditTextMedicine.getText().toString().trim();
         if (TextUtils.isEmpty(medicineName)) {
             textInputEditTextMedicine.setError("Enter a valid medicine name");
@@ -230,17 +227,14 @@ public class UpdateMedicineActivity extends AppCompatActivity {
         medicineObj.dosage = (Integer.parseInt(dosage.getSelectedItem().toString()));
         medicineObj.schedule = (schedule_text.getText().toString());
         medicineObj.routineTime = routinetime;
-
         dbHelper.updateMedicine(medicineObj);
 
         Toast.makeText(this, "Medicine updated successfully", Toast.LENGTH_SHORT).show();
         Intent myMedicneIntent = new Intent(UpdateMedicineActivity.this, MyMedicineActivity.class);
         startActivity(myMedicneIntent);
-
     }
 
     public void hideRadioButtons() {
-
         button1.setVisibility(View.GONE);
         button2.setVisibility(View.GONE);
         button3.setVisibility(View.GONE);
@@ -249,7 +243,6 @@ public class UpdateMedicineActivity extends AppCompatActivity {
     }
 
     public void showRadioButtons() {
-
         button1.setVisibility(View.VISIBLE);
         button2.setVisibility(View.VISIBLE);
         button3.setVisibility(View.VISIBLE);
@@ -259,45 +252,43 @@ public class UpdateMedicineActivity extends AppCompatActivity {
 
     public void getChecked() {
 
-        if(checkBox1.isChecked()){
-            routinetime += checkBox1.getText().toString()+",";
+        if (checkBox1.isChecked()) {
+            routinetime += checkBox1.getText().toString() + ",";
         }
 
-        if(checkBox2.isChecked()){
-            routinetime += checkBox2.getText().toString()+",";
+        if (checkBox2.isChecked()) {
+            routinetime += checkBox2.getText().toString() + ",";
         }
 
-        if(checkBox3.isChecked()){
-            routinetime += checkBox3.getText().toString()+",";
+        if (checkBox3.isChecked()) {
+            routinetime += checkBox3.getText().toString() + ",";
         }
 
-        if(checkBox4.isChecked()){
-            routinetime += checkBox4.getText().toString()+",";
+        if (checkBox4.isChecked()) {
+            routinetime += checkBox4.getText().toString() + ",";
         }
 
-        if(routinetime == null){
+        if (routinetime == null) {
             routinetime = medicineObj.routineTime;
         }
-
     }
 
-    public void decideAlarms(){
+    public void decideAlarms() {
 
         String[] routineList = routinetime.split(",");
-        for(int j=0; j<routineList.length; j++){
-            if(!rb.checkReminder(routineList[j], (schedule_text.getText().toString()))){
+        for (int j = 0; j < routineList.length; j++) {
+            if (!rb.checkReminder(routineList[j], (schedule_text.getText().toString()))) {
                 addAlarms(routineList[j]);
-            }
-            else {
+            } else {
                 reminder = rb.getReminder(routineList[j], (schedule_text.getText().toString()));
                 updateAlarm(routineList[j], reminder.reminderID);
             }
         }
     }
 
-    public int getHour(String time){
+    public int getHour(String time) {
         int hr = 0;
-        switch (time){
+        switch (time) {
             case "9 AM":
                 hr = 9;
                 break;
@@ -311,39 +302,36 @@ public class UpdateMedicineActivity extends AppCompatActivity {
                 hr = 21;
                 break;
         }
-
-        Log.v("time", ""+hr);
         return hr;
     }
 
-    public String getTitleForReminder(String time, String repeatType){
-        String title="Medicine(s) to be taken now:\n";
+    public String getTitleForReminder(String time, String repeatType) {
+        String title = "Medicine(s) to be taken now:\n";
         List<medicine_model> medicineList;
         medicineDbHelper helper = new medicineDbHelper(activity);
         medicineList = helper.getAllMedicines();
 
-        for(int i=0; i<medicineList.size(); i++){
+        for (int i = 0; i < medicineList.size(); i++) {
             medicine_model medicine = medicineList.get(i);
-            if(medicine.schedule.equals(repeatType) && (medicine.routineTime).contains(time)){
+            if (medicine.schedule.equals(repeatType) && (medicine.routineTime).contains(time)) {
                 title += "-" + medicine.medicineName + "\n";
             }
         }
-        Log.v("title:", ""+title);
+        Log.v("title:", "" + title);
         return title;
     }
 
-    public void addAlarms(String time){
+    public void addAlarms(String time) {
 
         String mActive;
-        if(medicineObj.schedule!="Never"){
+        if (medicineObj.schedule != "Never") {
             mActive = "true";
-        }
-        else {
+        } else {
             mActive = "false";
         }
 
         String title = getTitleForReminder(time, medicineObj.schedule);
-        Log.v("title to add in db", ""+title);
+        Log.v("title to add in db", "" + title);
         // Creating Reminder
         int ID = rb.addReminder(new reminder_model(title, time, time, medicineObj.schedule, mActive));
         // Set up calender for creating the notification
@@ -377,7 +365,7 @@ public class UpdateMedicineActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
     }
 
-    public void updateAlarm(String time, int mReceivedID){
+    public void updateAlarm(String time, int mReceivedID) {
 
         // Set new values in the reminder
         reminder.title = getTitleForReminder(time, medicineObj.schedule);
@@ -387,7 +375,8 @@ public class UpdateMedicineActivity extends AppCompatActivity {
 
         // Update reminder
         rb.updateReminder(reminder);
-        Log.v("Update is working","title:"+getTitleForReminder(time, medicineObj.schedule));
+        Log.v("Update is working", "title:" + getTitleForReminder(time, medicineObj.schedule));
+
         // Set up calender for creating the notification
         mCalendar.set(Calendar.MONTH, --mMonth);
         mCalendar.set(Calendar.YEAR, mYear);
