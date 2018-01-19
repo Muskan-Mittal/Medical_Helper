@@ -411,12 +411,14 @@ public class AddMedicineActivity extends AppCompatActivity {
         medicineList = helper.getAllMedicines();
 
         for (int i = 0; i < medicineList.size(); i++) {
-            medicine_model medicine = medicineList.get(i);
-            if (medicine.schedule == repeatType && (medicine.routineTime).contains(time)) {
+            //medicine_model medicine = medicineList.get(i);
+            medicine_model medicine = new medicine_model();
+            medicine = medicineList.get(i);
+            if (medicine.schedule.equals(repeatType) && (medicine.routineTime).contains(time)) {
                 title += i + ". " + medicine.medicineName + "\n";
-                Log.v("title", ""+title);
             }
         }
+        Log.v("Title that is returned", ""+title);
         return title;
     }
 
@@ -428,7 +430,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         } else {
             mActive = "false";
         }
-        Log.v("time",""+time);
+        //Log.v("time",""+time);
         String title = getTitleForReminder(time, medicine.schedule);
 
         // Creating Reminder
@@ -441,7 +443,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         mCalendar.set(Calendar.HOUR_OF_DAY, getHour(time));
         mCalendar.set(Calendar.MINUTE, 0);
         mCalendar.set(Calendar.SECOND, 0);
-        Log.v("time",""+getHour(time));
+        Log.v("time in add alarm",""+getHour(time));
         // Check repeat type
         if ((schedule_text.getText().toString()).equals("Daily until I stop")) {
             mRepeatTime = 1 * milDay;
@@ -472,6 +474,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         reminder.setDate = mDate;
         reminder.reminderActive = "true";
         Log.v("time", ""+time);
+        Log.e("title here hjkhfgdfg", ""+reminder.title+"\n"+getTitleForReminder(time, medicine.schedule));
         // Update reminder
         rb.updateReminder(reminder);
 

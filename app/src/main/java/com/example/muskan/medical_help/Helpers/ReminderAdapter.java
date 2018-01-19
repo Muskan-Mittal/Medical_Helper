@@ -31,7 +31,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
     int position = 0;
     medicineDbHelper dbHelper;
 
-    public ReminderAdapter(Activity a, List<medicine_model> medicineList){
+    public ReminderAdapter(Activity a, List<medicine_model> medicineList) {
         this.medicineList = medicineList;
         activity = a;
         inflater = (LayoutInflater) activity
@@ -51,11 +51,10 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
     public void onBindViewHolder(final ReminderViewHolder holder, int position) {
         final medicine_model medicine = medicineList.get(position);
         holder.name.setText(medicine.medicineName);
-        if(medicine.schedule!= "Never"){
-            holder.switchCompat.setChecked(true);
-        }
-        else{
+        if (medicine.schedule.equals("Never")) {
             holder.switchCompat.setChecked(false);
+        } else {
+            holder.switchCompat.setChecked(true);
         }
 
         holder.switchCompat.setTag("Tag");
@@ -67,11 +66,10 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
                     holder.switchCompat.setTag(null);
                     return;
                 }
-                if (holder.switchCompat.isChecked()){
+                if (holder.switchCompat.isChecked()) {
                     medicine.schedule = "Daily until I stop";
                     dbHelper.updateMedicine(medicine);
-                }
-                else {
+                } else {
                     medicine.schedule = "Never";
                     dbHelper.updateMedicine(medicine);
                 }
@@ -92,11 +90,14 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
         return medicineList.size();
     }
 
-    public void add(medicine_model medicine){ this.medicineList.add(medicine);}
+    public void add(medicine_model medicine) {
+        this.medicineList.add(medicine);
+    }
 
     public class ReminderViewHolder extends RecyclerView.ViewHolder {
         public TextView name;
         public SwitchCompat switchCompat;
+
         public ReminderViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.tv_reminder_label);

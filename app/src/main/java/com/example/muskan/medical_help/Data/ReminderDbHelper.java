@@ -18,8 +18,8 @@ import java.util.List;
 public class ReminderDbHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "ReminderDb";
-    private static final String TABLE_REMINDERS = "Reminders";
+    private static final String DATABASE_NAME = "MedReminderDb";
+    private static final String TABLE_REMINDERS = "MedReminders";
 
     // Table Columns names
     private static final String KEY_ID = "id";
@@ -39,7 +39,7 @@ public class ReminderDbHelper extends SQLiteOpenHelper {
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + KEY_TITLE + " TEXT,"
                 + KEY_DATE + " TEXT,"
-                + KEY_TIME + " INTEGER,"
+                + KEY_TIME + " TEXT,"
                 + KEY_REPEAT_TYPE + " TEXT,"
                 + KEY_ACTIVE + " BOOLEAN" + ")";
         db.execSQL(CREATE_REMINDERS_TABLE);
@@ -62,11 +62,8 @@ public class ReminderDbHelper extends SQLiteOpenHelper {
         };
 
         SQLiteDatabase db = this.getReadableDatabase();
-
         String selection = KEY_TIME + " = ? and " + KEY_REPEAT_TYPE + " = ?";
-
         String[] selectionArgs = {reminderTime, reminderType};
-
         Cursor cursor = db.query(TABLE_REMINDERS,
                 columns,
                 selection,
@@ -105,7 +102,6 @@ public class ReminderDbHelper extends SQLiteOpenHelper {
     // Getting single Reminder from time
     public reminder_model getReminder(String time, String type) {
         SQLiteDatabase db = this.getReadableDatabase();
-
         Cursor cursor = db.query(TABLE_REMINDERS, new String[]
                         {
                                 KEY_ID,
@@ -116,7 +112,7 @@ public class ReminderDbHelper extends SQLiteOpenHelper {
                                 KEY_ACTIVE
                         }, KEY_TIME + "=? and " + KEY_REPEAT_TYPE + "=?",
 
-                new String[]{String.valueOf(time), type}, null, null, null, null);
+                new String[]{time, type}, null, null, null, null);
 
         if (cursor != null)
             cursor.moveToFirst();
@@ -131,7 +127,6 @@ public class ReminderDbHelper extends SQLiteOpenHelper {
     // Getting single Reminder
     public reminder_model getReminder(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-
         Cursor cursor = db.query(TABLE_REMINDERS, new String[]
                         {
                                 KEY_ID,
@@ -159,7 +154,6 @@ public class ReminderDbHelper extends SQLiteOpenHelper {
 
         // Select all Query
         String selectQuery = "SELECT * FROM " + TABLE_REMINDERS;
-
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
