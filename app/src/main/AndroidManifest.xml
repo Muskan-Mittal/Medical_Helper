@@ -23,7 +23,7 @@
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/AppName"
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -56,6 +56,16 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".SignupActivity" />
+        </activity>
+
+        <!--Forgot password activity-->
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:label="Forgot Password"
+            android:parentActivityName=".LoginActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LoginActivity" />
         </activity>
 
         <!--Dashboard ativity-->
