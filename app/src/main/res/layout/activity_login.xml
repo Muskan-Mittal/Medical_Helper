@@ -67,6 +67,14 @@
                 tools:ignore="HardcodedText" />
         </android.support.design.widget.TextInputLayout>
 
+        <!--Forgot password-->
+        <TextView
+            android:id="@+id/ForgotPasswordText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="Forgot password?" />
+
         <!--Login button-->
         <Button
             android:id="@+id/buttonLogin"

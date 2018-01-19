@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -51,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText textInputEditTextEmail;
     private TextInputEditText textInputEditTextPassword;
     private Button ButtonLogin;
+    private TextView forgotPasswordText;
     private ProgressDialog progressDialog;
     private FirebaseAuth mAuth;
     private final static int RC_SIGN_IN = 2;
@@ -157,6 +159,16 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // Handles forgot password
+        forgotPasswordText.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent forgotPasswordIntent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                startActivity(forgotPasswordIntent);
+            }
+        });
     }
 
     private void initToolbar() {
@@ -184,6 +196,7 @@ public class LoginActivity extends AppCompatActivity {
         ButtonLogin = (Button) findViewById(R.id.buttonLogin);
         googleSignInButton = (SignInButton) findViewById(R.id.googleLoginBtn);
         facebookLoginButton = (LoginButton) findViewById(R.id.fbLoginBtn);
+        forgotPasswordText = (TextView) findViewById(R.id.ForgotPasswordText);
     }
 
     private void initObjects() {
