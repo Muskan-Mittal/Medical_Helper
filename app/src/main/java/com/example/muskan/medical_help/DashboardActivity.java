@@ -88,7 +88,6 @@ public class DashboardActivity extends AppCompatActivity {
                 })
                 .build();
 
-        Log.v("Profile pic", "" + user.getPhotoUrl());
         result = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
@@ -104,7 +103,6 @@ public class DashboardActivity extends AppCompatActivity {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        Log.v("Position", "" + position);
 
                         switch (position) {
                             case 2:
@@ -170,7 +168,6 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent reminderIntent = new Intent(DashboardActivity.this, RemindersMainActivity.class);
                 startActivity(reminderIntent);
-
             }
         });
 
@@ -178,7 +175,6 @@ public class DashboardActivity extends AppCompatActivity {
         records_layout.setOnClickListener(new View.OnClickListener()
 
         {
-
             @Override
             public void onClick(View view) {
                 Intent recordIntent = new Intent(DashboardActivity.this, HealthRecordsActivity.class);
@@ -199,6 +195,8 @@ public class DashboardActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(DashboardActivity.this, SettingsActivity.class);
+            startActivity(settingsIntent);
             return true;
         }
 

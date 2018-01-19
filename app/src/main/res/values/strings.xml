@@ -14,7 +14,7 @@
     <string name="Password">Password</string>
     <string name="SignUpBtnText">SIGN UP</string>
     <string name="OrConnectWithText">Or connect with</string>
-    <string name="AlreadyHaveText">Already have?</string>
+    <string name="AlreadyHaveText">Already have? </string>
     <string name="Login">LOGIN</string>
     <string name="ConfirmPassword">Confirm Password</string>
 

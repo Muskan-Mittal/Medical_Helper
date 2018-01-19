@@ -57,7 +57,7 @@ public class SignupActivity extends AppCompatActivity {
     private final AppCompatActivity activity = SignupActivity.this;
     SignInButton googleSignInButton;
     GoogleApiClient mGoogleApiClient;
-    LoginButton facebookLoginButton;
+    ImageView facebookLoginButton;
     private FirebaseAuth mAuth;
     private TextInputLayout textInputLayoutEmail;
     private TextInputLayout textInputLayoutPassword;
@@ -69,7 +69,6 @@ public class SignupActivity extends AppCompatActivity {
     private TextView textviewLogin;
     private ProgressDialog progressDialog;
     private CallbackManager mCallbackManager;
-    Bitmap profilePic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +142,7 @@ public class SignupActivity extends AppCompatActivity {
         });
 
         //Facebook Login
-        facebookLoginButton.setReadPermissions("email");
+        //facebookLoginButton.setReadPermissions("email");
         mCallbackManager = CallbackManager.Factory.create();
         facebookLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,7 +197,7 @@ public class SignupActivity extends AppCompatActivity {
         buttonSignup = (Button) findViewById(R.id.Signup_Button);
         textviewLogin = (TextView) findViewById(R.id.login_tv);
         googleSignInButton = (SignInButton) findViewById(R.id.googleSignUpBtn);
-        facebookLoginButton = (LoginButton) findViewById(R.id.fbSignUpBtn);
+        facebookLoginButton = (ImageView) findViewById(R.id.fbSignUpBtn);
     }
 
     private void initObjects() {
