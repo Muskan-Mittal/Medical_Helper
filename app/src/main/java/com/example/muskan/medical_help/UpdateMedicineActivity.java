@@ -116,7 +116,6 @@ public class UpdateMedicineActivity extends AppCompatActivity {
                 decideAlarms();
             }
         });
-
     }
 
     private void initToolbar() {
@@ -125,7 +124,6 @@ public class UpdateMedicineActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-
         }
     }
 
