@@ -15,7 +15,6 @@ public class medicineDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "AddMedicines.db";
     private static final int DATABASE_VERSION = 1;
-
     private static final String TABLE_MEDICINE = "Medicines";
 
     // User Table Columns names

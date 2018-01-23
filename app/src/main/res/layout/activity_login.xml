@@ -123,29 +123,29 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="186dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="15dp"
             android:layout_marginTop="18dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <!--Google sign in button-->
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/googleLoginBtn"
-                android:layout_width="160dp"
+                android:layout_width="170dp"
                 android:layout_height="38dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="12dp"
                 android:layout_weight="1"
                 android:backgroundTint="#D34836"
-                android:textColor="#FFFFFF"
-                android:layout_marginTop="12dp"
-                android:layout_marginLeft="15dp"/>
+                android:textColor="#FFFFFF" />
 
             <!--Facebook button-->
             <ImageView
                 android:id="@+id/fbLoginBtn"
-                android:layout_width="167dp"
-                android:layout_height="70dp"
+                android:layout_width="189dp"
+                android:layout_height="74dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
