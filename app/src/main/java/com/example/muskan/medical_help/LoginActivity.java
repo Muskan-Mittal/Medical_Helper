@@ -1,6 +1,7 @@
 package com.example.muskan.medical_help;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,10 +12,13 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -44,28 +48,25 @@ import java.util.Arrays;
 public class LoginActivity extends AppCompatActivity {
 
     private final AppCompatActivity activity = LoginActivity.this;
-
     private TextInputLayout textInputLayoutEmail;
     private TextInputLayout textInputLayoutPassword;
-
     private TextInputEditText textInputEditTextEmail;
     private TextInputEditText textInputEditTextPassword;
-
     private Button ButtonLogin;
+    private TextView forgotPasswordText;
     private ProgressDialog progressDialog;
     private FirebaseAuth mAuth;
-
-    SignInButton googleSignInButton;
     private final static int RC_SIGN_IN = 2;
-    GoogleApiClient mGoogleApiClient;
     private CallbackManager mCallbackManager;
-    private LoginButton facebookLoginButton;
+    ImageView facebookButton;
+    SignInButton googleSignInButton;
+    GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        initToolbar();
         initViews();
         initObjects();
 
@@ -76,14 +77,13 @@ public class LoginActivity extends AppCompatActivity {
                 String user_email = textInputEditTextEmail.getText().toString().trim();
                 String pwd = textInputEditTextPassword.getText().toString().trim();
 
-                if(!TextUtils.isEmpty(user_email) || !TextUtils.isEmpty(pwd)){
+                if (!TextUtils.isEmpty(user_email) && !TextUtils.isEmpty(pwd)) {
                     progressDialog.setTitle("Logging In");
                     progressDialog.setMessage("Please wait while your credentials are verified!");
                     progressDialog.setCanceledOnTouchOutside(false);
                     progressDialog.show();
                     login_user(user_email, pwd);
-                }
-                else {
+                } else {
                     Toast.makeText(LoginActivity.this, "Please fill the desired fields.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(LoginActivity.this,"Something went wrong!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -115,8 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (isNetworkAvailable()) {
 
                     signIn();
-                }else
-                {
+                } else {
                     Toast.makeText(getApplicationContext(), "No Connection!\nCheck your Internet Connection", Toast.LENGTH_LONG).show();
                 }
             }
@@ -124,16 +123,14 @@ public class LoginActivity extends AppCompatActivity {
 
 
         //Facebook Login
-
         mCallbackManager = CallbackManager.Factory.create();
-
-        facebookLoginButton.setOnClickListener(new View.OnClickListener() {
+        facebookButton = (ImageView) findViewById(R.id.fbLoginBtn);
+        facebookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (isNetworkAvailable()) {
-
-                    facebookLoginButton.setEnabled(false);
+                    facebookButton.setEnabled(false);
                     progressDialog.setTitle("Loging in");
                     progressDialog.setMessage("Please wait while your account is being authenticated.");
                     progressDialog.setCanceledOnTouchOutside(false);
@@ -144,7 +141,6 @@ public class LoginActivity extends AppCompatActivity {
 
                         @Override
                         public void onSuccess(LoginResult loginResult) {
-
                             handleFacebookAccessToken(loginResult.getAccessToken());
                         }
 
@@ -158,37 +154,57 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("ok", "facebook:onError", error);
                         }
                     });
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getApplicationContext(), "No Connection!\nCheck your Internet Connection", Toast.LENGTH_LONG).show();
                 }
             }
         });
 
+        // Handles forgot password
+        forgotPasswordText.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View view) {
+                Intent forgotPasswordIntent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                startActivity(forgotPasswordIntent);
+            }
+        });
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar_login);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getApplicationContext(), SignupActivity.class));
+                }
+            });
+        }
     }
 
     @SuppressLint("WrongViewCast")
     private void initViews() {
-
         textInputLayoutEmail = (TextInputLayout) findViewById(R.id.textInputLayoutEmail);
         textInputLayoutPassword = (TextInputLayout) findViewById(R.id.textInputLayoutPassword);
         textInputEditTextEmail = (TextInputEditText) findViewById(R.id.email_input);
         textInputEditTextPassword = (TextInputEditText) findViewById(R.id.pwd_input);
         ButtonLogin = (Button) findViewById(R.id.buttonLogin);
         googleSignInButton = (SignInButton) findViewById(R.id.googleLoginBtn);
-        facebookLoginButton = (LoginButton) findViewById(R.id.fbLoginBtn);
+        facebookButton = (ImageView) findViewById(R.id.fbLoginBtn);
+        forgotPasswordText = (TextView) findViewById(R.id.ForgotPasswordText);
     }
 
     private void initObjects() {
-
         progressDialog = new ProgressDialog(this);
         mAuth = FirebaseAuth.getInstance();
     }
 
-    private void login_user(String email, String password){
-
+    private void login_user(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -204,11 +220,9 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Authentication failed. Password is too short!",
                                     Toast.LENGTH_SHORT).show();
                             emptyInputEditText();
-
                         }
                     }
                 });
-
     }
 
     private void emptyInputEditText() {
@@ -224,7 +238,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signIn() {
-
         progressDialog.setTitle("Logging into your account");
         progressDialog.setMessage("Please wait while your account is being authenticated!");
         progressDialog.setCanceledOnTouchOutside(false);
@@ -235,9 +248,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
-
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
@@ -246,14 +257,12 @@ public class LoginActivity extends AppCompatActivity {
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
                 fireBaseAuthWithGoogle(account);
-
             } else {
                 Toast.makeText(LoginActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
             }
         } else {
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
-
     }
 
     private void fireBaseAuthWithGoogle(GoogleSignInAccount account) {
@@ -265,21 +274,16 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             progressDialog.dismiss();
-                            Intent mainIntent = new Intent(LoginActivity.this,DashboardActivity.class);
+                            Intent mainIntent = new Intent(LoginActivity.this, DashboardActivity.class);
                             startActivity(mainIntent);
                             finish();
-
                         } else {
                             // If sign in fails, display a message to the user.
                             progressDialog.hide();
-                            Toast.makeText(LoginActivity.this,"Authentication failed!", Toast.LENGTH_SHORT).show();
-
+                            Toast.makeText(LoginActivity.this, "Authentication failed!", Toast.LENGTH_SHORT).show();
                         }
-
-
                     }
                 });
-
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
@@ -295,10 +299,9 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("ok", "signInWithCredential:success");
 
                             progressDialog.dismiss();
-                            Intent intent = new Intent(LoginActivity.this,DashboardActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                             startActivity(intent);
                             finish();
-
                         } else {
                             // If sign in fails, display a message to the user.
                             progressDialog.hide();
@@ -310,5 +313,4 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
-
 }

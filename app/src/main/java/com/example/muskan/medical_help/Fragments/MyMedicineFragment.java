@@ -9,14 +9,14 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.muskan.medical_help.Data.medicineDbHelper;
 import com.example.muskan.medical_help.Helpers.MedicineAdapter;
@@ -27,7 +27,6 @@ import com.example.muskan.medical_help.UpdateMedicineActivity;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,8 +43,6 @@ public class MyMedicineFragment extends Fragment {
     private String[] FilePathStrings;
     private String[] FileNameStrings;
     private File[] listFile;
-    CardView cardView;
-    medicine_model medicineObj;
 
     @Override
     public void onDetach() {
@@ -97,7 +94,6 @@ public class MyMedicineFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -107,7 +103,6 @@ public class MyMedicineFragment extends Fragment {
         // Create a new folder if no folder named SDImageTutorial exist
         file.mkdirs();
         View rootview;
-
 
         if (file.isDirectory()) {
             listFile = file.listFiles();
@@ -123,35 +118,31 @@ public class MyMedicineFragment extends Fragment {
                 FileNameStrings[i] = listFile[i].getName();
             }
 
-
             if (savedInstanceState == null || !savedInstanceState.containsKey("medicineList")) {
                 medicineList = new ArrayList<medicine_model>();
                 medicineAdapter = new MedicineAdapter(getActivity(), medicineList, FilePathStrings, FileNameStrings);
                 createMedicineList();
-
             } else {
-
                 newString = (String) savedInstanceState.getSerializable("MedicineName");
                 medicineAdapter = new MedicineAdapter(getActivity(), medicineList, FilePathStrings, FileNameStrings);
-
             }
         }
 
-        rootview = inflater.inflate(R.layout.activity_mymedicine, container, false);
+        rootview = inflater.inflate(R.layout.fragment_mymedicine, container, false);
         medicineRecyclerView = (RecyclerView) rootview.findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(getActivity());
         medicineAdapter = new MedicineAdapter(getActivity(), medicineList, FilePathStrings, FileNameStrings);
         medicineRecyclerView.setLayoutManager(layoutManager);
         medicineRecyclerView.setAdapter(medicineAdapter);
-        medicineRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity() , medicineRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
+        medicineRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), medicineRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
 
-                        ((RecyclerItemClickListener.OnItemClickListener) getActivity()).onItemClick(view, position);
-                        Intent i = new Intent(getActivity(), UpdateMedicineActivity.class);
-                        i.putExtra("Medicine", (Parcelable)medicineList.get(position));
-                        startActivity(i);
-
-                }
+                ((RecyclerItemClickListener.OnItemClickListener) getActivity()).onItemClick(view, position);
+                Intent i = new Intent(getActivity(), UpdateMedicineActivity.class);
+                i.putExtra("Medicine", (Parcelable) medicineList.get(position));
+                startActivity(i);
+            }
 
             @Override
             public void onItemLongClick(View view, int position) {
@@ -167,5 +158,4 @@ public class MyMedicineFragment extends Fragment {
         medicineList = new ArrayList<medicine_model>();
         medicineList = (ArrayList<medicine_model>) dbHelper.getAllMedicines();
     }
-
 }

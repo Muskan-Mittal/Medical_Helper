@@ -36,7 +36,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:checked="false"
                 android:gravity="center_vertical" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>

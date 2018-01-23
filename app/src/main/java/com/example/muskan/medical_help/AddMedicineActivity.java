@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -40,7 +41,7 @@ import java.util.List;
 public class AddMedicineActivity extends AppCompatActivity {
 
     int count = 0;
-
+    static int medicineNum = 1;
     RadioButton button1, button2, button3, button4, button5;
     RadioGroup schedule_buttons;
     CheckBox checkBox1, checkBox2, checkBox3, checkBox4;
@@ -48,7 +49,7 @@ public class AddMedicineActivity extends AppCompatActivity {
     TextInputLayout textInputLayoutMedicine;
     Button camera_btn, save_btn;
     String CurrentPhotoPath;
-    String routinetime = "";
+    String routineTime = "";
     Spinner dosage;
     Uri imageUri;
     private Calendar mCalendar;
@@ -83,7 +84,7 @@ public class AddMedicineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addmedicine);
-
+        initToolbar();
         initObjects();
         initViews();
         hideRadioButtons();
@@ -123,7 +124,6 @@ public class AddMedicineActivity extends AppCompatActivity {
                     } else {
                         dispatchTakePictureIntent();
                     }
-
                 } else {
                     Toast.makeText(AddMedicineActivity.this, "Camera not supported", Toast.LENGTH_LONG).show();
                 }
@@ -140,7 +140,22 @@ public class AddMedicineActivity extends AppCompatActivity {
                 decideAlarms();
             }
         });
+    }
 
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar_addMedicine);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
+                }
+            });
+        }
     }
 
     private void initViews() {
@@ -168,7 +183,6 @@ public class AddMedicineActivity extends AppCompatActivity {
         mYear = mCalendar.get(Calendar.YEAR);
         mMonth = mCalendar.get(Calendar.MONTH) + 1;
         mDay = mCalendar.get(Calendar.DATE);
-
         mDate = mDay + "/" + mMonth + "/" + mYear;
         mTime = mHour + ":" + mMinute;
     }
@@ -178,7 +192,6 @@ public class AddMedicineActivity extends AppCompatActivity {
         dbHelper = new medicineDbHelper(activity);
         rb = new ReminderDbHelper(this);
         alarmReceiver = new AlarmReceiver();
-
     }
 
     private String getDateTime() {
@@ -197,21 +210,19 @@ public class AddMedicineActivity extends AppCompatActivity {
             return;
         }
 
-            if (!dbHelper.checkMedicine(textInputEditTextMedicine.getText().toString().trim())) {
-                medicine.medicineName = (textInputEditTextMedicine.getText().toString().trim());
-                medicine.imagePath = (getImageUri().getPath());
-                medicine.dosage = (Integer.parseInt(dosage.getSelectedItem().toString()));
-                medicine.schedule = (schedule_text.getText().toString());
-                medicine.routineTime = routinetime;
-                medicine.date = getDateTime();
-                dbHelper.addMedicine(medicine);
-
-            } else {
-                flag = false;
-                Toast.makeText(this, "This medicine is already added", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
+        if (!dbHelper.checkMedicine(textInputEditTextMedicine.getText().toString().trim())) {
+            medicine.medicineName = (textInputEditTextMedicine.getText().toString().trim());
+            medicine.imagePath = (getImageUri().getPath());
+            medicine.dosage = (Integer.parseInt(dosage.getSelectedItem().toString()));
+            medicine.schedule = (schedule_text.getText().toString());
+            medicine.routineTime = routineTime;
+            medicine.date = getDateTime();
+            dbHelper.addMedicine(medicine);
+        } else {
+            flag = false;
+            Toast.makeText(this, "This medicine is already added", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (flag) {
             Toast.makeText(this, "Medicine added successfully", Toast.LENGTH_SHORT).show();
             Intent dashboardIntent = new Intent(AddMedicineActivity.this, DashboardActivity.class);
@@ -265,7 +276,6 @@ public class AddMedicineActivity extends AppCompatActivity {
                     Toast.makeText(AddMedicineActivity.this, "Storage Permissions denied", Toast.LENGTH_SHORT).show();
                 }
             }
-
         }
     }
 
@@ -291,7 +301,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         // Create an image file name
         String folderName = "test";
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName = medicineNum + "_" + timeStamp;
         File f = new File(Environment.getExternalStorageDirectory(), folderName);
         if (!f.exists()) {
             f.mkdirs();
@@ -306,7 +316,6 @@ public class AddMedicineActivity extends AppCompatActivity {
         // Save a file: path for use with ACTION_VIEW intents
         imageUri = Uri.fromFile(image);
         CurrentPhotoPath = image.getAbsolutePath();
-
         return image;
     }
 
@@ -315,21 +324,18 @@ public class AddMedicineActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
             try {
-
                 frontimagePath.setText(CurrentPhotoPath);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public Uri getImageUri(){
+    public Uri getImageUri() {
         return imageUri;
     }
 
     public void hideRadioButtons() {
-
         button1.setVisibility(View.GONE);
         button2.setVisibility(View.GONE);
         button3.setVisibility(View.GONE);
@@ -338,7 +344,6 @@ public class AddMedicineActivity extends AppCompatActivity {
     }
 
     public void showRadioButtons() {
-
         button1.setVisibility(View.VISIBLE);
         button2.setVisibility(View.VISIBLE);
         button3.setVisibility(View.VISIBLE);
@@ -347,44 +352,38 @@ public class AddMedicineActivity extends AppCompatActivity {
     }
 
     public void getChecked() {
-
-        if(checkBox1.isChecked()){
-            routinetime += checkBox1.getText().toString()+",";
+        if (checkBox1.isChecked()) {
+            routineTime += checkBox1.getText().toString() + ",";
         }
 
-        if(checkBox2.isChecked()){
-            routinetime += checkBox2.getText().toString()+",";
+        if (checkBox2.isChecked()) {
+            routineTime += checkBox2.getText().toString() + ",";
         }
 
-        if(checkBox3.isChecked()){
-            routinetime += checkBox3.getText().toString()+",";
+        if (checkBox3.isChecked()) {
+            routineTime += checkBox3.getText().toString() + ",";
         }
 
-        if(checkBox4.isChecked()){
-            routinetime += checkBox4.getText().toString()+",";
+        if (checkBox4.isChecked()) {
+            routineTime += checkBox4.getText().toString() + ",";
         }
-
-
     }
 
-    public void decideAlarms(){
-
-        String[] routineList = routinetime.split(",");
-        for(int j=0; j<routineList.length; j++){
-            if(!rb.checkReminder(routineList[j], (schedule_text.getText().toString()))){
+    public void decideAlarms() {
+        String[] routineList = routineTime.split(",");
+        for (int j = 0; j < routineList.length; j++) {
+            if (!rb.checkReminder(routineList[j], (schedule_text.getText().toString()))) {
                 addAlarms(routineList[j]);
-            }
-            else {
+            } else {
                 reminder = rb.getReminder(routineList[j], (schedule_text.getText().toString()));
-                updateAlarm(medicine.medicineName, routineList[j], reminder.getReminderID());
+                updateAlarm(medicine.medicineName, routineList[j], reminder.reminderID);
             }
-
         }
     }
 
-    public int getHour(String time){
+    public int getHour(String time) {
         int hr = 0;
-        switch (time){
+        switch (time) {
             case "9 AM":
                 hr = 9;
                 break;
@@ -401,33 +400,34 @@ public class AddMedicineActivity extends AppCompatActivity {
         return hr;
     }
 
-    public String getTitleForReminder(String time, String repeatType){
-        String title="Medicine(s) to be taken today:\n";
+    public String getTitleForReminder(String time, String repeatType) {
+        String title = "Medicine(s) to be taken today:\n";
         List<medicine_model> medicineList;
         medicineDbHelper helper = new medicineDbHelper(activity);
         medicineList = helper.getAllMedicines();
 
-        for(int i=0; i<medicineList.size(); i++){
-            medicine_model medicine = medicineList.get(i);
-            if(medicine.schedule == repeatType && (medicine.routineTime).contains(time)){
+        for (int i = 0; i < medicineList.size(); i++) {
+            //medicine_model medicine = medicineList.get(i);
+            medicine_model medicine = new medicine_model();
+            medicine = medicineList.get(i);
+            if (medicine.schedule.equals(repeatType) && (medicine.routineTime).contains(time)) {
                 title += i + ". " + medicine.medicineName + "\n";
             }
         }
+        Log.v("Title that is returned", "" + title);
         return title;
     }
 
-    public void addAlarms(String time){
-
+    public void addAlarms(String time) {
         String mActive;
-
-        if(medicine.schedule!="Never"){
+        if (medicine.schedule != "Never") {
             mActive = "true";
-        }
-        else {
+        } else {
             mActive = "false";
         }
 
         String title = getTitleForReminder(time, medicine.schedule);
+
         // Creating Reminder
         int ID = rb.addReminder(new reminder_model(title, getDateTime(), time, medicine.schedule, mActive));
 
@@ -438,6 +438,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         mCalendar.set(Calendar.HOUR_OF_DAY, getHour(time));
         mCalendar.set(Calendar.MINUTE, 0);
         mCalendar.set(Calendar.SECOND, 0);
+        Log.v("time in add alarm", "" + getHour(time));
 
         // Check repeat type
         if ((schedule_text.getText().toString()).equals("Daily until I stop")) {
@@ -454,23 +455,22 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         // Create a new notification
         if (mActive.equals("true")) {
-                new AlarmReceiver().setRepeatAlarm(getApplicationContext(), mCalendar, ID, mRepeatTime);
+            new AlarmReceiver().setRepeatAlarm(getApplicationContext(), mCalendar, ID, mRepeatTime);
         }
 
         // Create toast to confirm new reminder
         Toast.makeText(getApplicationContext(), "Saved",
                 Toast.LENGTH_SHORT).show();
-
-        //onBackPressed();
     }
 
-    public void updateAlarm(String medicineName, String time, int mReceivedID){
+    public void updateAlarm(String medicineName, String time, int mReceivedID) {
 
         // Set new values in the reminder
-        reminder.setTitle(getTitleForReminder(time, medicine.schedule));
-        reminder.setSetDate(mDate);
-        reminder.setReminderActive("true");
-
+        reminder.title = (getTitleForReminder(time, medicine.schedule));
+        reminder.setDate = mDate;
+        reminder.reminderActive = "true";
+        Log.v("time", "" + time);
+        Log.e("title here hjkhfgdfg", "" + reminder.title + "\n" + getTitleForReminder(time, medicine.schedule));
         // Update reminder
         rb.updateReminder(reminder);
 
@@ -499,14 +499,13 @@ public class AddMedicineActivity extends AppCompatActivity {
         }
 
         // Create a new notification
-        if (reminder.getReminderActive().equals("true")) {
-                alarmReceiver.setRepeatAlarm(getApplicationContext(), mCalendar, mReceivedID, mRepeatTime);
+        if (reminder.reminderActive == "true") {
+            alarmReceiver.setRepeatAlarm(getApplicationContext(), mCalendar, mReceivedID, mRepeatTime);
         }
 
         // Create toast to confirm update
         Toast.makeText(getApplicationContext(), "Edited",
                 Toast.LENGTH_SHORT).show();
         onBackPressed();
-
     }
 }

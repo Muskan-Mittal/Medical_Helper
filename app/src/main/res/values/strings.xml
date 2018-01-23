@@ -12,8 +12,9 @@
     <!--Login and Sign up activity string labels-->
     <string name="UserId">User Id</string>
     <string name="Password">Password</string>
+    <string name="SignUpBtnText">SIGN UP</string>
     <string name="OrConnectWithText">Or connect with</string>
-    <string name="AlreadyHaveText">Already have?</string>
+    <string name="AlreadyHaveText">Already have? </string>
     <string name="Login">LOGIN</string>
     <string name="ConfirmPassword">Confirm Password</string>
 
@@ -26,19 +27,35 @@
     <string name="ScheduleText">Schedule</string>
     <string name="SelectAScheduleHint">Select a schedule</string>
 
+    <!--Forget password string labels-->
+    <string name="ResetPasswordHeading">Reset Password</string>
+    <string name="ResetPasswordDescription">To reset password, enter your email, press the button and check mail to follow instruction.</string>
+    <string name="EditTextHint">Enter your email here</string>
+
     <!--Logout page string labels-->
     <string name="DescriptionForAppAfterLogout">Thank you for using My Help health app! Login in to set alarms and click images to store your medical records.</string>
     <string name="TextForButtonToLoginPage">Click here to LOGIN</string>
+
+    <!--About us string labels-->
+    <string name="AboutUsDescription">This app is developed for the aged population to ease their lives and provide them a platform to set up alarms for their medicines as they generally start forgetting at this age,
+        so also forget to take medicines at proper time and suffer due to that. The user or anyone on behalf of the user can enter the medicine reminders by describing name, quantity and when it should be taken as a
+        reminder. The reminder helps the user to look into the details of tablets that he or she has to take. The user can also save the medical reports through the Health Records option available on the dashboard.
+        This app is made by Ms. Muskan Mittal as a project under the programme Learn IT Girl, under the mentorship of Ms. Meha Kaushik.</string>
+
+    <!--Health records string labels-->
+    <string name="UploadRecordsText">Upload health records and reports</string>
 
     <!--Overflow menu labels-->
     <string name="ActionSettings">Settings</string>
     <string name="ActionLogout">Logout</string>
 
     <!-- Navigation Drawer menu labels -->
+    <string name="NavHome">Home</string>
     <string name="NavEmergency">Emergency</string>
     <string name="NavSettings">Settings</string>
     <string name="NavAboutUs">About Us</string>
     <string name="NavLogout">Logout</string>
+    <string name="EmergencyBtnText">Tap here to call the Ambulance Dial 112</string>
 
     <!--Navigation drawer string labels-->
     <string name="NavigationDrawerOpen">Open navigation drawer</string>
@@ -62,4 +79,8 @@
         <item>4</item>
         <item>5</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
