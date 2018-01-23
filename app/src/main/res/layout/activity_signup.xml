@@ -144,12 +144,12 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="15dp"
                 android:layout_marginTop="18dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <!--Google sign in button-->
                 <com.google.android.gms.common.SignInButton
                     android:id="@+id/googleSignUpBtn"
-                    android:layout_width="160dp"
+                    android:layout_width="166dp"
                     android:layout_height="38dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="12dp"
@@ -160,8 +160,8 @@
                 <!--Facebook button-->
                 <ImageView
                     android:id="@+id/fbSignUpBtn"
-                    android:layout_width="167dp"
-                    android:layout_height="70dp"
+                    android:layout_width="178dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
@@ -172,13 +172,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="4dp"
                 android:orientation="horizontal">
 
                 <!--Already have an account? text-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
                     android:text="@string/AlreadyHaveText"
                     android:textColor="#212121"
                     android:textSize="16sp" />
@@ -188,6 +189,7 @@
                     android:id="@+id/login_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
                     android:text="@string/Login"
                     android:textColor="#ef5350" />
             </LinearLayout>

@@ -105,24 +105,14 @@
                 android:value=".MyMedicineActivity" />
         </activity>
 
-        <!--Reminders main activity-->
-        <activity
-            android:name=".RemindersMainActivity"
-            android:label="Reminders"
-            android:parentActivityName=".DashboardActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".DashboardActivity" />
-        </activity>
-
         <!--Reminders activity-->
         <activity
             android:name=".RemindersActivity"
             android:label="Manage Reminders"
-            android:parentActivityName=".SettingsActivity">
+            android:parentActivityName=".DashboardActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".SettingsActivity" />
+                android:value=".DashboardActivity" />
         </activity>
 
         <!--Health Records activity-->

@@ -36,7 +36,7 @@ public class RemindersActivity extends AppCompatActivity {
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(RemindersActivity.this, SettingsActivity.class));
+                    startActivity(new Intent(RemindersActivity.this, DashboardActivity.class));
                 }
             });
         }

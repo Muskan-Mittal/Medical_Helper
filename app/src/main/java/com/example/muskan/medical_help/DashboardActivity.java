@@ -166,7 +166,7 @@ public class DashboardActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Intent reminderIntent = new Intent(DashboardActivity.this, RemindersMainActivity.class);
+                Intent reminderIntent = new Intent(DashboardActivity.this, RemindersActivity.class);
                 startActivity(reminderIntent);
             }
         });

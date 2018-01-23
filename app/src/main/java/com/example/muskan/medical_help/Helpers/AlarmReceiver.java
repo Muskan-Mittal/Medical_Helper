@@ -1,6 +1,5 @@
 package com.example.muskan.medical_help.Helpers;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -19,7 +18,6 @@ import com.example.muskan.medical_help.AddMedicineActivity;
 import com.example.muskan.medical_help.Data.ReminderDbHelper;
 import com.example.muskan.medical_help.Models.reminder_model;
 import com.example.muskan.medical_help.R;
-import com.example.muskan.medical_help.RemindersMainActivity;
 import com.example.muskan.medical_help.UpdateMedicineActivity;
 
 import java.util.Calendar;

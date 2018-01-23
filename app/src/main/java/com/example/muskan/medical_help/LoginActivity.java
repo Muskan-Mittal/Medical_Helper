@@ -123,7 +123,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
         //Facebook Login
-
         mCallbackManager = CallbackManager.Factory.create();
         facebookButton = (ImageView) findViewById(R.id.fbLoginBtn);
         facebookButton.setOnClickListener(new View.OnClickListener() {
